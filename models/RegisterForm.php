@@ -62,7 +62,10 @@ class RegisterForm extends Model
 
 	public function register()
 	{
-
+		if($this->validate())
+		{
+			
+		}
 	}
 	/**
 	 * Check if registering user exists at site database

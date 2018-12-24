@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8c8191f1f82014ec9411eefa438a28ad",
+    "content-hash": "41790df47d109535348af5d7f41d2e19",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -445,6 +445,65 @@
             ],
             "description": "Flexible Stub wrapper for PHPUnit's Mock Builder",
             "time": "2018-07-26T11:55:37+00:00"
+        },
+        {
+            "name": "dektrium/yii2-user",
+            "version": "0.9.14",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dektrium/yii2-user.git",
+                "reference": "8f2daea532f7efefc3f808e50d74a91c0de71ff4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dektrium/yii2-user/zipball/8f2daea532f7efefc3f808e50d74a91c0de71ff4",
+                "reference": "8f2daea532f7efefc3f808e50d74a91c0de71ff4",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0",
+                "yiisoft/yii2": "^2.0.13",
+                "yiisoft/yii2-authclient": "^2.1.0",
+                "yiisoft/yii2-bootstrap": "^2.0.0",
+                "yiisoft/yii2-swiftmailer": "^2.0.0"
+            },
+            "require-dev": {
+                "codeception/specify": "^0.4.3",
+                "codeception/verify": "^0.3.1",
+                "yiisoft/yii2-codeception": "^2.0.0"
+            },
+            "type": "yii2-extension",
+            "extra": {
+                "bootstrap": "dektrium\\user\\Bootstrap",
+                "branch-alias": {
+                    "dev-master": "0.9.x-dev",
+                    "dev-develop": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "dektrium\\user\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dmitry Erofeev",
+                    "email": "dmeroff@gmail.com",
+                    "homepage": "http://dmeroff.ru"
+                }
+            ],
+            "description": "Flexible user registration and authentication module for Yii2",
+            "keywords": [
+                "User management",
+                "dektrium",
+                "yii2",
+                "yii2-user"
+            ],
+            "time": "2018-04-03T12:24:41+00:00"
         },
         {
             "name": "doctrine/instantiator",

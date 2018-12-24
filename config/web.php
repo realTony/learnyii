@@ -3,6 +3,7 @@
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 $urlRules = require __DIR__.'/urlRules.php';
+$config = parse_ini_file(__DIR__.'/../../secure/stickit.ini', true);
 $config = [
     'id' => 'stickit',
     'basePath' => dirname(__DIR__),
@@ -11,7 +12,23 @@ $config = [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
+    'language' => 'ru',
     'components' => [
+        'authClientCollection' => [
+            'class' => 'yii\authclient\Collection',
+            'clients' => [
+                'google' => [
+                    'class' => 'yii\authclient\clients\GoogleOpenId',
+                    'clientID' => $config['oauth_google_clientId'],
+                    'clientSecret' => $config['oauth_google_clientSecret']
+                ],
+                'facebook' => [
+                    'class' => 'yii\authclient\clients\Facebook',
+                    'clientID' => $config['oauth_facebook_clientId'],
+                    'clientSecret' => $config['oauth_facebook_clientSecret']
+                ]
+            ]
+        ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'gZxNLSezjY7MWYGhogsz463Elr9nzDYf',
@@ -62,6 +79,11 @@ $config = [
             'showScriptName' => false,
             'rules' => $urlRules,
         ],
+    ],
+    'modules' =>[
+        'user' => [
+            'class' => 'dektrium\user\Module'
+        ]
     ],
     //'layout' => 'main.twig',
     'params' => $params,
