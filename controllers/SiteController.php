@@ -62,7 +62,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        return $this->render('index.twig');
     }
 
     /**
@@ -91,18 +91,28 @@ class SiteController extends Controller
      * 
      * @return Response|string
      */
-    public function actionRegister()
+    public function actionAccount()
     {
-        $model = new RegisterForm();
-        if ($model->load(Yii::$app->request->post()) && $model->register()) {
+        $registerModel = new RegisterForm();
+        $loginModel = new LoginForm();
+        if (!Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+        if ($registerModel->load(Yii::$app->request->post()) && $registerModel->register()) {
             $request = Yii::$app->request;
             $post = $request->post();
             return $this->goBack();
         }
+        if ($loginModel->load(Yii::$app->request->post()) && $loginModel->login()) {
+            return $this->goBack();
+        }
 
-        $model->password = '';
-        return $this->render('register', [
-            'model' => $model,
+        $loginModel->password = '';
+        $registerModel->password = '';
+
+        return $this->render('account', [
+            'model' => $registerModel,
+            'loginModel' => $loginModel
         ]); 
     }
     /**
@@ -143,5 +153,10 @@ class SiteController extends Controller
     public function actionAbout()
     {
         return $this->render('about');
+    }
+
+    public function actionHowItWorks()
+    {
+        return $this->render('how-it-works.twig');
     }
 }

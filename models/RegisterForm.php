@@ -2,8 +2,10 @@
 
 namespace app\models;
 
+
+use dektrium\user\models\RegistrationForm;
+use app\models\User;
 use Yii;
-use yii\base\Model;
 
 /**
  * RegisterForm is the model behind the register form.
@@ -24,7 +26,7 @@ use yii\base\Model;
 	//Re-enter Password
 	//Rules aggriement checkbox
 
-class RegisterForm extends Model
+class RegisterForm extends RegistrationForm
 {
 	public $username;
 	public $email;
@@ -33,10 +35,16 @@ class RegisterForm extends Model
 	public $password_repeat;
 	public $password;
 	public $rules_agreement = false;
+	public static $usernameRegExp = '/^[a-zA-Zа-яёА-ЯЁ(\ a-zA-Zа-яёА-ЯЁ)?]+$/';
 
 	public function rules()
 	{
 		return [
+            // username rules
+            'usernameTrim'     => ['username', 'trim'],
+            'usernameRequired' => ['username', 'required', 'on' => ['register', 'create', 'connect', 'update']],
+            'usernameMatch'    => ['username', 'match', 'pattern' => self::$usernameRegExp],
+            'usernameLength'   => ['username', 'string', 'min' => 3, 'max' => 255],
 			// username, email, password, re-entred password must be not empty
             [['username', 'email', 'password', 'password_repeat', 'rules_agreement'], 'required'],
             // rememberMe must be a boolean value
@@ -44,7 +52,7 @@ class RegisterForm extends Model
             ['rules_agreement', 'boolean'],
             //email must be a valid email address
             ['email','email'],
-        	
+
             // normalize "phone" input
 		    ['phone', 'filter', 'filter' => [$this, 'normalizePhone']],
             // password is validated by validateRegForm()
@@ -56,16 +64,22 @@ class RegisterForm extends Model
 	public function validateRegForm()
 	{
 		if (!$this->hasErrors()) {
-
+		    return true;
 		}
 	}
 
+
 	public function register()
 	{
-		if($this->validate())
-		{
-			
-		}
+        parent::register();
+        $user = Yii::createObject(User::className());
+        $user->setScenario('register');
+        $this->loadAttributes($user);
+        if (!$user->register()) {
+            return false;
+        }else{
+
+        }
 	}
 	/**
 	 * Check if registering user exists at site database
@@ -83,8 +97,21 @@ class RegisterForm extends Model
 	 * 
 	 * @return phoneNumber|string 
 	 */
-	private function normalizePhone($value)
+	public function normalizePhone($value)
 	{
 		return $value;
 	}
+
+    public function attributeLabels()
+    {
+        return [
+            'username' => Yii::t('app','Имя'),
+            'email' => Yii::t('app','E-Mail'),
+            'phone' => Yii::t('app','Телефон'),
+            'city' => Yii::t('app','Город'),
+            'password_repeat' => Yii::t('app','Повторить пароль'),
+            'password' => Yii::t('app','Пароль'),
+            'rules_agreement' => Yii::t('app','Соглашение с условиями')
+        ];
+    }
 }
