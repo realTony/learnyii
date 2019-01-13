@@ -12,19 +12,20 @@ $config = [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
-    'language' => 'ru',
+    'name' => 'STICKIT',
+    'language' => 'ru-Ru',
     'components' => [
         'authClientCollection' => [
             'class' => 'yii\authclient\Collection',
             'clients' => [
                 'google' => [
-                    'class' => 'yii\authclient\clients\GoogleOpenId',
-                    'clientID' => $config['oauth_google_clientId'],
+                    'class' => 'yii\authclient\clients\Google',
+                    'clientId' => $config['oauth_google_clientId'],
                     'clientSecret' => $config['oauth_google_clientSecret']
                 ],
                 'facebook' => [
                     'class' => 'yii\authclient\clients\Facebook',
-                    'clientID' => $config['oauth_facebook_clientId'],
+                    'clientId' => $config['oauth_facebook_clientId'],
                     'clientSecret' => $config['oauth_facebook_clientSecret']
                 ]
             ]
@@ -50,6 +51,11 @@ $config = [
                     ],
                     'globals' => [
                         'html' => '\yii\helpers\Html',
+                        'url' => ['class' => 'yii\helpers\Url']
+                    ],
+                    'uses' => [
+                               'yii\helpers\Html',
+                                'yii\widgets\Menu'
                     ]
                 ]
             ]
@@ -79,13 +85,24 @@ $config = [
             'showScriptName' => false,
             'rules' => $urlRules,
         ],
+        'i18n' =>[
+            'translations' => [
+                'app*' =>[
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'fileMap' => [
+                        'app' => 'app.php',
+                        'app/error' => 'error.php'
+                    ]
+                ]
+            ]
+        ]
     ],
     'modules' =>[
         'user' => [
             'class' => 'dektrium\user\Module'
         ]
     ],
-    //'layout' => 'main.twig',
+    'layout' => 'main.twig',
     'params' => $params,
 ];
 

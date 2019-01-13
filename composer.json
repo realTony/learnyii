@@ -22,10 +22,11 @@
         "codeception/codeception": "*",
         "yiisoft/yii2-imagine": "*",
         "yiisoft/yii2-authclient": "^2.1",
-        "spomky-labs/jose": "^7.1"
+        "spomky-labs/jose": "^7.1",
+        "dektrium/yii2-user": "^0.9.14"
     },
     "require-dev": {
-        "yiisoft/yii2-debug": "~2.0.0",
+        "yiisoft/yii2-debug": "~2.0.0",,
         "yiisoft/yii2-gii": "~2.0.0",
         "yiisoft/yii2-faker": "~2.0.0",
 

@@ -2,5 +2,5 @@
 
 return [
 	'' => 'site/index',
-	'<action:(login|logout|register|about)>' => 'site/<action>'
+	'<action:(login|logout|account|about)>' => 'site/<action>'
 ];

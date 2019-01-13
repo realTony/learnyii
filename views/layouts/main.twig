@@ -1,17 +1,207 @@
-{{ this.beginPage() }}
-<!doctype html>
-<html lang="{{app.language}}">
-    <head>
-        <meta charset="{{app.charset}}"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1">      
-        {{ html.csrfMetaTags() | raw }}
-        <title>{{ html.encode(this.title) }}</title>
-        {{ this.head() }}
-    </head>
-    <body class="wrap">
-    {{ this.beginBody() }}
-        {{ content | raw }}
-    {{ this.endBody() }}
-    </body>
+{{ register_asset_bundle('app/assets/AppAsset') }}  {# asset root for yii advanced template #}
+{{   void(this.beginPage()) }}
+{{ this.registerLinkTag({'rel':'icon', 'type' :'image/png', 'href':'/favicon.png'}) }}
+<!DOCTYPE html>
+<html lang="{{ app.language }}">
+<head>
+    <meta charset="{{ app.charset }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ html.encode(this.title) }}</title>
+    {{ html.csrfMetaTags | raw }}
+    {{   void(this.head) }}
+</head>
+<body>
+    <div id="wrapper">
+        <header id="header" class="header">
+            <div class="container">
+                <!-- logo -->
+                {#<div class="logo mr-auto">#}
+                    {#<a href="{{ app.homeUrl }}" class="d-flex align-items-center"><img src="/images/logo.png" alt="logo"/></a>#}
+                {#</div>#}
+                <div class="top-head">
+                    <strong class="logo"><a href="{{ app.homeUrl }}" alt="logo">{{ app.name }}</a></strong>
+                    <div class="holder-ads">
+                        <a class="btn-ads" href="#">ПОДАТЬ ОБЪЯВЛЕНИЕ </a>
+                    </div>
+                    <div class="log-registration">
+                        <a class="btn-registration" href="#">Регистрация</a>
+                        <a class="btn-login" href="#">Вход<i class="fas fa-sign-in-alt"></i></a>
+                    </div>
+                    <div class="mobile-nav-btn">
+                        <a href="#">
+                            <img src="images/bg-33.png" alt="img">
+                        </a>
+                        <a href="#">
+                            <img src="images/bg-34.png" alt="img">
+                        </a>
+                    </div>
+                    <a class="open-menu" href="#"></a>
+                    <ul class="list-language">
+                        <li class="active">
+                            <a href="#">РУС</a>
+                        </li>
+                        <li>
+                            <a href="#">УКР</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="holder-nav">
+                <div class="container">
+                    <span class="bg-nav">&nbsp;</span>
+                    <strong class="logo"><a href="#">STICKIT</a></strong>
+                    <span class="closed-menu">closed-menu</span>
+
+                    {{ menu_widget({
+                        'options': {
+                            'class': '',
+                            'id': 'nav'
+                        },
+                        'items': [{
+                                'label': 'КАК ЭТО РАБОТАЕТ?',
+                                'url': '/site/how-it-works',
+                            },
+                            {
+                                'label': 'ТРАНСПОРТ',
+                                'url': '/site/index',
+                            },
+                            {
+                                'label': 'РЕКЛАМА',
+                                'url': '/site/index',
+                            },
+                            {
+                                'label' : 'ИСПОЛНИТЕЛИ',
+                                'url': '/site/index',
+                            },
+                            {
+                                'label' : 'ПРОМОАКЦИИ',
+                                'url': '/site/index',
+                            }
+                        ]
+                    }) }}
+                    <ul class="social">
+                        <li>
+                            <a class="t-icon" href="#">
+                                <i class="fab fa-telegram-plane"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="f-icon" href="#">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="i-icon" href="#">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="i-icon" href="#">
+                                <i class="fab fa-viber"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+        {{   void(this.beginBody()) }}
+        <div id="main">
+            {{ content | raw}}
+        </div>
+    </div>
+    <footer id="footer">
+        <div class="container">
+            <div class="holder-block">
+                <strong class="f-logo"><a href="{{ app.homeUrl }}">{{ app.name }}</a></strong>
+                <span class="copyright">&#169; 2018 Stick It. Все права защищены.</span>
+            </div>
+            <div class="holder-block">
+                {{ menu_widget({
+                    'options': {
+                        'class': 'nav-footer',
+                    },
+                    'items': [{
+                        'label': 'Как это работает?',
+                        'url': '/site/index',
+                    },
+                        {
+                            'label': 'Тарифы',
+                            'url': '/site/index',
+                        },
+                        {
+                            'label': 'Блог',
+                            'url': '/blog/index',
+                        }
+                    ]
+                }) }}
+            </div>
+            <div class="holder-block">
+                {{ menu_widget({
+                    'options': {
+                        'class': 'nav-footer',
+                    },
+                    'items': [{
+                        'label': 'Рекламодателям',
+                        'url': '/site/index',
+                    },
+                        {
+                            'label': 'Автомобилистам',
+                            'url': '/site/index',
+                        },
+                        {
+                            'label': 'Исполнителям',
+                            'url': '/site/index',
+                        }
+                    ]
+                }) }}
+            </div>
+            <div class="holder-block">
+                {{ menu_widget({
+                    'options': {
+                        'class': 'nav-footer',
+                    },
+                    'items': [{
+                        'label': 'Реклама на сайте',
+                        'url': '/site/index',
+                    },
+                        {
+                            'label': 'Конфиденциальность',
+                            'url': '/site/index',
+                        },
+                        {
+                            'label': 'Личный кабинет',
+                            'url': '/site/index',
+                        }
+                    ]
+                }) }}
+            </div>
+            <div class="holder-block">
+                <ul class="social">
+                    <li>
+                        <a class="t-icon" href="#">
+                            <i class="fab fa-telegram-plane"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="f-icon" href="#">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="i-icon" href="#">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="i-icon" href="#">
+                            <i class="fab fa-viber"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+{{   void(this.endBody()) }}
+</body>
 </html>
-{{ this.endPage() }}
+{{   void(this.endPage()) }}

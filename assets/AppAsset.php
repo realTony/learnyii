@@ -21,8 +21,20 @@ class AppAsset extends AssetBundle
     public $baseUrl = '@web';
     public $css = [
         'css/site.css',
+        'css/slick.css',
+        'css/dropdown.css',
+        'css/all.css',
+        'https://use.fontawesome.com/releases/v5.5.0/css/all.css'
     ];
     public $js = [
+        'js/libs/slick.min.js',
+        'https://code.jquery.com/ui/1.12.1/jquery-ui.js',
+        'js/libs/jquery.ui.touch-punch.js',
+        'js/libs/core.js',
+        'js/libs/dropdown.js',
+        'js/libs/jquery.matchHeight.js',
+        'js/libs/isotope.pkgd.min.js',
+        'js/jquery.main.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',

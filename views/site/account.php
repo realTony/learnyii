@@ -1,3 +1,16 @@
+<?php
+
+/* @var $this yii\web\View */
+/* @var $form yii\bootstrap\ActiveForm */
+/* @var $model app\models\RegisterForm */
+/* @var $loginModel \app\models\LoginForm */
+
+use yii\helpers\Html;
+use yii\widgets\ActiveForm;
+$this->title = 'Регистрация';
+$this->params['breadcrumbs'][] = $this->title;
+
+?>
 <div class="form-search">
     <div class="container">
         <a class="search-query" href="#">Поисковый запрос</a>
@@ -40,21 +53,28 @@
                 </ul>
                 <div class="tab-body">
                     <div class="tab active">
-                        <form class="for-login">
+                        <?php $form = ActiveForm::begin([
+                            'id' => 'login-form'
+                        ]); ?>
                             <fieldset>
                                 <div class="holder-input">
-                                    <input type="text" placeholder="E-Mail">
+                                    <?= $form->field($loginModel, 'login')
+                                        ->label(false)
+                                        ->textInput(['autofocus' => true, 'placeholder' => 'E-Mail']) ?>
                                 </div>
                                 <div class="holder-input">
-                                    <input type="password" placeholder="Пароль">
+                                    <?= $form->field($loginModel, 'password')
+                                        ->label(false)
+                                        ->passwordInput(['placeholder' => 'Пароль']) ?>
                                 </div>
                                 <div class="holder-checkbox">
-                                    <label for="c1">
-                                        <input id="c1" type="checkbox" name="cc" checked>
-                                        <span><i class="fas fa-check"></i> Запомнить меня</span>
-                                    </label>
+                                    <?= $form->field($loginModel, 'rememberMe', [
+                                        'template' => "<label>{input}<span><i class=\"fas fa-check\"></i> Запомнить меня</span></label>",
+                                    ])
+                                        ->label(false)
+                                        ->checkbox([],false) ?>
                                 </div>
-                                <input class="btn-orange" type="submit" value="войти">
+                                <?= Html::submitButton('войти', ['class' => 'btn-orange', 'name' => 'login-button']) ?>
                                 <a class="forgot" href="#">Забыли пароль?</a>
                                 <div class="in-network">
                                     <a class="btn-network" href="#">
@@ -71,7 +91,7 @@
                                     </a>
                                 </div>
                             </fieldset>
-                        </form>
+                        <?php ActiveForm::end(); ?>
                         <form class="form-recovery">
                             <fieldset>
                                 <span class="title">Восстановление пароля</span>
@@ -84,36 +104,41 @@
                         </form>
                     </div>
                     <div class="tab">
-                        <form>
+                        <?php $form = ActiveForm::begin([
+                            'id' => 'register-form'
+                        ]); ?>
                             <fieldset>
                                 <div class="holder-input">
-                                    <input type="text" placeholder="Имя">
+                                    <?= $form->field($model, 'username')->label(false)->textInput(['autofocus' => true, 'placeholder' => 'Имя'])?>
                                 </div>
                                 <div class="holder-input">
-                                    <input type="text" placeholder="E-Mail">
+                                    <?= $form->field($model, 'email')->label(false)->input('email', ['placeholder' => "E-Mail"]) ?>
                                 </div>
                                 <div class="holder-input">
-                                    <input type="text" placeholder="Телефон">
+                                    <?= $form->field($model, 'phone')->label(false)->input('phone', ['placeholder' => 'Телефон']) ?>
                                 </div>
                                 <div class="holder-input">
-                                    <input type="text" placeholder="Город">
+                                    <?= $form->field($model, 'city')->label(false)->textInput(['placeholder' => 'Город']) ?>
                                 </div>
                                 <div class="holder-input">
-                                    <input type="password" placeholder="Пароль">
+                                    <?= $form->field($model, 'password')->label(false)->passwordInput(['placeholder' => 'Пароль']) ?>
                                 </div>
                                 <div class="holder-input">
-                                    <input type="password" placeholder="Повторить пароль">
+                                    <?= $form->field($model, 'password_repeat')->label(false)->passwordInput(['placeholder' => 'Повторить пароль']) ?>
                                 </div>
                                 <div class="holder-checkbox left-text">
-                                    {#<label for="c2">#}
-                                        {#<input id="c2" type="checkbox" name="c" checked>#}
-                                        {#<span><i class="fas fa-check"></i> Согласен с <a href="#">условиями использования</a></span>#}
-                                    {#</label>#}
+                                    <?= $form->field($model, 'rules_agreement', [
+                                        'template' => "<label>{input}<span><i class=\"fas fa-check\"></i>Согласен с <a href=\"#\">условиями использования</a></span>\n<div class=\"col-lg-8\">{error}</div></label>",
+                                    ])->label(false)->checkbox([],false) ?>
+<!--                                    <label for="c2">-->
+<!--                                        <input id="c2" type="checkbox" name="c" checked>-->
+<!--                                        <span><i class="fas fa-check"></i> Согласен с <a href="#">условиями использования</a></span>-->
+<!--                                    </label>-->
                                 </div>
-                                <input class="btn-orange" type="submit" value="зарегистрироваться">
+
+                                <?= Html::submitButton('зарегистрироваться', ['class' => 'btn-orange', 'name' => 'register-button', 'value' => 'зарегистрироваться']) ?>
                             </fieldset>
-                        </form>
-                        {{ active_form_end() }}
+                        <?php ActiveForm::end(); ?>
                     </div>
                 </div>
             </div>
@@ -150,3 +175,5 @@
         </div>
     </div>
 </div>
+
+
