@@ -51,12 +51,20 @@ $config = [
                     ],
                     'globals' => [
                         'html' => '\yii\helpers\Html',
-                        'url' => ['class' => 'yii\helpers\Url']
+                        'url' => ['class' => 'yii\helpers\Url'],
+                        'lang' => 'Yii'
                     ],
                     'uses' => [
                                'yii\helpers\Html',
                                 'yii\widgets\Menu'
-                    ]
+                    ],
+                    'functions' => array(
+                        't' => 'Yii::t',
+                        'beginform' =>'yii\helpers\Html::beginForm',
+                        'endform' =>'yii\helpers\Html::endForm',
+                        'submitButton' =>'yii\helpers\Html::submitButton',
+                        'connect' => 'dektrium\user\widgets\Connect::widget'
+                    ),
                 ]
             ]
         ],
@@ -100,6 +108,16 @@ $config = [
     'modules' =>[
         'user' => [
             'class' => 'dektrium\user\Module'
+        ],
+        'myaccount' => [
+            'class' => 'app\modules\myaccount\Module',
+            // ... другие настройки модуля ...
+        ],
+        'blog' => [
+            'class' => 'app\modules\blog\Module',
+        ],
+        'admin' => [
+            'class' => 'app\modules\admin\Module',
         ]
     ],
     'layout' => 'main.twig',

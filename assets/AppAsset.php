@@ -20,6 +20,8 @@ class AppAsset extends AssetBundle
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
+        'fonts/stylesheet.css',
+        'css/jquery-ui.css',
         'css/site.css',
         'css/slick.css',
         'css/dropdown.css',
@@ -38,6 +40,6 @@ class AppAsset extends AssetBundle
     ];
     public $depends = [
         'yii\web\YiiAsset',
-        'yii\bootstrap\BootstrapAsset',
+//        'yii\bootstrap\BootstrapAsset',
     ];
 }

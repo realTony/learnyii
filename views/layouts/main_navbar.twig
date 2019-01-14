@@ -1,0 +1,55 @@
+<div class="container">
+    <span class="bg-nav">&nbsp;</span>
+    <strong class="logo"><a href="#">STICKIT</a></strong>
+    <span class="closed-menu">closed-menu</span>
+
+    {{ menu_widget({
+        'options': {
+            'class': '',
+            'id': 'nav'
+        },
+        'items': [{
+            'label': 'КАК ЭТО РАБОТАЕТ?',
+            'url': '/site/how-it-works',
+        },
+            {
+                'label': 'ТРАНСПОРТ',
+                'url': '/site/index',
+            },
+            {
+                'label': 'РЕКЛАМА',
+                'url': '/site/index',
+            },
+            {
+                'label' : 'ИСПОЛНИТЕЛИ',
+                'url': '/site/index',
+            },
+            {
+                'label' : 'ПРОМОАКЦИИ',
+                'url': '/site/index',
+            }
+        ]
+    }) }}
+    <ul class="social">
+        <li>
+            <a class="t-icon" href="#">
+                <i class="fab fa-telegram-plane"></i>
+            </a>
+        </li>
+        <li>
+            <a class="f-icon" href="#">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+        </li>
+        <li>
+            <a class="i-icon" href="#">
+                <i class="fab fa-instagram"></i>
+            </a>
+        </li>
+        <li>
+            <a class="i-icon" href="#">
+                <i class="fab fa-viber"></i>
+            </a>
+        </li>
+    </ul>
+</div>

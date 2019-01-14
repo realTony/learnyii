@@ -167,7 +167,11 @@ $(document).ready(function(){
         $('.tab-control li').removeClass("active");
         return false;
     });
-
+    $('#user_logout').on('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        $('#logout').trigger('click');
+    });
     //accardion aside right info
     $(".item .heading").click(function(e){
         $(this).next().slideToggle(400,function(){

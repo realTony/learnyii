@@ -2,6 +2,8 @@
 
 namespace app\controllers;
 
+use app\models\User;
+use http\Url;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -13,6 +15,7 @@ use app\models\ContactForm;
 
 class SiteController extends Controller
 {
+    public $successUrl = 'Success';
     /**
      * {@inheritdoc}
      */
@@ -52,6 +55,10 @@ class SiteController extends Controller
                 'class' => 'yii\captcha\CaptchaAction',
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
             ],
+            'auth' => [
+                'class' => 'yii\authclient\AuthAction',
+                'successCallback' => [$this, 'successCallback']
+            ]
         ];
     }
 
@@ -98,17 +105,16 @@ class SiteController extends Controller
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
-        if ($registerModel->load(Yii::$app->request->post()) && $registerModel->register()) {
-            $request = Yii::$app->request;
-            $post = $request->post();
-            return $this->goBack();
-        }
-        if ($loginModel->load(Yii::$app->request->post()) && $loginModel->login()) {
-            return $this->goBack();
+        if ( $registerModel->load(Yii::$app->request->post()) && ( $registerModel->register() || $loginModel->login() )) {
+            Yii::$app->response->redirect(['myaccount']);
         }
 
+        if ($loginModel->load(Yii::$app->request->post()) && $loginModel->login()) {
+            Yii::$app->response->redirect(['myaccount']);
+        }
         $loginModel->password = '';
         $registerModel->password = '';
+        $registerModel->password_repeat = '';
 
         return $this->render('account', [
             'model' => $registerModel,
@@ -158,5 +164,18 @@ class SiteController extends Controller
     public function actionHowItWorks()
     {
         return $this->render('how-it-works.twig');
+    }
+
+    public function successCallback($client)
+    {
+        $attributes = $client->getUserAttributes();
+        $user = User::find()->where(['email'=> $attributes['email']])->one();
+        if(!empty($user)){
+            Yii::$app->user->login($user);
+        }else{
+            $session = Yii::$app->session;
+            $session['attributes'] = $attributes;
+            $this->successUrl = \yii\helpers\Url::to(['site/account']);
+        }
     }
 }

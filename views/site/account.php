@@ -58,9 +58,9 @@ $this->params['breadcrumbs'][] = $this->title;
                         ]); ?>
                             <fieldset>
                                 <div class="holder-input">
-                                    <?= $form->field($loginModel, 'login')
+                                    <?= $form->field($loginModel, 'email')
                                         ->label(false)
-                                        ->textInput(['autofocus' => true, 'placeholder' => 'E-Mail']) ?>
+                                        ->input('email',['autofocus' => true, 'placeholder' => 'E-Mail']) ?>
                                 </div>
                                 <div class="holder-input">
                                     <?= $form->field($loginModel, 'password')
@@ -77,7 +77,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <?= Html::submitButton('войти', ['class' => 'btn-orange', 'name' => 'login-button']) ?>
                                 <a class="forgot" href="#">Забыли пароль?</a>
                                 <div class="in-network">
-                                    <a class="btn-network" href="#">
+                                    <a class="btn-network" href="/site/auth?authclient=facebook" data-popup-width="860" data-popup-height="480">
                                         <div class="holder-img">
                                             <img src="images/bg-53.png" alt="img">
                                         </div>
@@ -105,8 +105,13 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
                     <div class="tab">
                         <?php $form = ActiveForm::begin([
-                            'id' => 'register-form'
+                            'id' => 'register-form',
+                            'enableAjaxValidation' => true,
+                            'enableClientValidation' => true
                         ]); ?>
+                        <?= yii\authclient\widgets\AuthChoice::widget([
+                            'baseAuthUrl' => ['site/auth']
+                        ]) ?>
                             <fieldset>
                                 <div class="holder-input">
                                     <?= $form->field($model, 'username')->label(false)->textInput(['autofocus' => true, 'placeholder' => 'Имя'])?>

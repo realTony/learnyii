@@ -1,0 +1,74 @@
+<div class="top-head">
+    <strong class="logo"><a href="{{ app.homeUrl }}" alt="logo">{{ app.name }}</a></strong>
+    <div class="holder-ads">
+        <a class="btn-ads" href="#">{{ t('app', 'Подать объявление') }} </a>
+    </div>
+    <div class="log-registration">
+        {% set menuItems = [] %}
+        {% if app.user.isGuest == false %}
+        {% set menuItems = menuItems|merge([
+                {
+                    'label' : app.user.identity.username,
+                    'url' : ['/myaccount/'],
+                    'options' : {'tag':false},
+                    'template':'<a href="{url}" class="btn-registration">{label} <i class="fas fa-user"></i></a>'
+                },
+                {
+                    'label' : t('app', 'Выход'),
+                    'url' : ['/site/logout'],
+                    'linkOptions' : {'data-method' : 'post'},
+                    'options' : {'tag':false},
+                    'template':'<a href="{url}" class="btn-login" id="user_logout">{label} <i class="fas fa-sign-in-alt"></i></a>',
+                    'linkOptions' : {'data-method' : 'post'}
+                }
+            ])
+        %}
+        {% else %}
+            {% set menuItems = menuItems|merge([
+                {
+                    'label' : t('app', 'Регистрация'),
+                    'url' : ['/site/account'],
+                    'options' : { 'tag':false },
+                    'template':'<a href="{url}"  class="btn-registration">{label}</a>'
+                },
+                {
+                    'label' : t('app', 'Вход'),
+                    'url' : ['/site/account'],
+                    'options' : { 'tag':false },
+                    'template':'<a href="{url}"  class="btn-login">{label}<i class="fas fa-sign-in-alt"></i></a>'
+                },
+            ])
+        %}
+    {% endif %}
+        {{ menu_widget({
+            'options': {
+                'class': 'log-registration',
+                'id': false,
+                'tag':false
+            },
+            'items': menuItems
+        }) }}
+    {% if app.user.isGuest == false %}
+        {{ beginform(['/site/logout'], 'post',{'style':'display:none'}) |raw}}
+        {{ submitButton( t('app', 'Выход'), {'id':'logout'}) | raw}}
+        {{ endform() |raw}}
+    {% endif %}
+    </div>
+    <div class="mobile-nav-btn">
+        <a href="#">
+            <img src="images/bg-33.png" alt="img">
+        </a>
+        <a href="#">
+            <img src="images/bg-34.png" alt="img">
+        </a>
+    </div>
+    <a class="open-menu" href="#"></a>
+    <ul class="list-language">
+        <li class="active">
+            <a href="#">{{ t('app', 'РУС') }}</a>
+        </li>
+        <li>
+            <a href="#">{{ t('app', 'УКР') }}</a>
+        </li>
+    </ul>
+</div>

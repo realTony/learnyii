@@ -4,7 +4,7 @@ namespace app\models;
 
 use Yii;
 use yii\base\Model;
-
+use dektrium\user\helpers\Password;
 /**
  * LoginForm is the model behind the login form.
  *
@@ -13,7 +13,7 @@ use yii\base\Model;
  */
 class LoginForm extends Model
 {
-    public $login;
+    public $email;
     public $password;
     public $rememberMe = true;
 
@@ -26,8 +26,10 @@ class LoginForm extends Model
     public function rules()
     {
         return [
-            // username and password are both required
-            [['login', 'password'], 'required'],
+            // email and password are both required
+            [['email', 'password'], 'required'],
+            //email must be a valid email address
+            ['email','email'],
             // rememberMe must be a boolean value
             ['rememberMe', 'boolean'],
             // password is validated by validatePassword()
@@ -44,13 +46,8 @@ class LoginForm extends Model
      */
     public function validatePassword($attribute, $params)
     {
-        if (!$this->hasErrors()) {
-            $user = $this->getUser();
-
-            if (!$user || !$user->validatePassword($this->password)) {
-                $this->addError($attribute, 'Incorrect username or password.');
-            }
-        }
+        if ($this->user === null || !Password::validate($this->password, $this->user->password_hash))
+            $this->addError($attribute, Yii::t('user', 'Invalid login or password'));
     }
 
     /**
@@ -73,7 +70,7 @@ class LoginForm extends Model
     public function getUser()
     {
         if ($this->_user === false) {
-            $this->_user = User::findByUsername($this->login);
+            $this->_user = User::findByEmail($this->email);
         }
 
         return $this->_user;

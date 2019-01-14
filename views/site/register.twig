@@ -84,29 +84,39 @@
                         </form>
                     </div>
                     <div class="tab">
+                        {% set form = active_form_begin({
+                            'id': 'register-form',
+                            'action' : '',
+                            'options': {
+                                'class': '',
+                            }
+                        }) %}
+
                         <form>
                             <fieldset>
                                 <div class="holder-input">
-                                    <input type="text" placeholder="Имя">
+                                    {{ form.field(model, 'username').label(false).textInput({'autofocus':true, 'placeholder':'Имя'}) | raw }}
                                 </div>
                                 <div class="holder-input">
-                                    <input type="text" placeholder="E-Mail">
+                                    {{ form.field(model, 'email').label(false).input('email',{'placeholder':'E-Mail'}) | raw }}
                                 </div>
                                 <div class="holder-input">
-                                    <input type="text" placeholder="Телефон">
+                                    {{ form.field(model, 'phone').label(false).input('phone',{'placeholder':'Телефон'}) | raw }}
                                 </div>
                                 <div class="holder-input">
-                                    <input type="text" placeholder="Город">
+                                    {{ form.field(model, 'city').label(false).textInput({'placeholder':'Город'}) | raw }}
                                 </div>
                                 <div class="holder-input">
-                                    <input type="password" placeholder="Пароль">
+                                    {{ form.field(model, 'password').label(false).passwordInput({'placeholder':'Пароль'}) | raw }}
                                 </div>
                                 <div class="holder-input">
-                                    <input type="password" placeholder="Повторить пароль">
+                                    {{ form.field(model, 'password_repeat').label(false).passwordInput({'placeholder':'Повторить пароль'}) | raw }}
                                 </div>
                                 <div class="holder-checkbox left-text">
                                     {#<label for="c2">#}
                                         {#<input id="c2" type="checkbox" name="c" checked>#}
+                                        {{ form.field(model, 'rules_agreement').label(false)
+                                        .checkbox({'template':"<div class="col-lg-offset-1 col-lg-3">{input} {label}</div>\n<div class="col-lg-8">{error}</div>"}) | raw }}
                                         {#<span><i class="fas fa-check"></i> Согласен с <a href="#">условиями использования</a></span>#}
                                     {#</label>#}
                                 </div>

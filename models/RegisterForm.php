@@ -12,7 +12,7 @@ use Yii;
  *
  * @property User|null $user This property is read-only.
  *
- */ 
+ */
 
 // Can check is User exists
 // Can register via Google API
@@ -76,14 +76,25 @@ class RegisterForm extends RegistrationForm
         $user->setScenario('register');
         $this->loadAttributes($user);
         if (!$user->register()) {
+            if ($user->validate()) {
+                // все данные корректны
+            } else {
+                // данные не корректны: $errors - массив содержащий сообщения об ошибках
+                $errors = $user->errors;
+                echo "<pre>";
+                print_r($user->username);
+                echo "</pre>";
+                echo "<pre>";
+                print_r($errors);
+                echo "</pre>";
+            }
             return false;
-        }else{
-
-        }
+        }else
+            return true;
 	}
 	/**
 	 * Check if registering user exists at site database
-	 * 
+	 *
 	 * @return boolean
 	 */
 	private function checkUser($email)
@@ -94,8 +105,8 @@ class RegisterForm extends RegistrationForm
 	}
 	/**
 	 * Phone normalization method
-	 * 
-	 * @return phoneNumber|string 
+	 *
+	 * @return phoneNumber|string
 	 */
 	public function normalizePhone($value)
 	{
