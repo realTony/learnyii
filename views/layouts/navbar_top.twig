@@ -1,18 +1,12 @@
 <div class="top-head">
     <strong class="logo"><a href="{{ app.homeUrl }}" alt="logo">{{ app.name }}</a></strong>
     <div class="holder-ads">
-        <a class="btn-ads" href="#">{{ t('app', 'Подать объявление') }} </a>
+        {#<a class="btn-ads" href="#">{{ t('app', 'Подать объявление') }} </a>#}
     </div>
     <div class="log-registration">
         {% set menuItems = [] %}
         {% if app.user.isGuest == false %}
         {% set menuItems = menuItems|merge([
-                {
-                    'label' : app.user.identity.username,
-                    'url' : ['/myaccount/'],
-                    'options' : {'tag':false},
-                    'template':'<a href="{url}" class="btn-registration">{label} <i class="fas fa-user"></i></a>'
-                },
                 {
                     'label' : t('app', 'Выход'),
                     'url' : ['/site/logout'],
@@ -20,6 +14,16 @@
                     'options' : {'tag':false},
                     'template':'<a href="{url}" class="btn-login" id="user_logout">{label} <i class="fas fa-sign-in-alt"></i></a>',
                     'linkOptions' : {'data-method' : 'post'}
+                },
+                {
+                    'label' : app.user.identity.username,
+                    'url' : ['/myaccount/'],
+                    'options' : {'tag':false},
+                    'template':'<a href="{url}" class="btn-login btn-profile">
+                                    <div class="holder-img">
+                                        <img src="'~app.session.profile_image~'" alt="profile_image">
+                                    </div>
+                                </a>'
                 }
             ])
         %}
@@ -29,13 +33,13 @@
                     'label' : t('app', 'Регистрация'),
                     'url' : ['/site/account'],
                     'options' : { 'tag':false },
-                    'template':'<a href="{url}"  class="btn-registration">{label}</a>'
+                    'template':'<a href="{url}#register"  class="btn-registration">{label}</a>'
                 },
                 {
                     'label' : t('app', 'Вход'),
                     'url' : ['/site/account'],
                     'options' : { 'tag':false },
-                    'template':'<a href="{url}"  class="btn-login">{label}<i class="fas fa-sign-in-alt"></i></a>'
+                    'template':'<a href="{url}#login"  class="btn-login">{label}<i class="fas fa-sign-in-alt"></i></a>'
                 },
             ])
         %}
@@ -64,11 +68,11 @@
     </div>
     <a class="open-menu" href="#"></a>
     <ul class="list-language">
-        <li class="active">
-            <a href="#">{{ t('app', 'РУС') }}</a>
-        </li>
-        <li>
-            <a href="#">{{ t('app', 'УКР') }}</a>
-        </li>
+        {#<li class="active">#}
+            {#<a href="#">{{ t('app', 'РУС') }}</a>#}
+        {#</li>#}
+        {#<li>#}
+            {#<a href="#">{{ t('app', 'УКР') }}</a>#}
+        {#</li>#}
     </ul>
 </div>

@@ -5,9 +5,9 @@
 <html lang="{{ app.language }}">
 <head>
     <meta charset="{{ app.charset }}">
+    {{ csrfMetatags }}
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ html.encode(this.title) }}</title>
-    {{ html.csrfMetaTags | raw }}
+    <title>{{ this.title }}</title>
     {{   void(this.head) }}
 </head>
 <body>

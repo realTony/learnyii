@@ -85,10 +85,51 @@ $(document).ready(function(){
                 // use element for option
                 columnWidth: '.grid-sizer'
             }
-        })
+        });
+        if( $('#account-panel').is('ul') ){
+            var hash = window.location.hash;
+            if( typeof hash != 'undefined'){
+                $('#account-panel li').each( function () {
+                    $(this).attr('class', '');
+                    if( $(this).children().attr('href') == hash ) {
+                        $(this).attr('class', 'active');
+                    }
+                });
+            }
+        }
     });
-
-
+    $('.edit-photo a#save-photo').on('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var $imageInput = $('#edit-image-form').find('[type = file]');
+        $imageInput.trigger('click');
+        $imageInput.on('change', function () {
+            $('#edit-image-form').trigger('submit');
+        });
+    });
+    $('#delete-photo').on('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var form = $('#edit-profile-form');
+        var _csrf = form.find('input[name="_csrf"]').val();
+        console.log(_csrf);
+        //
+        $.ajax({
+            url: '/myaccount/default/remove-photo',
+            type: 'POST',
+            data: {
+                id:'edit-image-form',
+                _csrf:_csrf
+            },
+            success: function (data) {
+                if( typeof data != 'undefined'){
+                    $('img[alt="profile_image"]').each(function () {
+                        $(this).attr('src', data );
+                    })
+                }
+            }
+        });
+    });
     // like-heart active
     $(".like-star").click(function(e){
         $(this).toggleClass("active");

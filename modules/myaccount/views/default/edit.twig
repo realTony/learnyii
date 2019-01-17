@@ -1,0 +1,235 @@
+{{ use('yii\\widgets\\Breadcrumbs') }}
+{{ use('yii\\widgets\\ActiveForm') }}
+{{ use('yii/helpers/Url') }}
+{{ set(this, 'title', t('app', 'Редактировать профиль')) }}
+<div class="form-search">
+    <div class="container">
+        <a class="search-query" href="#">Поисковый запрос</a>
+        <div class="holder-form-search">
+            <span class="bg-search"></span>
+            <form>
+                <fieldset>
+                    <a class="closed-search-form" href="#"></a>
+                    <div class="search-input">
+                        <input type="text" placeholder="Поисковый запрос">
+                    </div>
+                    <div class="category-input">
+                        <select name="dropdown" class="dropdown">
+                            <option>Категория</option>
+                            <option>Категория1</option>
+                            <option>Категория2</option>
+                            <option>Категория3</option>
+                        </select>
+                    </div>
+                    <div class="city-input ui-widget">
+                        <input class="tags-city" type="text" placeholder="Город">
+                    </div>
+                    <input class="btn-search" type="submit" value="искать">
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="holder-crumbs">
+    <div class="container">
+        <div class="holder-bread-crumbs">
+            {{ breadcrumbs_widget({
+
+                'links': breadcrumbs,
+                'options': {
+                    'class': 'bread-crumbs'
+                }
+
+            }) | raw }}
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="title-text clone">
+        <h1>{{ this.title }}</h1>
+    </div>
+    <div class="group-content">
+        <div class="aside-left">
+            <div class="aside-profile hide">
+                <div class="seller clone">
+                    <div class="holder-img">
+                        <img src="{{ app.session.profile_image }}" alt="profile_image">
+                    </div>
+                    <div class="holder-text">
+                        <a href="{{  url.toRoute('/myaccount/') }}" class="name">{{ user.username }}</a>
+                        <span>{{ t('app', 'Дата регистрации') }}</span>
+                        <span class="date">{{ user.created_at |date('d.m.Y') }}</span>
+                    </div>
+                </div>
+                {% block myaccount_navbar %}
+                    {% include 'myaccount_navbar.twig' %}
+                {% endblock %}
+            </div>
+        </div>
+
+        {% set form = active_form_begin({
+            'id': 'edit-image-form',
+            'action' : url.toRoute('default/save-image'),
+            'enableAjaxValidation': false,
+            'options' : {
+                'enctype' : 'multipart/form-data'
+            }
+        }) %}
+        {{ form.field(uploadImage, 'imageFile').label(false).fileInput() | raw }}
+        {{ active_form_end() }}
+        <div class="content">
+            {% set form = active_form_begin({
+                'id': 'edit-profile-form',
+                'action' : '',
+                'options': {
+                    'class': 'form-user'
+                }
+            }) %}
+                <fieldset>
+                    <div class="group">
+                        <div class="holder-left">
+                            <div class="holder-img">
+                                <img src="{{ app.session.profile_image }}" alt="profile_image">
+                                <div class="edit-photo">
+                                    <a href="#" id="save-photo">
+                                        <i class="fas fa-pen-square"></i>
+                                    </a>
+                                    <a href="#" id="delete-photo">
+                                        <i class="fas fa-times-circle"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="size-photo">
+                                <span>{{ t('app', 'Фото должно иметь размер не более 500 Кб и разрешение не менее 210х210 пикселей') }}</span>
+                            </div>
+                        </div>
+                        <div class="holder-right">
+                            {{ form
+                                .field(model, 'username', {'options':{'class':'holder-input', 'tag':'div'}})
+                                .label(false)
+                                .textInput({'placeholder':'Имя', 'class':'input'}) | raw }}
+                            <ul class="input-list">
+                                <li>
+                                    {{ form
+                                        .field(model, 'email', {'options':{'tag':false}})
+                                        .label(false).input('email',{'placeholder':'E-Mail', 'class':'input'}) | raw }}
+                                </li>
+                                <li>
+                                    {{ form.
+                                        field(model, 'address', {'options':{'tag':false}})
+                                    .label(false).textInput({'placeholder':'Адрес', 'class':'input'}) | raw }}
+                                </li>
+                                <li>
+                                    {{ form.
+                                        field(model, 'phone', {'options':{'tag':false}}).
+                                        label(false).
+                                        input('phone', {'placeholder':'Телефон', 'class':'input'}) | raw }}
+                                </li>
+                                <li>
+                                    {{ form.
+                                        field(model, 'viber', {'options':{'tag':false}})
+                                    .label(false).input('phone',{'placeholder':'Viber', 'class':'input'}) | raw }}
+                                </li>
+                                <li>
+                                    {{ form.
+                                        field(model, 'telegram', {'options':{'tag':false}}).
+                                        label(false).textInput({'placeholder':'Telegram', 'class':'input'}) | raw }}
+                                    {#<input class="input" type="text" placeholder="Telegram">#}
+                                </li>
+                                <li>
+                                    {{ form
+                                        .field(model, 'whatsapp', {'options':{'tag':false}})
+                                        .label(false)
+                                        .input('phone',{'placeholder':'Whatsapp', 'class':'input'}) | raw }}
+                                </li>
+                            </ul>
+                            <ul class="input-button">
+                                <div>
+                                    {{ form
+                                        .field(model, 'site',{'options':{'tag':false}})
+                                        .label(false).textInput({'placeholder':'Сайт', 'class':'input'}) | raw }}
+                                </div>
+                                <div>
+                                    {{ submitButton(t('app','Сохранить'), {
+                                        'class': 'btn-orange',
+                                    }) | raw }}
+                                </div>
+                            </ul>
+                        </div>
+                    </div>
+                    <hr>
+                </fieldset>
+            {{ active_form_end() }}
+            {% set form = active_form_begin({
+                'id': 'change-password',
+                'action' : '',
+                'options': {
+                    'class': 'form-user',
+                }
+            }) %}
+                <fieldset>
+                    <div class="group">
+                        <div class="holder-left">
+                            <h2>Изменить пароль</h2>
+                        </div>
+                        <div class="holder-right">
+                            <div class="holder-password">
+                                <div class="holder-input">
+                                    {{ form
+                                        .field(changePassword, 'oldPassword', {'options':{'class':'holder-input', 'tag':'div'}})
+                                        .label(false).passwordInput({'placeholder':t('app', 'Старый пароль'), 'class':'input'}) | raw }}
+                                </div>
+                                <div class="holder-input">
+                                    {{ form
+                                        .field(changePassword, 'newPassword', {'options':{'class':'holder-input', 'tag':'div'}})
+                                        .label(false).
+                                        passwordInput({'placeholder':t('app', 'Новый пароль'), 'class':'input'}) | raw }}
+                                </div>
+                                <div class="holder-input">
+                                    {{ form
+                                        .field(changePassword, 'repeatNewPassword', {'options':{'class':'holder-input', 'tag':'div'}})
+                                        .label(false)
+                                        .passwordInput({'placeholder':t('app', 'Повторите новый пароль'), 'class':'input'}) | raw }}
+                                </div>
+                                {{ submitButton(t('app','Изменить пароль'), {
+                                    'class': 'btn-orange',
+                                }) | raw }}
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            {{ active_form_end() }}
+        </div>
+    </div>
+</div>
+<hr>
+<div class="accordion">
+    <div class="holder-section">
+        <div class="container">
+            <div class="holder-box-hidden clone">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ut nunc in eros posuere euismod in a tortor. Phasellus nunc orci, vehicula in <span class="box-hidden">hendrerit eu, hendrerit quis neque. Duis eget turpis nec enim vulputate tristique vel vel sem. Etiam sagittis facilisis nisl, id ultricies ante commodo vitae. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Integer nec elit sollicitudin, vehicula massa vel, accumsan dolor. Phasellus placerat quam justo, eu porttitor ante imperdiet a. Duis imperdiet, lacus at placerat bibendum, lacus arcu molestie lorem, sed lobortis dui nulla malesuada purus. Quisque id viverra lorem. Aliquam rutrum mattis varius. Aenean lectus mi, imperdiet aliquam imperdiet ac, pretium sed neque. Duis molestie luctus tellus sit amet eleifend. Curabitur erat nisl, sagittis non magna eget, sagittis malesuada urna. Etiam nibh justo, egestas et ligula at, molestie auctor tortor. Aliquam hendrerit ante sit amet urna congue ultrices. Vivamus pellentesque risus sit amet est pretium tristique.</span></p>
+                <a class="btn-show-more" href="#">Читать дальше...</a>
+            </div>
+            <div class="adver-group">
+                <div class="item-accordion">
+                    <div class="advert">
+                        <strong class="btn-accordion">Объявления в городах</strong>
+                    </div>
+                    <div class="holder-text content-accordion">
+                        <p><a href="#">Lorem</a>, <a href="#">ipsum</a>, <a href="#">dolor</a>, <a href="#">sit amet</a>, <a href="#">consectetur</a>, <a href="#">adipiscing</a>, <a href="#">elit</a>, <a href="#">nunc in eros</a>, <a href="#">posuere euismod</a>, <a href="#">in a tortor</a>, <a href="#">Phasellus nunc orci</a>, <a href="#">vehicula in</a>, <a href="#">hendrerit eu</a>, <a href="#">hendrerit quis neque</a>, <a href="#">Duis eget turpis</a>, <a href="#">nec enim vulputate</a>, <a href="#">tristique vel vel sem</a>. <a href="#">Etiam sagittis</a>, <a href="#">facilisis nisl</a>, <a href="#">id ultricies</a>, <a href="#">ante commodo</a>, <a href="#">vitae</a>. <a href="#">Class aptent</a>, <a href="#">taciti sociosqu</a>, <a href="#">ad litora torquent</a>, <a href="#">per conubia nostra</a>, <a href="#">per inceptos</a>, <a href="#">himenaeos</a>. <a href="#">Integer nec elit</a>, <a href="#">sollicitudin</a>, <a href="#">vehicula massa vel</a>, <a href="#">accumsan dolor</a>, <a href="#">Phasellus placerat</a>, <a href="#">quam justo</a>, <a href="#">eu porttitor</a>, <a href="#">ante imperdiet a</a>. </p>
+                    </div>
+                </div>
+            </div>
+            <div class="adver-group">
+                <div class="item-accordion">
+                    <div class="advert">
+                        <strong class="btn-accordion">Интересные <br>предложения</strong>
+                    </div>
+                    <div class="holder-text content-accordion">
+                        <p><a href="#">Lorem</a>, <a href="#">ipsum</a>, <a href="#">dolor</a>, <a href="#">sit amet</a>, <a href="#">consectetur</a>, <a href="#">adipiscing</a>, <a href="#">elit</a>, <a href="#">nunc in eros</a>, <a href="#">posuere euismod</a>, <a href="#">in a tortor</a>, <a href="#">Phasellus nunc orci</a>, <a href="#">vehicula in</a>, <a href="#">hendrerit eu</a>, <a href="#">hendrerit quis neque</a>, <a href="#">Duis eget turpis</a>, <a href="#">nec enim vulputate</a>, <a href="#">tristique vel vel sem</a>. <a href="#">Etiam sagittis</a>, <a href="#">facilisis nisl</a>, <a href="#">id ultricies</a>, <a href="#">ante commodo</a>, <a href="#">vitae</a>. <a href="#">Class aptent</a>, <a href="#">taciti sociosqu</a>, <a href="#">ad litora torquent</a>, <a href="#">per conubia nostra</a>, <a href="#">per inceptos</a>, <a href="#">himenaeos</a>. <a href="#">Integer nec elit</a>, <a href="#">sollicitudin</a>, <a href="#">vehicula massa vel</a>, <a href="#">accumsan dolor</a>, <a href="#">Phasellus placerat</a>, <a href="#">quam justo</a>, <a href="#">eu porttitor</a>, <a href="#">ante imperdiet a</a>. </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

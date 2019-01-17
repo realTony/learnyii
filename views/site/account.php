@@ -43,12 +43,12 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="container">
         <div class="login-registration">
             <div class="tabset">
-                <ul class="tab-control">
+                <ul id="account-panel" class="tab-control">
                     <li class="active">
-                        <a href="#">вход</a>
+                        <a href="#login"><?= \Yii::t('app', 'вход')?></a>
                     </li>
                     <li>
-                        <a href="#">регистрация</a>
+                        <a href="#register"><?= \Yii::t('app', 'регистрация')?></a>
                     </li>
                 </ul>
                 <div class="tab-body">

@@ -63,7 +63,8 @@ $config = [
                         'beginform' =>'yii\helpers\Html::beginForm',
                         'endform' =>'yii\helpers\Html::endForm',
                         'submitButton' =>'yii\helpers\Html::submitButton',
-                        'connect' => 'dektrium\user\widgets\Connect::widget'
+                        'connect' => 'dektrium\user\widgets\Connect::widget',
+                        'csrfMetatags' => 'yii\helpers\Html::csrfMetaTags'
                     ),
                 ]
             ]
@@ -125,6 +126,7 @@ $config = [
 ];
 
 if (YII_ENV_DEV) {
+    unset($config['components']['cache']);
     // configuration adjustments for 'dev' environment
     $config['bootstrap'][] = 'debug';
     $config['modules']['debug'] = [

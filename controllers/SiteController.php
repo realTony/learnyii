@@ -2,6 +2,8 @@
 
 namespace app\controllers;
 
+use app\models\ImageUpload;
+use app\models\Profile;
 use app\models\User;
 use http\Url;
 use Yii;
@@ -85,6 +87,9 @@ class SiteController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            $profile = Profile::findOne(['user_id'=>Yii::$app->user->getId()]);
+            $session = Yii::$app->session;
+            $session['profile_image'] = (!empty($profile['profile_image']))?'/'.$profile['profile_image']:Yii::getAlias('@web').'/images/empty_user.jpg';
             return $this->goBack();
         }
 
@@ -102,14 +107,17 @@ class SiteController extends Controller
     {
         $registerModel = new RegisterForm();
         $loginModel = new LoginForm();
-        if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
+
         if ( $registerModel->load(Yii::$app->request->post()) && ( $registerModel->register() || $loginModel->login() )) {
             Yii::$app->response->redirect(['myaccount']);
         }
 
         if ($loginModel->load(Yii::$app->request->post()) && $loginModel->login()) {
+            $imageUpload = new ImageUpload();
+            $profile = Profile::findOne(['user_id'=>Yii::$app->user->getId()]);
+            $session = Yii::$app->session;
+            $image = ($imageUpload->fileExists($profile['profile_image']))? $profile['profile_image']: $imageUpload->getImage();
+            $session->set( 'profile_image', $image );
             Yii::$app->response->redirect(['myaccount']);
         }
         $loginModel->password = '';

@@ -34,7 +34,7 @@
             {{ set(this, 'params', { 'breadcrumbs' : { '' : this.title } }) }}
             {{ breadcrumbs_widget({
 
-                'links': this.params['breadcrumbs'],
+                'links': breadcrumbs,
                 'options': {
                     'class': 'bread-crumbs'
                 }
@@ -52,31 +52,17 @@
             <div class="aside-profile hide">
                 <div class="seller clone">
                     <div class="holder-img">
-                        <img src="images/img-19.jpg" alt="img">
+                        <img src="{{ app.session.profile_image }}" alt="img">
                     </div>
                     <div class="holder-text">
-                        <a href="#" class="name">{{ t('app', 'Имя Фамилия') }}</a>
-                        <span>Дата регистрации</span>
-                        <span class="date">18.01.1990</span>
+                        <a href="{{  url.toRoute('/myaccount/') }}" class="name">{{ user.username }}</a>
+                        <span>{{ t('app', 'Дата регистрации') }}</span>
+                        <span class="date">{{ user.created_at | date('d.m.Y') }}</span>
                     </div>
                 </div>
-                <ul class="sub-nav">
-                    <li>
-                        <a href="#"><i class="fas fa-pencil-alt"></i> {{ t('app', 'Редактировать профиль') }}</a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fas fa-plus-circle"></i> {{ t('app', 'Создать объявление') }}</a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fas fa-tags"></i> {{ t('app', 'Мои объявления') }}<sup><small>(12)</small></sup></a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fas fa-star"></i> Избранное</a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fas fa-comments"></i> Сообщения </a>
-                    </li>
-                </ul>
+                {% block myaccount_navbar %}
+                    {% include 'myaccount_navbar.twig' %}
+                {% endblock %}
             </div>
         </div>
         <div class="content">

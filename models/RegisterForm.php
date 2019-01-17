@@ -82,9 +82,6 @@ class RegisterForm extends RegistrationForm
                 // данные не корректны: $errors - массив содержащий сообщения об ошибках
                 $errors = $user->errors;
                 echo "<pre>";
-                print_r($user->username);
-                echo "</pre>";
-                echo "<pre>";
                 print_r($errors);
                 echo "</pre>";
             }
