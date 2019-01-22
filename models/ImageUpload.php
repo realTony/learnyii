@@ -115,7 +115,7 @@ class ImageUpload extends Model
         $filename = $this->generateFilename();
 
         $this->isUploadExists();
-        $this->imageFile->saveAs(Yii::getAlias('@web').self::$uploadFolder.$filename);
+        $this->imageFile->saveAs(Yii::getAlias('@webroot').self::$uploadFolder.$filename);
         return $this->getUploadFolder().$filename;
     }
 
