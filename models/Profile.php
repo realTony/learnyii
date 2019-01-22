@@ -89,4 +89,14 @@ class Profile extends \yii\db\ActiveRecord
 
         return Profile::findOne(['user_id' => $id])->profile_image;
     }
+
+    public static function getUsername( $id )
+    {
+        return User::findOne(['id' => $id])->username;
+    }
+
+    public static function getUserDate($id)
+    {
+        return date('d.m.Y', User::findOne(['id'=>$id])->created_at);
+    }
 }

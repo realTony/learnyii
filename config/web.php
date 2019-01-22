@@ -65,7 +65,9 @@ $config = [
                         'submitButton' =>'yii\helpers\Html::submitButton',
                         'connect' => 'dektrium\user\widgets\Connect::widget',
                         'csrfMetatags' => 'yii\helpers\Html::csrfMetaTags',
-                        'getAvatar' => 'app\models\Profile::getUserAvatar'
+                        'getAvatar' => 'app\models\Profile::getUserAvatar',
+                        'getUsername' => 'app\models\Profile::getUsername',
+                        'getUserDate' => 'app\models\Profile::getUserDate'
                     ),
                     'filters' => [
                         'print_r' => 'print_r',

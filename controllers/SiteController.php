@@ -109,6 +109,7 @@ class SiteController extends Controller
 
         if( !empty( $validateRegister ))
             return $validateRegister;
+
         if ( $registerModel->load(Yii::$app->request->post()) &&  $registerModel->register() ) {
             return $this->render('message/message', [
                 'model' => $registerModel,
@@ -128,6 +129,7 @@ class SiteController extends Controller
             $session->set( 'profile_image', $image );
             Yii::$app->response->redirect(['myaccount']);
         }
+
         $loginModel->password = '';
         $registerModel->password = '';
         $registerModel->password_repeat = '';

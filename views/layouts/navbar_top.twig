@@ -1,3 +1,4 @@
+
 <div class="top-head">
     <strong class="logo"><a href="{{ app.homeUrl }}" alt="logo">{{ app.name }}</a></strong>
     <div class="holder-ads">
@@ -75,4 +76,39 @@
             {#<a href="#">{{ t('app', 'УКР') }}</a>#}
         {#</li>#}
     </ul>
+    {% if app.user.isGuest == false %}
+        <div class="popup-profile">
+            <div class="head-profile">
+                <strong class="logo"><a href="#">STICKIT</a></strong>
+                <span class="closed-popup-profile">closed-menu</span>
+            </div>
+            <div class="seller clone">
+                <div class="holder-img">
+                    <img src="{{ getAvatar(app.user.id) }}" alt="img">
+                </div>
+                <div class="holder-text">
+                    <a href="#" class="name">{{ getUsername(app.user.id)}}</a>
+                    <span>{{ t('app', 'Дата регистрации') }}</span>
+                    <span class="date">{{ getUserDate(app.user.id) }}</span>
+                </div>
+            </div>
+            <ul class="sub-nav">
+                <li>
+                    <a href="{{  url.toRoute('/myaccount/edit') }}"><i class="fas fa-pencil-alt"></i> {{ t('app', 'Редактировать профиль') }}</a>
+                </li>
+                {#<li>#}
+                    {#<a href="#"><i class="fas fa-plus-circle"></i> Создать объявление</a>#}
+                {#</li>#}
+                {#<li class="active">#}
+                    {#<a href="#"><i class="fas fa-tags"></i> Мои объявления<sup><small>(12)</small></sup></a>#}
+                {#</li>#}
+                {#<li>#}
+                    {#<a href="#"><i class="fas fa-star"></i> Избранное</a>#}
+                {#</li>#}
+                {#<li>#}
+                    {#<a href="#"><i class="fas fa-comments"></i> Сообщения </a>#}
+                {#</li>#}
+            </ul>
+        </div>
+    {% endif %}
 </div>
