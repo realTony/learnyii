@@ -12,7 +12,7 @@ $config = [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
-    'name' => 'STICKIT',
+    'name' => ' STICKIT',
     'language' => 'ru-Ru',
     'components' => [
         'authClientCollection' => [
@@ -75,14 +75,6 @@ $config = [
                     ]
                 ]
             ],
-//            'theme' => [
-//                'basePath' => '@app/themes/basic',
-//                'baseUrl' => '@web/themes/basic',
-//                'pathMap' =>[
-//                    '@app/views' => '@app/themes/basic',
-//                    '@app/modules' => '@app/themes/basic/modules',
-//                ]
-//            ]
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
