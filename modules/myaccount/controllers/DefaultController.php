@@ -120,6 +120,8 @@ class DefaultController extends Controller
         if(Yii::$app->request->isAjax){
             $profile = Profile::findOne(['user_id'=>Yii::$app->user->getId()]);
             $model->deleteCurrentImage($profile->profile_image);
+            $profile->profile_image = '/images/empty_user.jpg';
+            $profile->save();
         }
         return $empty_image;
     }
