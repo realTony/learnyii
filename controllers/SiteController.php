@@ -4,10 +4,10 @@ namespace app\controllers;
 
 use app\models\ImageUpload;
 use app\models\Profile;
-use app\models\RecoveryForm;
 use app\models\RestoreForm;
 use app\models\User;
 use app\models\AjaxValidationTrait;
+use dektrium\user\models\RecoveryForm;
 use dektrium\user\traits\EventTrait;
 use http\Url;
 use Yii;
@@ -87,21 +87,24 @@ class SiteController extends Controller
     {
         $registerModel = new RegisterForm();
         $loginModel = new LoginForm();
-        $restoreModel = new RecoveryForm();
+        $restoreModel = $model = \Yii::createObject([
+            'class'    => RecoveryForm::className(),
+            'scenario' => RecoveryForm::SCENARIO_REQUEST,
+        ]);
 
         $registerEvent = $event = $this->getFormEvent($registerModel);
 
         $this->trigger('beforeRegister', $registerEvent );
 
-        //$validateReset = $this->performAjaxValidation($restoreModel);
-
+        $validateReset = $this->performAjaxValidation($restoreModel);
 //        if( !empty($validateReset))
 //            return $validateReset;
         //Account restoring
-        if( $restoreModel->load(Yii::$app->request->post()) && $restoreModel->restore() ) {
-            echo "<pre>";
-            print_r('Success');
-            echo "</pre>";
+        if( $restoreModel->load(Yii::$app->request->post()) && $restoreModel->sendRecoveryMessage() ) {
+            return $this->render('message/message', [
+                'title'  => \Yii::t('user', 'Recovery message sent'),
+                'module' => $this->module,
+            ]);
         }
 
         //Account registration
