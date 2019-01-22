@@ -13,6 +13,8 @@ use dektrium\user\helpers\Password;
  */
 class LoginForm extends Model
 {
+    use AjaxValidationTrait;
+
     public $email;
     public $password;
     public $rememberMe = true;

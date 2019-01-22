@@ -35,23 +35,34 @@ class RegisterForm extends RegistrationForm
 	public $password_repeat;
 	public $password;
 	public $rules_agreement = false;
-	public static $usernameRegExp = '/^[a-zA-Zа-яёА-ЯЁ(\ a-zA-Zа-яёА-ЯЁ)?]+$/';
+	public static $usernameRegExp = '/^[a-zA-z\p{Cyrillic}\D]+$/';
 
 	public function rules()
 	{
 		return [
             // username rules
-            'usernameTrim'     => ['username', 'trim'],
-            'usernameRequired' => ['username', 'required', 'on' => ['register', 'create', 'connect', 'update']],
-            'usernameMatch'    => ['username', 'match', 'pattern' => self::$usernameRegExp],
-            'usernameLength'   => ['username', 'string', 'min' => 3, 'max' => 255],
+            [['username', 'email', 'password', 'password_repeat'], 'trim'],
+            ['username', 'match', 'pattern' => self::$usernameRegExp],
 			// username, email, password, re-entred password must be not empty
             [['username', 'email', 'password', 'password_repeat', 'rules_agreement'], 'required'],
             // rememberMe must be a boolean value
             ['rules_agreement', 'required', 'requiredValue' => 1],
             ['rules_agreement', 'boolean'],
+            //Set default value for rules
+            ['rules_agreement', 'default', 'value' => 0],
             //email must be a valid email address
-            ['email','email'],
+            // email rules
+            'emailRequired' => ['email', 'required', 'on' => ['register', 'connect', 'create', 'update']],
+            'emailPattern'  => ['email', 'email'],
+            'emailLength'   => ['email', 'string', 'max' => 255],
+            'emailUnique'   => [
+                'email',
+                'unique',
+                'message' => \Yii::t('user', 'This email address has already been taken'),
+                'targetClass' => '\app\models\User'
+            ],
+//            ['email','email'],
+//            ['email', 'unique','targetAttribute' => 'email', 'targetClass' => 'app\models\User'],
 
             // normalize "phone" input
 		    ['phone', 'filter', 'filter' => [$this, 'normalizePhone']],
@@ -68,26 +79,28 @@ class RegisterForm extends RegistrationForm
 		}
 	}
 
-
-	public function register()
+    public function register()
 	{
-        parent::register();
+        if(!$this->validate()) {
+            return false;
+        }
         $user = Yii::createObject(User::className());
         $user->setScenario('register');
         $this->loadAttributes($user);
-        if (!$user->register()) {
-            if ($user->validate()) {
-                // все данные корректны
-            } else {
-                // данные не корректны: $errors - массив содержащий сообщения об ошибках
-                $errors = $user->errors;
-                echo "<pre>";
-                print_r($errors);
-                echo "</pre>";
-            }
+
+        if(!$user->register()) {
             return false;
-        }else
-            return true;
+        }
+
+        Yii::$app->session->setFlash(
+            'info',
+            Yii::t(
+                'user',
+                'Your account has been created and a message with further instructions has been sent to your email'
+            )
+        );
+
+        return true;
 	}
 	/**
 	 * Check if registering user exists at site database

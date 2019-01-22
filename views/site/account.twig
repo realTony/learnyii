@@ -1,83 +1,35 @@
-{{ use('yii\\widgets\\Breadcrumbs') }}
-<div class="form-search">
+{{ set(this, 'title', t('app', 'Регистрация')) }}
+{{ use('yii\\widgets\\ActiveForm') }}
+{{ use('yii/helpers/Url') }}
+{% block search_form %}
+    {% include 'forms/search.twig' %}
+{% endblock %}
+<div class="promo-block" style="background-image: url({{ app.homeUrl }}images/bg-51.png)">
     <div class="container">
-        <a class="search-query" href="#">Поисковый запрос</a>
-        <div class="holder-form-search">
-            <span class="bg-search"></span>
-            <form>
-                <fieldset>
-                    <a class="closed-search-form" href="#"></a>
-                    <div class="search-input">
-                        <input type="text" placeholder="Поисковый запрос">
+        <div class="login-registration">
+            <div class="tabset">
+                <ul id="account-panel" class="tab-control">
+                    <li class="active">
+                        <a href="#login">{{  t('app', 'вход') }}</a>
+                    </li>
+                    <li>
+                        <a href="#register">{{  t('app', 'регистрация') }}</a>
+                    </li>
+                </ul>
+                <div class="tab-body">
+                    <div class="tab active">
+                        {% block form_login %}
+                            {% include 'forms/login.twig' %}
+                        {% endblock %}
+                        {% block form_recovery %}
+                            {% include 'forms/recovery.twig' %}
+                        {% endblock %}
                     </div>
-                    <div class="category-input">
-                        <select name="dropdown" class="dropdown">
-                            <option>Категория</option>
-                            <option>Категория1</option>
-                            <option>Категория2</option>
-                            <option>Категория3</option>
-                        </select>
+                    <div class="tab">
+                        {% block form_register %}
+                            {% include 'forms/register.twig' %}
+                        {% endblock %}
                     </div>
-                    <div class="city-input ui-widget">
-                        <input class="tags-city" type="text" placeholder="Город">
-                    </div>
-                    <input class="btn-search" type="submit" value="искать">
-                </fieldset>
-            </form>
-        </div>
-    </div>
-</div>
-<div class="holder-crumbs">
-    <div class="container">
-        <div class="holder-bread-crumbs">
-            {{ set(this, 'title', t('app', 'Личный кабинет')) }}
-            {{ set(this, 'params', { 'breadcrumbs' : { '' : this.title } }) }}
-            {{ breadcrumbs_widget({
-
-                'links': breadcrumbs,
-                'options': {
-                    'class': 'bread-crumbs'
-                }
-
-            }) | raw }}
-        </div>
-    </div>
-</div>
-<div class="container">
-    <div class="title-text clone">
-        <h1>{{ t('app', 'Личный кабинет') }}</h1>
-    </div>
-    <div class="group-content">
-        <div class="aside-left">
-            <div class="aside-profile hide">
-                <div class="seller clone">
-                    <div class="holder-img">
-                        <img src="{{ getAvatar(app.user.id) }}" alt="img">
-                    </div>
-                    <div class="holder-text">
-                        <a href="{{  url.toRoute('/myaccount/') }}" class="name">{{ user.username }}</a>
-                        <span>{{ t('app', 'Дата регистрации') }}</span>
-                        <span class="date">{{ user.created_at | date('d.m.Y') }}</span>
-                    </div>
-                </div>
-                {% block myaccount_navbar %}
-                    {% include 'myaccount_navbar.twig' %}
-                {% endblock %}
-            </div>
-        </div>
-        <div class="content">
-            <div class="user-message">
-                <a href="#"><i class="fas fa-comments"></i> Сообщения<span>22</span></a>
-            </div>
-            <div class="user-message">
-                <a href="#"><i class="fas fa-tags"></i> Активные объявления<span>3</span></a>
-            </div>
-            <div class="holder-user-message">
-                <div class="user-message">
-                    <a href="#"><i class="fas fa-calendar-check"></i> Объявления на подтверждении<span>2</span></a>
-                </div>
-                <div class="user-message">
-                    <a href="#"><i class="fas fa-eye-slash"></i> Архив<span>15</span></a>
                 </div>
             </div>
         </div>

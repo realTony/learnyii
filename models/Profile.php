@@ -83,4 +83,10 @@ class Profile extends \yii\db\ActiveRecord
     {
         return (self::getAttribute('profile_image')) ? self::getAttribute('profile_image') : '/images/empty_user.jpg';
     }
+
+    public static function getUserAvatar($id)
+    {
+
+        return Profile::findOne(['user_id' => $id])->profile_image;
+    }
 }

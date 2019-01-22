@@ -1,0 +1,23 @@
+{% set form = active_form_begin({
+    'id': 'recovery-form',
+    'enableAjaxValidation': true,
+    'enableClientValidation': false,
+    'options': {
+        'class': 'form-recovery',
+    },
+    'fieldConfig': {
+        'options': {
+            'tag':'div',
+            'class' : 'holder-input'
+        }
+    }
+}) %}
+    <fieldset>
+        <span class="title">{{ t('app', 'Восстановление пароля') }}</span>
+        {{ form.field(restoreModel, 'email').label(false).input('email',{'placeholder':'Введите ваш E-Mail'}) | raw }}
+        <p class="left-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum in eros ex. Aliquam dignissim mauris vel sem imperdiet dictum. Ut fringilla, augue quis viverra pulvinar, dui odio varius nisi, eu aliquam elit nisl vulputate nunc. Quisque blandit egestas tortor id bibendum. Maecenas quis ante vel tortor mattis bibendum nec id sapien. Nam pulvinar arcu in interdum laoreet. Donec lacus ipsum, efficitur id mauris auctor, gravida tincidunt odio.</p>
+        {{ submitButton(t('app','Восстановить'), {
+            'class': 'btn-orange',
+        }) | raw }}
+    </fieldset>
+{{ active_form_end() }}

@@ -12,7 +12,7 @@ class m190116_174353_add_profile_image_column_from_profile_table extends Migrati
      */
     public function safeUp()
     {
-        $this->addColumn('{{%profile}}', 'profile_image', $this->string(255));
+        $this->addColumn('{{%profile}}', 'profile_image', $this->string(255)->notNull()->defaultValue('/images/empty_user.jpg'));
     }
 
     /**

@@ -8,10 +8,9 @@ use app\models\User;
 use Yii;
 use yii\helpers\Url;
 use yii\web\Controller;
+use yii\web\UploadedFile;
 use app\modules\myaccount\models\EditProfileForm;
 use app\modules\myaccount\models\ChangePassword;
-use app\modules\myaccount\models\SetProfileImage;
-use yii\web\UploadedFile;
 
 /**
  * Default controller for the `user` module
@@ -95,15 +94,14 @@ class DefaultController extends Controller
         $profile = Profile::findOne(['user_id'=>Yii::$app->user->getId()]);
         $model = new ImageUpload;
         $editProfile = new EditProfileForm();
+
         if( \Yii::$app->request->isPost ){
-            if(!empty($profile->profile_image)){
+            if(!empty($profile->profile_image) && ! strpos('empty_user', $profile->profile_image )) {
                 $model->deleteCurrentImage($profile->profile_image);
             }
+
             $file = UploadedFile::getInstance($model, 'imageFile');
             $editProfile->saveImage($model->uploadImage($file, $profile->profile_image));
-            $session = Yii::$app->session;
-            $profile = Profile::findOne(['user_id'=>Yii::$app->user->getId()]);
-            $session->set('profile_image', '/'.$profile->profile_image);
         }
         Yii::$app->response->redirect(['myaccount/edit']);
     }
@@ -118,13 +116,10 @@ class DefaultController extends Controller
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 
         $model = new ImageUpload();
-        $session = Yii::$app->session;
         $empty_image = $model->getImage();
         if(Yii::$app->request->isAjax){
             $profile = Profile::findOne(['user_id'=>Yii::$app->user->getId()]);
             $model->deleteCurrentImage($profile->profile_image);
-
-            $session->set('profile_image',$empty_image );
         }
         return $empty_image;
     }

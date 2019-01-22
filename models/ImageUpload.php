@@ -13,6 +13,7 @@ class ImageUpload extends Model
      * @var UploadedFile
      */
     public $imageFile;
+    private static $uploadFolder;
 
     public function rules()
     {
@@ -42,9 +43,10 @@ class ImageUpload extends Model
         if($this->validate())
         {
             //Save image
+            $this->isUploadExists();
             $this->deleteCurrentImage($currentImage);
 
-            return $this->getUploadFolder().$this->saveImage();
+            return $this->saveImage();
         }else{
             return false;
         }
@@ -55,7 +57,7 @@ class ImageUpload extends Model
      */
     public function getUploadFolder()
     {
-        return $this->makeFolder();
+        return self::$uploadFolder;
     }
 
     /**
@@ -70,7 +72,9 @@ class ImageUpload extends Model
     {
         //Remove image file if it's already exists
         if ($this->fileExists($currentImage)){
-            unlink(Yii::getAlias('@web') . $currentImage);
+            if( is_file(Yii::$app->basePath . '/web'  . $currentImage )) {
+                unlink(Yii::$app->basePath . '/web'  . $currentImage);
+            }
         }
     }
 
@@ -80,21 +84,39 @@ class ImageUpload extends Model
      */
     public function fileExists($currentImage)
     {
-        $path = Yii::$app->basePath . '/web/' . $currentImage;
+        $path = Yii::$app->basePath . '/web' . $currentImage;
+
         if(!empty($currentImage) && $currentImage != null )
         {
             return file_exists($path);
         }
     }
 
+    private function isUploadExists() {
+        $date = date('Y-m');
+        $path = Yii::getAlias('@web') . '/uploads/'.$date.'/';
+
+        if(! is_dir(self::$uploadFolder)) {
+            $path = $this->makeUploadFolder($path);
+            $this->setUploadPath($path);
+        }
+
+        return $this;
+    }
+
+    private function setUploadPath($path) {
+        self::$uploadFolder = $path;
+
+        return $this;
+    }
+
     private function saveImage()
     {
         $filename = $this->generateFilename();
 
-        $this->imageFile->saveAs($this->getUploadFolder().$filename);
-
-
-        return $filename;
+        $this->isUploadExists();
+        $this->imageFile->saveAs(Yii::getAlias('@webroot').self::$uploadFolder.$filename);
+        return $this->getUploadFolder().$filename;
     }
 
     public function getImage()
@@ -102,15 +124,14 @@ class ImageUpload extends Model
         return ($this->imageFile) ? $this->getUploadFolder(). $this->imageFile : '/images/empty_user.jpg';
     }
 
-    private function makeFolder()
+    private function makeUploadFolder($path)
     {
-        $date = date('Y-m');
-        $path = Yii::getAlias('@web') . 'uploads/'.$date.'/';
         if( !is_dir($path ) )
         {
             FileHelper::createDirectory($path, '0775' );
             return $path;
         }
+
         return $path;
     }
 }

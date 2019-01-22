@@ -4,7 +4,11 @@ namespace app\controllers;
 
 use app\models\ImageUpload;
 use app\models\Profile;
+use app\models\RecoveryForm;
+use app\models\RestoreForm;
 use app\models\User;
+use app\models\AjaxValidationTrait;
+use dektrium\user\traits\EventTrait;
 use http\Url;
 use Yii;
 use yii\filters\AccessControl;
@@ -14,9 +18,13 @@ use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\RegisterForm;
 use app\models\ContactForm;
+use yii\widgets\ActiveForm;
 
 class SiteController extends Controller
 {
+    use AjaxValidationTrait;
+    use EventTrait;
+
     public $successUrl = 'Success';
     /**
      * {@inheritdoc}
@@ -74,44 +82,44 @@ class SiteController extends Controller
         return $this->render('index.twig');
     }
 
-    /**
-     * Login action.
-     *
-     * @return Response|string
-     */
-    public function actionLogin()
-    {
-        if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
 
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            $profile = Profile::findOne(['user_id'=>Yii::$app->user->getId()]);
-            $session = Yii::$app->session;
-            $session['profile_image'] = (!empty($profile['profile_image']))?'/'.$profile['profile_image']:Yii::getAlias('@web').'/images/empty_user.jpg';
-            return $this->goBack();
-        }
-
-        $model->password = '';
-        return $this->render('login', [
-            'model' => $model,
-        ]);
-    }
-    /**
-     * Registration action
-     * 
-     * @return Response|string
-     */
     public function actionAccount()
     {
         $registerModel = new RegisterForm();
         $loginModel = new LoginForm();
+        $restoreModel = new RecoveryForm();
 
-        if ( $registerModel->load(Yii::$app->request->post()) && ( $registerModel->register() || $loginModel->login() )) {
-            Yii::$app->response->redirect(['myaccount']);
+        $registerEvent = $event = $this->getFormEvent($registerModel);
+
+        $this->trigger('beforeRegister', $registerEvent );
+
+        //$validateReset = $this->performAjaxValidation($restoreModel);
+
+//        if( !empty($validateReset))
+//            return $validateReset;
+        //Account restoring
+        if( $restoreModel->load(Yii::$app->request->post()) && $restoreModel->restore() ) {
+            echo "<pre>";
+            print_r('Success');
+            echo "</pre>";
         }
 
+        //Account registration
+        $validateRegister = $this->performAjaxValidation($registerModel);
+
+        if( !empty( $validateRegister ))
+            return $validateRegister;
+        if ( $registerModel->load(Yii::$app->request->post()) &&  $registerModel->register() ) {
+            return $this->render('message/message', [
+                'model' => $registerModel,
+                'title'  => \Yii::t('user', 'Your account has been created'),
+                'module' => $registerModel,
+            ]);
+        }
+
+        $validateLogin = $this->performAjaxValidation($loginModel);
+        if( !empty( $validateLogin )){
+            return $validateLogin;}
         if ($loginModel->load(Yii::$app->request->post()) && $loginModel->login()) {
             $imageUpload = new ImageUpload();
             $profile = Profile::findOne(['user_id'=>Yii::$app->user->getId()]);
@@ -124,10 +132,10 @@ class SiteController extends Controller
         $registerModel->password = '';
         $registerModel->password_repeat = '';
 
-        return $this->render('account', [
-            'model' => $registerModel,
-            'loginModel' => $loginModel
-        ]); 
+        return $this->render('account.twig', [ 'model' => $registerModel,
+                                                        'loginModel' => $loginModel,
+                                                        'restoreModel' => $restoreModel
+                                                    ]);
     }
     /**
      * Logout action.
@@ -139,34 +147,6 @@ class SiteController extends Controller
         Yii::$app->user->logout();
 
         return $this->goHome();
-    }
-
-    /**
-     * Displays contact page.
-     *
-     * @return Response|string
-     */
-    public function actionContact()
-    {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
-            Yii::$app->session->setFlash('contactFormSubmitted');
-
-            return $this->refresh();
-        }
-        return $this->render('contact', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * Displays about page.
-     *
-     * @return string
-     */
-    public function actionAbout()
-    {
-        return $this->render('about');
     }
 
     public function actionHowItWorks()

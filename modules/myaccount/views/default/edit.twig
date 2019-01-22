@@ -53,7 +53,7 @@
             <div class="aside-profile hide">
                 <div class="seller clone">
                     <div class="holder-img">
-                        <img src="{{ app.session.profile_image }}" alt="profile_image">
+                        <img src="{{ getAvatar(app.user.id) }}" alt="profile_image">
                     </div>
                     <div class="holder-text">
                         <a href="{{  url.toRoute('/myaccount/') }}" class="name">{{ user.username }}</a>
@@ -89,7 +89,7 @@
                     <div class="group">
                         <div class="holder-left">
                             <div class="holder-img">
-                                <img src="{{ app.session.profile_image }}" alt="profile_image">
+                                <img src="{{ getAvatar(app.user.id) }}" alt="profile_image">
                                 <div class="edit-photo">
                                     <a href="#" id="save-photo">
                                         <i class="fas fa-pen-square"></i>

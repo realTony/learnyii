@@ -45,7 +45,7 @@ $(document).ready(function(){
 
     if( $('#account-panel').is('ul') ){
         var hash = window.location.hash;
-        if( typeof hash != 'undefined'){
+        if( typeof hash != 'undefined' && hash != ''){
             $('#account-panel li').each( function () {
                 $(this).attr('class', '');
                 if( $(this).children().attr('href') == hash ) {

@@ -1,0 +1,24 @@
+{% set form = active_form_begin({
+    'id': 'register-form',
+    'enableAjaxValidation': true,
+    'enableClientValidation': false,
+    'fieldConfig': {
+        'options': {
+            'tag': 'div',
+            'class': 'holder-input'
+        }
+    }
+}) %}
+<fieldset>
+    {{ form.field(model, 'username').label(false).textInput({'autofocus':true, 'placeholder':'Имя'}) | raw }}
+    {{ form.field(model, 'email').label(false).input('email',{'placeholder':'E-Mail'}) | raw }}
+    {{ form.field(model, 'phone').label(false).input('phone',{'placeholder':'Телефон'}) | raw }}
+    {{ form.field(model, 'city').label(false).textInput({'placeholder':'Город'}) | raw }}
+    {{ form.field(model, 'password').label(false).passwordInput({'placeholder':'Пароль'}) | raw }}
+    {{ form.field(model, 'password_repeat').label(false).passwordInput({'placeholder':'Повторить пароль'}) | raw }}
+    {{ form.field(model, 'rules_agreement', {'options' : {'class':'holder-checkbox left-text'}, 'template':"<label>{input}<span><i class='fas fa-check'></i> "~ t('app', 'Согласен с ')~"<a href='#'>" ~t('app', 'условиями использования')~"</a>"}).label(false).checkbox([], false) | raw }}
+    {{ submitButton(t('app','Зарегистрироваться'), {
+        'class': 'btn-orange',
+    }) | raw }}
+</fieldset>
+{{ active_form_end() }}

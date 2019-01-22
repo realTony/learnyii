@@ -33,6 +33,17 @@
         {% include 'footer.twig' %}
     {% endblock %}
 {{   void(this.endBody()) }}
+    <script>
+        (function ($) {
+
+            $('#login-form').on('submit', function(e) {
+                e.preventDefault();
+            //
+                $('#login-form').data('yiiActiveForm').submitting = true;
+                $('#login-form').yiiActiveForm('validate');
+            });
+        })(jQuery);
+    </script>
 </body>
 </html>
 {{   void(this.endPage()) }}

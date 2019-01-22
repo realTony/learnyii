@@ -1,0 +1,38 @@
+{% set form = active_form_begin({
+    'id': 'login-form',
+    'enableAjaxValidation': true,
+    'enableClientValidation': false,
+    'options': {
+        'class': 'for-login',
+    },
+    'fieldConfig': {
+        'options': {
+            'tag':'div',
+            'class' : 'holder-input'
+        }
+    }
+}) %}
+<fieldset>
+    {{ form.field(loginModel, 'email').label(false).input('email',{'placeholder':'E-Mail'}) | raw }}
+    {{ form.field(loginModel, 'password').label(false).passwordInput({'placeholder':'Пароль'}) | raw }}
+    {{ form.field(loginModel, 'rememberMe', {'options' : {'class':'holder-checkbox'}, 'template':"<label>{input}<span><i class='fas fa-check'></i> "~ t('app', 'Запомнить меня')}).label(false).checkbox([], false) | raw }}
+    {{ submitButton(t('app','Войти'), {
+        'class': 'btn-orange',
+    }) | raw }}
+    <a class="forgot" href="#">{{ t('app', 'Забыли пароль?') }}</a>
+    {#<div class="in-network">#}
+        {#<a class="btn-network" href="#">#}
+            {#<div class="holder-img">#}
+                {#<img src="images/bg-53.png" alt="img">#}
+            {#</div>#}
+            {#<span>{{ t('app', 'Войти через Facebook') }}</span>#}
+        {#</a>#}
+        {#<a class="btn-network" href="#">#}
+            {#<div class="holder-img">#}
+                {#<img src="images/bg-54.png" alt="img">#}
+            {#</div>#}
+            {#<span>{{ t('app', 'Войти через Google') }}</span>#}
+        {#</a>#}
+    {#</div>#}
+</fieldset>
+{{ active_form_end() }}

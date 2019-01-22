@@ -64,20 +64,42 @@ $config = [
                         'endform' =>'yii\helpers\Html::endForm',
                         'submitButton' =>'yii\helpers\Html::submitButton',
                         'connect' => 'dektrium\user\widgets\Connect::widget',
-                        'csrfMetatags' => 'yii\helpers\Html::csrfMetaTags'
+                        'csrfMetatags' => 'yii\helpers\Html::csrfMetaTags',
+                        'getAvatar' => 'app\models\Profile::getUserAvatar'
                     ),
+                    'filters' => [
+                        'print_r' => 'print_r',
+                        'var_dump' => 'var_dump'
+                    ]
                 ]
-            ]
+            ],
+//            'theme' => [
+//                'basePath' => '@app/themes/basic',
+//                'baseUrl' => '@web/themes/basic',
+//                'pathMap' =>[
+//                    '@app/views' => '@app/themes/basic',
+//                    '@app/modules' => '@app/themes/basic/modules',
+//                ]
+//            ]
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
+            'transport' => [
+                'class' => 'Swift_SmtpTransport',
+                'host' => $config['smtp_host'],
+                'username' => $config['smtp_username'],
+                'password' => $config['smtp_password'],
+                'port' => '587',
+                'encryption' => 'tls',
+            ],
             // send all mails to a file by default. You have to set
             // 'useFileTransport' to false and configure a transport
             // for the mailer to send real emails.
-            'useFileTransport' => true,
+            'useFileTransport' => false,
+//            'viewPath' => '@common/mail'
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
@@ -108,7 +130,7 @@ $config = [
     ],
     'modules' =>[
         'user' => [
-            'class' => 'dektrium\user\Module'
+            'class' => 'app\modules\user\Module'
         ],
         'myaccount' => [
             'class' => 'app\modules\myaccount\Module',
@@ -142,5 +164,4 @@ if (YII_ENV_DEV) {
         //'allowedIPs' => ['127.0.0.1', '::1'],
     ];
 }
-
 return $config;
