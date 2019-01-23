@@ -74,8 +74,11 @@ class DefaultController extends Controller
         }
         
         if( $changePassword->load(Yii::$app->request->post()) && $changePassword->changePassword() ) {
-            Yii::$app->user->logout();
-            Yii::$app->response->redirect(['site/account#login']);
+            Yii::$app->session->setFlash('success', \Yii::t('app', 'Пароль успешно изменён'));
+            return $this->render('/message.php', [
+                'title'  => Yii::t('app', 'Изменение пароля'),
+                'module' => $this->module,
+            ]);
 
         }
         return $this->render('edit.twig', [
