@@ -10,7 +10,8 @@ namespace app\modules\myaccount\models;
 
 use Yii;
 use yii\base\Model;
-use app\models\User;
+use dektrium\user\models\User;
+use dektrium\user\helpers\Password;
 
 class ChangePassword extends Model
 {
@@ -40,9 +41,17 @@ class ChangePassword extends Model
 
     public function changePassword()
     {
-        if( $this->validate() ){
-
+        if( !$this->validate() ){
+            return false;
         }
+        $user = Yii::createObject(User::className())->findOne(['id'=>Yii::$app->user->getId()]);
+        
+        if( ! Password::validate($this->oldPassword, $user->password_hash ))
+            return false;
+
+        $user->resetPassword($this->newPassword);
+
+        return true;
     }
 
     public function attributeLabels()
