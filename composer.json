@@ -23,7 +23,9 @@
         "yiisoft/yii2-imagine": "*",
         "yiisoft/yii2-authclient": "^2.1",
         "spomky-labs/jose": "^7.1",
-        "dektrium/yii2-user": "^0.9.14"
+        "dektrium/yii2-user": "^0.9.14",
+        "mdmsoft/yii2-admin": "~2.0",
+        "2amigos/yii2-tinymce-widget": "~1.1"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

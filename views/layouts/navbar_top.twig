@@ -61,10 +61,10 @@
     </div>
     <div class="mobile-nav-btn">
         <a href="#">
-            <img src="images/bg-33.png" alt="img">
+            <img src="{{ app.homeUrl }}images/bg-33.png" alt="img">
         </a>
         <a href="#">
-            <img src="images/bg-34.png" alt="img">
+            <img src="{{ app.homeUrl }}images/bg-34.png" alt="img">
         </a>
     </div>
     <a class="open-menu" href="#"></a>
@@ -79,7 +79,7 @@
     {% if app.user.isGuest == false %}
         <div class="popup-profile">
             <div class="head-profile">
-                <strong class="logo"><a href="#">STICKIT</a></strong>
+                <strong class="logo"><a href="#">{{ app.name }}</a></strong>
                 <span class="closed-popup-profile">closed-menu</span>
             </div>
             <div class="seller clone">
