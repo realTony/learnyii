@@ -23,11 +23,11 @@ class m190201_121020_create_pages_table extends Migration
             'translation' => $this->text(),
             'updated_at' => $this->timestamp(),
             'created_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
-        ]);
+        ], 'ENGINE InnoDB');
 
         $this->insert($this->tableName, [
             'title' => 'Главная',
-            'link' => '/',
+            'link' => 'main',
         ]);
         $this->insert($this->tableName, [
             'title' => 'Как это работает?',
