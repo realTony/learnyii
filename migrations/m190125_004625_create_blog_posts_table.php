@@ -27,7 +27,7 @@ class m190125_004625_create_blog_posts_table extends Migration
             'translation' => $this->text(),
             'updated_at' => $this->timestamp(),
             'created_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
-        ]);
+        ], 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB');
     }
 
     /**

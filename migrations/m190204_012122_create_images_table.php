@@ -19,7 +19,7 @@ class m190204_012122_create_images_table extends Migration
             'item_id' => $this->integer(), //id of page
             'alt' => $this->string()->notNull(),
             'sort' => $this->integer()->notNull(),
-        ]);
+        ], 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB');
     }
 
     /**

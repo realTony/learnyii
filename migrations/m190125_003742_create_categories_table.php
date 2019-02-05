@@ -25,7 +25,7 @@ class m190125_003742_create_categories_table extends Migration
             'translation' => $this->text(),
             'updated_at' => $this->timestamp(),
             'created_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
-        ]);
+        ], 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB');
     }
 
     /**
