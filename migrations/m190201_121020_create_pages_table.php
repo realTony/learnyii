@@ -23,7 +23,7 @@ class m190201_121020_create_pages_table extends Migration
             'translation' => $this->text(),
             'updated_at' => $this->timestamp(),
             'created_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
-        ], 'ENGINE InnoDB');
+        ], 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB');
 
         $this->insert($this->tableName, [
             'title' => 'Главная',

@@ -7,6 +7,7 @@ use yii\helpers\Html;
 use yii\widgets\Breadcrumbs;
 
 AdminAssets::register($this);
+
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -48,7 +49,7 @@ AdminAssets::register($this);
             <!-- /logo -->
         </div>
         <!-- main navigation -->
-        <?= $this->render('_menu', ['menu' => $menu ] ) ?>
+        <?= $this->render('_menu', ['menu' => \Yii::$app->view->params['menu'] ] ) ?>
         <!-- /main navigation -->
     </div>
     <!-- /sidebar panel -->
