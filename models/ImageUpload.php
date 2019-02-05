@@ -63,7 +63,7 @@ class ImageUpload extends Model
     /**
      * @return string fileName
      */
-    private function generateFilename()
+    protected function generateFilename()
     {
         return strtolower(md5(uniqid($this->imageFile->baseName))).'.'.($this->imageFile->extension);
     }
@@ -92,7 +92,7 @@ class ImageUpload extends Model
         }
     }
 
-    private function isUploadExists() {
+    protected function isUploadExists() {
         $date = date('Y-m');
         $path = Yii::getAlias('@web') . '/uploads/'.$date.'/';
 
@@ -110,7 +110,7 @@ class ImageUpload extends Model
         return $this;
     }
 
-    private function saveImage()
+    protected function saveImage()
     {
         $filename = $this->generateFilename();
 

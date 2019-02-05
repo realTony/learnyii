@@ -107,7 +107,7 @@
                             {{ form
                                 .field(model, 'username', {'options':{'class':'holder-input', 'tag':'div'}})
                                 .label(false)
-                                .textInput({'placeholder':'Имя', 'class':'input'}) | raw }}
+                                .textInput({'placeholder': t('app', 'Имя'), 'class':'input'}) | raw }}
                             <ul class="input-list">
                                 <li>
                                     {{ form
@@ -117,13 +117,13 @@
                                 <li>
                                     {{ form.
                                         field(model, 'address', {'options':{'tag':false}})
-                                    .label(false).textInput({'placeholder':'Адрес', 'class':'input'}) | raw }}
+                                    .label(false).textInput({'placeholder': t('app', 'Адрес'), 'class':'input'}) | raw }}
                                 </li>
                                 <li>
                                     {{ form.
                                         field(model, 'phone', {'options':{'tag':false}}).
                                         label(false).
-                                        input('phone', {'placeholder':'Телефон', 'class':'input'}) | raw }}
+                                        input('phone', {'placeholder': t('app', 'Телефон'), 'class':'input'}) | raw }}
                                 </li>
                                 <li>
                                     {{ form.

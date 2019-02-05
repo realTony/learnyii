@@ -5,24 +5,23 @@
             <span class="copyright">&#169; {{ "now"|date("Y") }} Stick It. {{ t('app', 'Все права защищены.') }}</span>
         </div>
         <div class="holder-block">
-            {#{{ menu_widget({#}
-                {#'options': {#}
-                    {#'class': 'nav-footer',#}
-                {#},#}
-                {#'items': [{#}
-                    {#'label': 'Как это работает?',#}
-                    {#'url': '/site/index',#}
-                {#},#}
-                    {#{#}
-                        {#'label': 'Тарифы',#}
-                        {#'url': '/site/index',#}
-                    {#},#}
-                    {#{#}
-                        {#'label': 'Блог',#}
-                        {#'url': '/blog/index',#}
-                    {#}#}
-                {#]#}
-            {#}) }}#}
+            {{ menu_widget({
+                'options': {
+                    'class': 'nav-footer',
+                },
+                'items': [{
+                        'label': 'Как это работает?',
+                        'url': '/site/index',
+                    }, {
+                        'label': 'Тарифы',
+                        'url': '/site/index',
+                    },
+                    {
+                        'label': 'Блог',
+                        'url': '/news',
+                    }
+                ]
+            }) }}
         </div>
         <div class="holder-block">
             {#{{ menu_widget({#}
@@ -90,3 +89,7 @@
         </div>
     </div>
 </footer>
+
+<div class="up">
+    <i class="fas fa-arrow-up"></i>
+</div>

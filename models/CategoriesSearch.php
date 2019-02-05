@@ -18,7 +18,7 @@ class CategoriesSearch extends Categories
     {
         return [
             [['id', 'parent_id', 'is_blog', 'is_advertisement'], 'integer'],
-            [['title', 'description', 'seo_text', 'seo_title', 'link', 'options', 'modified_at'], 'safe'],
+            [['title', 'description', 'seo_text', 'seo_title', 'link', 'options', 'updated_at'], 'safe'],
         ];
     }
 
@@ -62,7 +62,7 @@ class CategoriesSearch extends Categories
             'parent_id' => $this->parent_id,
             'is_blog' => $this->is_blog,
             'is_advertisement' => $this->is_advertisement,
-            'modified_at' => $this->modified_at,
+            'updated_at' => $this->updated_at,
         ]);
 
         $query->andFilterWhere(['like', 'title', $this->title])

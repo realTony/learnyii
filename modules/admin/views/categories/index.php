@@ -31,13 +31,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'description:ntext',
             'seo_text:ntext',
             'seo_title',
-            //'link',
-            //'parent_id',
-            //'is_blog',
-            //'is_advertisement',
-            //'options:ntext',
-            //'modified_at',
-
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>

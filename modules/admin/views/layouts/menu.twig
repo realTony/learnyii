@@ -4,21 +4,24 @@
             <ul class="metismenu" id="menu">
                 <li class="active">
                     <a href="javascript:void(0)" aria-expanded="true"><i class="ti-dashboard"></i><span>dashboard</span></a>
-                    {#<ul class="collapse">#}
-                        {#<li class="active"><a href="index.html">ICO dashboard</a></li>#}
-                        {#<li><a href="index2.html">Ecommerce dashboard</a></li>#}
-                        {#<li><a href="index3.html">SEO dashboard</a></li>#}
-                    {#</ul>#}
                 </li>
                 <li><a href="#">Меню</a></li>
                 <li><a href="#">Страницы</a></li>
                 <li>
-                    <a href="#">Блог</a>
+                    <a href="#">Новости</a>
                     <ul class="collapse">
-                        <li class=""><a href="">Категории</a></li>
+                        <li class=""><a href="{{ url.toRoute(['/admin/blog/index']) }}">Новости</a></li>
+                        <li class=""><a href="{{ url.toRoute(['/admin/blog/create']) }}">Создать новую запись</a></li>
                     </ul>
                 </li>
-                <li><a href="#">Список пользователей</a></li>
+                <li>
+                    <a href="#">Категории</a>
+                    <ul class="collapse">
+                        <li class=""><a href="{{ url.toRoute(['/admin/categories/index']) }}">Категории</a></li>
+                        <li class=""><a href="{{ url.toRoute(['/admin/categories/create']) }}">Создать категорию</a></li>
+                    </ul>
+                </li>
+                <li><a href="{{ url.toRoute(['/rbac/user/index']) }}">Пользователи</a></li>
                 <li><a href="#">Настройки сайта</a></li>
             </ul>
         </nav>

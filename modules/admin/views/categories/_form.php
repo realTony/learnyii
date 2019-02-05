@@ -1,5 +1,6 @@
 <?php
 
+use dosamigos\tinymce\TinyMce;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -8,34 +9,105 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="categories-form">
+<?php $form = ActiveForm::begin([
+    'options' => [
+        'class' => false
+    ]
+]); ?>
+<div class="row">
+    <div class="col-md-6">
+        <div class="card bg-white m-b">
+            <div class="card-block">
 
-    <?php $form = ActiveForm::begin(); ?>
+                <?= $form->
+                field($model, 'title', [
+                    'options' => [
+                        'class' => 'form-group',
+                        'tag' => 'div'
+                    ]
+                ])->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
+                <?= $form->field($model, 'description', [
+                    'options' => [
+                        'class' => 'form-group',
+                        'tag' => 'div'
+                    ]
+                ])->widget(TinyMce::className(), [
+                    'options' => ['rows' => 6],
+                    'language' => 'ru',
+                    'clientOptions' => [
+                        'plugins' => [
+                            "advlist autolink lists link charmap print preview anchor",
+                            "searchreplace visualblocks code fullscreen",
+                            "insertdatetime media table contextmenu paste"
+                        ],
+                        'toolbar' => "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
+                    ]
+                ]);?>
 
-    <?= $form->field($model, 'seo_text')->textarea(['rows' => 6]) ?>
-
-    <?= $form->field($model, 'seo_title')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'link')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'parent_id')->textInput() ?>
-
-    <?= $form->field($model, 'is_blog')->textInput() ?>
-
-    <?= $form->field($model, 'is_advertisement')->textInput() ?>
-
-    <?= $form->field($model, 'options')->textarea(['rows' => 6]) ?>
-
-    <?= $form->field($model, 'modified_at')->textInput() ?>
-
-    <div class="form-group">
-        <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
+            </div>
+        </div>
     </div>
+    
+    <div class="col-md-6">
+        <div class="card bg-white m-b">
+            <div class="card-block">
 
-    <?php ActiveForm::end(); ?>
+                <?= $form->field($model, 'parent_id', [
+                    'options' => [
+                        'class' => 'form-group',
+                        'tag' => 'div'
+                    ]
+                ] )->dropDownList($data['catList'], ['prompt' => 'Выберите категорию...']) ?>
 
+            </div>
+        </div>
+    </div>
 </div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card bg-white m-b">
+            <div class="card-block"></div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card bg-white m-b">
+            <div class="card-block">
+
+                <?= $form->field($model, 'seo_title', [
+                    'options' => [
+                        'class' => 'form-group',
+                        'tag' => 'div'
+                    ]
+                ])->textInput(['maxlength' => true]) ?>
+
+                <?= $form->field($model, 'seo_text', [
+                    'options' => [
+                        'class' => 'form-group',
+                        'tag' => 'div'
+                    ]
+                ])->widget(TinyMce::className(), [
+                    'options' => ['rows' => 6],
+                    'language' => 'ru',
+                    'clientOptions' => [
+                        'plugins' => [
+                            "advlist autolink lists link charmap print preview anchor",
+                            "searchreplace visualblocks code fullscreen",
+                            "insertdatetime media table contextmenu paste"
+                        ],
+                        'toolbar' => "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
+                    ]
+                ]);?>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="form-group">
+    <?= Html::submitButton(Yii::t('app', 'Сохранить'), ['class' => 'btn btn-success']) ?>
+</div>
+
+<?php ActiveForm::end(); ?>
+

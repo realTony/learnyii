@@ -7,7 +7,9 @@ $config = parse_ini_file(__DIR__.'/../../secure/stickit.ini', true);
 $config = [
     'id' => 'stickit',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log'],
+    'bootstrap' => [
+        'log'
+    ],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
@@ -17,6 +19,17 @@ $config = [
     'components' => [
         'authManager' => [
             'class' => 'yii\rbac\DbManager'
+        ],
+        'assetManager' => [
+            'linkAssets' => true,
+            'bundles' => array(
+                'yii\web\JqueryAsset' => array(
+                    'sourcePath' => '@web',
+                    'js' => array(
+                        'js/jquery.min.js',
+                    ),
+                ),
+            )
         ],
         'authClientCollection' => [
             'class' => 'yii\authclient\Collection',
@@ -33,6 +46,10 @@ $config = [
                 ]
             ]
         ],
+        'image' => [
+            'class' => 'yii\image\ImageDriver',
+            'driver' => 'GD',  //GD or Imagick
+        ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'gZxNLSezjY7MWYGhogsz463Elr9nzDYf',
@@ -41,10 +58,10 @@ $config = [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
-            //'identityClass' => 'app\models\User',
+            'identityClass' => 'app\models\User',
 //            'enableAutoLogin' => true,
-            'identityClass' => 'mdm\admin\models\User',
-            'loginUrl' => ['rbac/user/login'],
+//            'identityClass' => 'mdm\admin\models\User',
+            'loginUrl' => ['account#login'],
         ],
         'view' => [
             'renderers' => [
@@ -111,9 +128,15 @@ $config = [
         ],
         'db' => $db,
         'urlManager' => [
+            'class' => 'codemix\localeurls\UrlManager',
+            'languages' => ['ru' => 'ru-Ru', 'uk' => 'uk-Uk'],
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => $urlRules,
+            'ignoreLanguageUrlPatterns' => [
+                // route pattern => url pattern
+                '#^site/(login|register)#' => '#^(signin|signup)#',
+            ],
         ],
         'i18n' =>[
             'translations' => [
@@ -132,8 +155,13 @@ $config = [
         'allowActions' => [
             'site/*',
             'admin/*',
+            'myaccount/*',
             'rbac/*',
             'gii/*',
+            'debug/*',
+            'categories/*',
+            'images/*',
+            'news/*'
 //            'some-controller/some-action',
             // The actions listed here will be allowed to everyone including guests.
             // So, 'admin/*' should not appear here in the production, of course.
@@ -167,29 +195,6 @@ $config = [
                     'idField' => 'id',
                     'usernameField' => 'username',
                     'fullnameField' => 'username',
-//                    'extraColumns' => [
-//                        [
-//                            'attribute' => 'username',
-//                            'label' => 'Full Name',
-//                            'value' => function($model, $key, $index, $column) {
-//                                return $model->profile->full_name;
-//                            },
-//                        ],
-//                        [
-//                            'attribute' => 'dept_name',
-//                            'label' => 'Department',
-//                            'value' => function($model, $key, $index, $column) {
-//                                return $model->profile->dept->name;
-//                            },
-//                        ],
-//                        [
-//                            'attribute' => 'post_name',
-//                            'label' => 'Post',
-//                            'value' => function($model, $key, $index, $column) {
-//                                return $model->profile->post->name;
-//                            },
-//                        ],
-//                    ],
                     'searchClass' => 'app\models\UserSearch'
                 ],
             ]
@@ -200,7 +205,6 @@ $config = [
 ];
 
 if (YII_ENV_DEV) {
-    unset($config['components']['cache']);
     // configuration adjustments for 'dev' environment
     $config['bootstrap'][] = 'debug';
     $config['modules']['debug'] = [

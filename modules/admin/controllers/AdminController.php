@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Tony
- * Date: 24.01.2019
- * Time: 1:33
- */
 
 namespace app\modules\admin\controllers;
 
@@ -14,11 +8,12 @@ use Yii;
 
 class AdminController extends Controller
 {
-    public $layout = 'admin.twig';
-    
+//    public $layout = 'admin.twig';
+    public $layout = 'ml_admin.php';
+
     public function actionIndex()
     {
-        return $this->render('index.twig');
+//        return $this->render('index.twig');
     }
 
 }

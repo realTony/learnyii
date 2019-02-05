@@ -2,9 +2,19 @@
 
 return [
 	'' => 'site/index',
-	'<action:(login|logout|account|about)>' => 'site/<action>',
+	'<action:(login|logout|how-it-works|privacy-policy)>' => 'site/<action>',
 	'myaccount/edit' => 'myaccount/default/edit',
     'user/recover/<id:\d+>/<code:[A-Za-z0-9_-]+>' => 'user/recovery/reset',
-    'admin/<action>' => 'admin/admin/<action>'
+    'admin/blog' => 'admin/blog/index',
+    'admin/pages' => 'admin/pages/index',
+    'admin/categories' => 'admin/categories/index',
+    'admin/pages/edit/<link:[A-Za-z0-9_-]+>' => 'admin/pages/update-static',
+    'admin/<action>' => 'admin/admin/<action>',
+    'categories/<link:[A-Za-z0-9_-]+>' => 'categories/index',
+    'uk/categories/<link:[A-Za-z0-9_-]+>' => 'categories/index',
+    'news/category/<link>' => 'news/category',
+    'uk/news/category/<link>' => 'news/category',
+    'news/<link>' => 'news/post',
+    'uk/news/<link>' => 'news/post'
 
 ];

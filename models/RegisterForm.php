@@ -6,6 +6,7 @@ namespace app\models;
 use dektrium\user\models\RegistrationForm;
 use app\models\User;
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * RegisterForm is the model behind the register form.
@@ -85,6 +86,7 @@ class RegisterForm extends RegistrationForm
             return false;
         }
         $user = Yii::createObject(User::className());
+        $user->status = ArrayHelper::getValue(Yii::$app->params, 'user.defaultStatus', User::STATUS_ACTIVE);
         $user->setScenario('register');
         $this->loadAttributes($user);
 

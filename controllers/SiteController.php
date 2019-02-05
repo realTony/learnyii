@@ -3,14 +3,17 @@
 namespace app\controllers;
 
 use app\models\ImageUpload;
+use app\models\Pages;
 use app\models\Profile;
 use app\models\RestoreForm;
 use app\models\User;
 use app\models\AjaxValidationTrait;
+use app\widgets\LanguageSwitcher;
 use dektrium\user\models\RecoveryForm;
 use dektrium\user\traits\EventTrait;
 use http\Url;
 use Yii;
+use yii\bootstrap\Html;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
@@ -73,13 +76,19 @@ class SiteController extends Controller
     }
 
     /**
-     * Displays homepage.
-     *
      * @return string
+     * @throws \yii\base\InvalidConfigException
      */
     public function actionIndex()
     {
-        return $this->render('index.twig');
+        $model = Yii::createObject(Pages::className())->find()->where(['link' => 'main'])->one();
+
+        $model->options = json_decode($model->options);
+        $model->translation = json_decode($model->translation);
+
+        return $this->render('index.twig', [
+                'model' => $model
+        ]);
     }
 
 
@@ -156,8 +165,29 @@ class SiteController extends Controller
 
     public function actionHowItWorks()
     {
-        return $this->render('how-it-works.twig');
+        $model = Yii::createObject(Pages::className())->find()->where(['link' => 'how-it-works'])->one();
+
+        $model->options = json_decode($model->options);
+        $model->translation = json_decode($model->translation);
+
+        return $this->render('how-it-works.twig', [
+            'model' => $model
+        ]);
     }
+
+    public function actionPrivacyPolicy()
+    {
+        $model = Yii::createObject(Pages::className())->find()->where(['link' => 'privacy-policy'])->one();
+
+        $model->options = json_decode($model->options);
+        $model->translation = json_decode($model->translation);
+
+        return $this->render('policy.twig', [
+            'model' => $model
+        ]);
+    }
+
+
 
     public function successCallback($client)
     {

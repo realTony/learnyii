@@ -14,16 +14,17 @@ class m190125_003742_create_categories_table extends Migration
     {
         $this->createTable('{{%categories}}', [
             'id' => $this->primaryKey(),
-            'title' => $this->string(255)->notNull(),
+            'title' => $this->string()->notNull(),
             'description' => $this->text(),
             'seo_text' =>$this->text(),
-            'seo_title' => $this->string()->defaultValue(''),
-            'link' => $this->string(255)->notNull(),
-            'parent_id' => $this->smallInteger(6),
+            'seo_title' => $this->string(),
+            'link' => $this->string()->notNull()->unique()->defaultValue(''),
+            'parent_id' => $this->integer(11)->defaultValue(0),
             'is_blog' => $this->boolean(),
-            'is_advertisement' => $this->boolean(),
             'options' => $this->text(),
-            'modified_at' => $this->dateTime()
+            'translation' => $this->text(),
+            'updated_at' => $this->timestamp(),
+            'created_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
         ]);
     }
 

@@ -1,8 +1,8 @@
-
+{{ use('app\\widgets\\LanguageSwitcher') }}
 <div class="top-head">
     <strong class="logo"><a href="{{ app.homeUrl }}" alt="logo">{{ app.name }}</a></strong>
     <div class="holder-ads">
-        {#<a class="btn-ads" href="#">{{ t('app', 'Подать объявление') }} </a>#}
+        <a class="btn-ads" href="#">{{ t('app', 'Подать объявление') }} </a>
     </div>
     <div class="log-registration">
         {% set menuItems = [] %}
@@ -68,14 +68,7 @@
         </a>
     </div>
     <a class="open-menu" href="#"></a>
-    <ul class="list-language">
-        {#<li class="active">#}
-            {#<a href="#">{{ t('app', 'РУС') }}</a>#}
-        {#</li>#}
-        {#<li>#}
-            {#<a href="#">{{ t('app', 'УКР') }}</a>#}
-        {#</li>#}
-    </ul>
+    {{ languageSwitcher_widget({'options': {'class': 'list-language'}}) }}
     {% if app.user.isGuest == false %}
         <div class="popup-profile">
             <div class="head-profile">
@@ -96,18 +89,18 @@
                 <li>
                     <a href="{{  url.toRoute('/myaccount/edit') }}"><i class="fas fa-pencil-alt"></i> {{ t('app', 'Редактировать профиль') }}</a>
                 </li>
-                {#<li>#}
-                    {#<a href="#"><i class="fas fa-plus-circle"></i> Создать объявление</a>#}
-                {#</li>#}
-                {#<li class="active">#}
-                    {#<a href="#"><i class="fas fa-tags"></i> Мои объявления<sup><small>(12)</small></sup></a>#}
-                {#</li>#}
-                {#<li>#}
-                    {#<a href="#"><i class="fas fa-star"></i> Избранное</a>#}
-                {#</li>#}
-                {#<li>#}
-                    {#<a href="#"><i class="fas fa-comments"></i> Сообщения </a>#}
-                {#</li>#}
+                <li>
+                    <a href="#"><i class="fas fa-plus-circle"></i> Создать объявление</a>
+                </li>
+                <li class="active">
+                    <a href="#"><i class="fas fa-tags"></i> Мои объявления<sup><small>(12)</small></sup></a>
+                </li>
+                <li>
+                    <a href="#"><i class="fas fa-star"></i> Избранное</a>
+                </li>
+                <li>
+                    <a href="#"><i class="fas fa-comments"></i> Сообщения </a>
+                </li>
             </ul>
         </div>
     {% endif %}

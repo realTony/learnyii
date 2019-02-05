@@ -9,7 +9,10 @@ use yii\web\IdentityInterface;
 
 class User extends \dektrium\user\models\User implements IdentityInterface
 {
-    public static $usernameRegexp = '/^[a-zA-Zа-яёА-ЯЁ(\ a-zA-Zа-яёА-ЯЁ)?]+$/';
+    const STATUS_INACTIVE = 0;
+    const STATUS_ACTIVE = 10;
+
+    public static $usernameRegexp = '/^[a-zA-z\p{Cyrillic}\D]+$/';
     /**
      * Validation method
      *
@@ -21,7 +24,7 @@ class User extends \dektrium\user\models\User implements IdentityInterface
             // username rules
             'usernameTrim'     => ['username', 'trim'],
             'usernameRequired' => ['username', 'required', 'on' => ['register', 'create', 'connect', 'update']],
-//            'usernameMatch'    => ['username', 'match', 'pattern' => static::$usernameRegexp],
+            'usernameMatch'    => ['username', 'match', 'pattern' => static::$usernameRegexp],
             'usernameLength'   => ['username', 'string', 'min' => 3, 'max' => 255],
             'usernameUnique'   => [
                 'username',
@@ -43,6 +46,8 @@ class User extends \dektrium\user\models\User implements IdentityInterface
             // password rules
             'passwordRequired' => ['password', 'required', 'on' => ['register']],
             'passwordLength'   => ['password', 'string', 'min' => 6, 'max' => 72, 'on' => ['register', 'create']],
+
+            ['status', 'in', 'range' => [User::STATUS_ACTIVE, User::STATUS_INACTIVE]],
         ];
     }
 
@@ -54,5 +59,10 @@ class User extends \dektrium\user\models\User implements IdentityInterface
     public static function findByEmail($email)
     {
         return User::find()->where(['email' => $email])->one();
+    }
+
+    public static function findIdentity($id)
+    {
+        return static::findOne(['id' => $id, 'status' => User::STATUS_ACTIVE]);
     }
 }

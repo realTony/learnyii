@@ -88,4 +88,13 @@ class EditProfileForm extends Model
         $profile->profile_image = $filename;
         $profile->save();
     }
+
+    public function attributeLabels()
+    {
+        return [
+            'username' => Yii::t('app','Имя'),
+            'address' => Yii::t('app','Адрес'),
+            'phone' => Yii::t('app','Телефон'),
+        ];
+    }
 }
