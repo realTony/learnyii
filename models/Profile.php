@@ -86,8 +86,9 @@ class Profile extends \yii\db\ActiveRecord
 
     public static function getUserAvatar($id)
     {
+        $profile = Profile::findOne(['user_id' => $id]);
 
-        return Profile::findOne(['user_id' => $id])->profile_image;
+        return (! empty($profile->profile_image)) ? $profile->profile_image : '';
     }
 
     public static function getUsername( $id )
