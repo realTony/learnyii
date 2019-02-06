@@ -8,9 +8,12 @@ use app\models\Pages;
 use app\models\PagesSearch;
 use yii\base\DynamicModel;
 use yii\base\ViewNotFoundException;
+use yii\helpers\ArrayHelper;
 use yii\helpers\FileHelper;
 use yii\helpers\Url;
+use yii\imagine\Image;
 use yii\web\Controller;
+use yii\web\MethodNotAllowedHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\Response;
@@ -201,20 +204,15 @@ class PagesController extends Controller
 
             $model->image_name = strtotime('now').'_'.Yii::$app->getSecurity()->generateRandomString(6).'.'.$file->extension;
 
-            if ($file->saveAs($dir.$model->image_name)) {
-//                $img = Yii::$
-            }
-            $model->image_name = $dir.$model->image_name;
+            $file->saveAs($dir.$model->image_name);
+
+            $model->image_name = '/uploads/'.strtolower($post['Images']['module']).'/'.$model->image_name;
             $model->module = $post['Images']['module'];
             $model->item_id = $post['Images']['item_id'];
             $model->alt = $file->name;
             $count = $model::find()->andWhere(['module'=>$model->module])->count();
             $model->sort =  ($count > 0)? $count++ : 0;
-            if( !$model->save()) {
-                echo "<pre>";
-                print_r($model->errors);
-                echo "</pre>";die;
-            }
+
             $model->save();
 
             Yii::$app->response->format = Response::FORMAT_JSON;
@@ -223,5 +221,55 @@ class PagesController extends Controller
         throw new MethodNotAllowedHttpException();
     }
 
+    public function actionDeleteImage()
+    {
+        $this->enableCsrfValidation = false;
+
+        if (Yii::$app->request->isAjax && Yii::$app->request->isPost) {
+            $post = Yii::$app->request->post();
+            $model = Yii::createObject(Images::className())->findOne($post['key']);
+
+            if( $model->delete()) {
+                return true;
+            } else {
+                throw new NotFoundHttpException('The requested page doesn`t exists.');
+            }
+        }
+
+        throw new MethodNotAllowedHttpException();
+    }
+
+    public function actionSortImage($id)
+    {
+        $this->enableCsrfValidation = false;
+        $param = [];
+        $counter = 0;
+        if (Yii::$app->request->isAjax && Yii::$app->request->isPost) {
+            $post = Yii::$app->request->post('sort');
+
+            if ($post['oldIndex'] > $post['newIndex']) {
+               $param = [
+                            'and',
+                            ['>=', 'sort', $post['newIndex']],
+                            ['<', 'sort', $post['oldIndex']]
+               ];
+                $counter = 1;
+            } else {
+                $param = [
+                    'and',
+                    ['<=', 'sort', $post['newIndex']],
+                    ['>', 'sort', $post['oldIndex']]
+                ];
+                $counter = -1;
+            }
+
+            Images::updateAllCounters(['sort' => $counter], ['and', ['module' => 'page', 'item_id' => $id], $param ]);
+            Images::updateAll(['sort' => $post['newIndex']], ['id' => $post['stack'][$post['newIndex']]['key']]);
+            return true;
+
+        }
+
+        throw new MethodNotAllowedHttpException();
+    }
 
 }

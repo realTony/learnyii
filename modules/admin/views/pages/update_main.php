@@ -26,11 +26,11 @@ use yii\widgets\ActiveForm;
                             'multiple'=>true
                         ],
                         'pluginOptions' => [
-                            'deleteUrl' => Url::toRoute(['/pages/delete-image']),
-                            'initialPreview'=> [],
-                            'initialPreviewAsData'=>true,
-                            'overwriteInitial'=>false,
-                            'initialPreviewConfig'=>[],
+                            'deleteUrl' => Url::to(['pages/delete-image']),
+                            'initialPreview'=> $model->imagesLinks,
+                            'initialPreviewAsData' => true,
+                            'overwriteInitial' => false,
+                            'initialPreviewConfig' => $model->imagesLinksData,
                             'uploadUrl' => Url::to(['pages/save-image']),
                             'uploadExtraData' => [
                                 'Images[module]' => $model->formName(),
@@ -40,7 +40,7 @@ use yii\widgets\ActiveForm;
                         ],
                         'pluginEvents' => [
                             'filesorted' => new \yii\web\JsExpression('function(event, params){
-                                  $.post("'.Url::toRoute(["/blog/sort-image","id"=>$model->id]).'",{sort: params});
+                                  $.post("'.Url::toRoute(["pages/sort-image","id"=>$model->id]).'",{sort: params});
                             }')
                         ],
                     ])

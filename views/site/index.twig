@@ -1,39 +1,13 @@
 <div class="promo-slider">
-    <div>
-        <picture>
-            <source srcset="images/bg-35.png" media="(max-width: 500px)">
-            <source srcset="images/bg-1.png" media="(min-width: 501px)">
-            <img src="images/bg-1.png" alt="img">
-        </picture>
-    </div>
-    <div>
-        <picture>
-            <source srcset="images/bg-35.png" media="(max-width: 500px)">
-            <source srcset="images/bg-1.png" media="(min-width: 501px)">
-            <img src="images/bg-1.png" alt="img">
-        </picture>
-    </div>
-    <div>
-        <picture>
-            <source srcset="images/bg-35.png" media="(max-width: 500px)">
-            <source srcset="images/bg-1.png" media="(min-width: 501px)">
-            <img src="images/bg-1.png" alt="img">
-        </picture>
-    </div>
-    <div>
-        <picture>
-            <source srcset="images/bg-35.png" media="(max-width: 500px)">
-            <source srcset="images/bg-1.png" media="(min-width: 501px)">
-            <img src="images/bg-1.png" alt="img">
-        </picture>
-    </div>
-    <div>
-        <picture>
-            <source srcset="images/bg-35.png" media="(max-width: 500px)">
-            <source srcset="images/bg-1.png" media="(min-width: 501px)">
-            <img src="images/bg-1.png" alt="img">
-        </picture>
-    </div>
+    {% for slide in slider %}
+        <div>
+            <picture>
+                <source srcset="{{ slide }}" media="(max-width: 500px)">
+                <source srcset="{{ slide }}" media="(min-width: 501px)">
+                <img src="{{ slide }}" alt="img">
+            </picture>
+        </div>
+    {% endfor %}
 </div>
 <div class="form-search">
     <div class="container">

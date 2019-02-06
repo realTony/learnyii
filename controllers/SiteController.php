@@ -85,9 +85,11 @@ class SiteController extends Controller
 
         $model->options = json_decode($model->options);
         $model->translation = json_decode($model->translation);
+        $slider = $model->imagesLinks;
 
         return $this->render('index.twig', [
-                'model' => $model
+                'model' => $model,
+                'slider' => $slider
         ]);
     }
 
