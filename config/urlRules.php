@@ -2,7 +2,7 @@
 
 return [
 	'' => 'site/index',
-	'<action:(login|logout|how-it-works|privacy-policy)>' => 'site/<action>',
+	'<action:(account|logout|how-it-works|privacy-policy)>' => 'site/<action>',
 	'myaccount/edit' => 'myaccount/default/edit',
     'user/recover/<id:\d+>/<code:[A-Za-z0-9_-]+>' => 'user/recovery/reset',
     'admin/blog' => 'admin/blog/index',

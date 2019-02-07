@@ -2,6 +2,7 @@
 
 namespace app\modules\admin\models;
 
+use app\models\ImagesTrait;
 use app\modules\admin\models\LinksExtension;
 use yii\helpers\Url;
 use Yii;
@@ -24,6 +25,7 @@ use yii\helpers\ArrayHelper;
 class Categories extends \yii\db\ActiveRecord
 {
     use LinksExtension;
+    use ImagesTrait;
 
     /**
      * {@inheritdoc}

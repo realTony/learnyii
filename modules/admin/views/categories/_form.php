@@ -1,7 +1,9 @@
 <?php
 
 use dosamigos\tinymce\TinyMce;
+use kartik\file\FileInput;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
@@ -17,23 +19,32 @@ use yii\widgets\ActiveForm;
 <div class="row">
     <div class="col-md-6">
         <div class="card bg-white m-b">
+            <div class="card-header ">
+                <h3 class="text-center m-b-md">Основные поля</h3>
+            </div>
             <div class="card-block">
+                <?= $form
+                    ->field($model, 'title', [
+                        'options' => [
+                            'class' => 'form-group',
+                            'tag' => 'div'
+                        ]
+                    ])->label('Название категории')
+                    ->textInput(['maxlength' => true]) ?>
 
-                <?= $form->
-                field($model, 'title', [
+                <?= $form->field($model, 'parent_id', [
                     'options' => [
                         'class' => 'form-group',
                         'tag' => 'div'
                     ]
-                ])->textInput(['maxlength' => true]) ?>
-
+                ] )->label('Выбрать родительскую категория')->dropDownList($data['catList'], ['prompt' => 'Выберите категорию...']) ?>
 
                 <?= $form->field($model, 'description', [
                     'options' => [
                         'class' => 'form-group',
                         'tag' => 'div'
                     ]
-                ])->widget(TinyMce::className(), [
+                ])->label('Описание')->widget(TinyMce::className(), [
                     'options' => ['rows' => 6],
                     'language' => 'ru',
                     'clientOptions' => [
@@ -45,35 +56,15 @@ use yii\widgets\ActiveForm;
                         'toolbar' => "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
                     ]
                 ]);?>
-
             </div>
         </div>
     </div>
-    
+
     <div class="col-md-6">
         <div class="card bg-white m-b">
-            <div class="card-block">
-
-                <?= $form->field($model, 'parent_id', [
-                    'options' => [
-                        'class' => 'form-group',
-                        'tag' => 'div'
-                    ]
-                ] )->dropDownList($data['catList'], ['prompt' => 'Выберите категорию...']) ?>
-
+            <div class="card-header ">
+                <h3 class="text-center m-b-md">Настройки SEO</h3>
             </div>
-        </div>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-md-6">
-        <div class="card bg-white m-b">
-            <div class="card-block"></div>
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="card bg-white m-b">
             <div class="card-block">
 
                 <?= $form->field($model, 'seo_title', [
@@ -110,4 +101,37 @@ use yii\widgets\ActiveForm;
 </div>
 
 <?php ActiveForm::end(); ?>
+
+<div class="col-md-6">
+    <div class="card bg-white m-b">
+        <div class="card-header ">
+            <h3 class="text-center m-b-md">Редактировать изображение категории</h3>
+        </div>
+        <div class="card-block">
+            <?=
+            FileInput::widget([
+                'name' => 'Images[attachment]',
+                'pluginOptions' => [
+                    'deleteUrl' => Url::to(['categories/delete-image']),
+                    'initialPreview'=> $model->imagesLinks,
+                    'initialPreviewAsData' => true,
+                    'overwriteInitial' => false,
+                    'initialPreviewConfig' => $model->imagesLinksData,
+                    'uploadUrl' => Url::to(['categories/save-image']),
+                    'uploadExtraData' => [
+                        'Images[module]' => $model->formName(),
+                        'Images[item_id]' => $model->id
+                    ],
+                    'maxFileCount' => 1
+                ],
+                'pluginEvents' => [
+                    'filesorted' => new \yii\web\JsExpression('function(event, params){
+                                  $.post("'.Url::toRoute(["categories/sort-image","id"=>$model->id]).'",{sort: params});
+                            }')
+                ],
+            ])
+            ?>
+        </div>
+    </div>
+</div>
 

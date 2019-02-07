@@ -42,6 +42,7 @@ class PagesController extends Controller
                     'delete' => ['POST'],
                     'delete-image' => ['POST'],
                     'sort-image' => ['POST'],
+                    'save-image' => ['POST'],
                 ],
             ],
         ];

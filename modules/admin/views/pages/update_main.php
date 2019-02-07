@@ -13,7 +13,7 @@ use yii\widgets\ActiveForm;
 ?>
 
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-6">
         <div class="card bg-white m-b">
             <div class="card-header ">
                 <h3 class="text-center m-b-md">Редактировать слайдер</h3>
@@ -48,11 +48,12 @@ use yii\widgets\ActiveForm;
             </div>
         </div>
     </div>
-</div>
 <?php $form = ActiveForm::begin(); ?>
-<div class="pages-form row">
     <div class="col-md-6">
         <div class="card bg-white m-b">
+            <div class="card-header ">
+                <h3 class="text-center m-b-md">Основные настройки</h3>
+            </div>
             <div class="card-block">
                 <?= $form
                     ->field($model, 'title')

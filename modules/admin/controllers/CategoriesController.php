@@ -2,13 +2,19 @@
 
 namespace app\modules\admin\controllers;
 
+use app\models\Images;
+use app\models\ImageWidgetModel;
+use Imagine\Gd\Image;
 use Yii;
 use app\modules\admin\models\Categories;
 use app\modules\admin\models\CategoriesSearch;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
+use yii\web\MethodNotAllowedHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
+use yii\web\UploadedFile;
 
 /**
  * CategoriesController implements the CRUD actions for Categories model.
@@ -26,6 +32,8 @@ class CategoriesController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                    'save-image' => ['POST'],
+                    'delete-image' => ['POST'],
                 ],
             ],
         ];
@@ -149,5 +157,71 @@ class CategoriesController extends Controller
         }
 
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+    }
+
+    public function actionSaveImage($subDir = 'categories')
+    {
+        $this->enableCsrfValidation = false;
+        $result = [];
+
+        if (Yii::$app->request->isAjax && Yii::$app->request->isPost) {
+
+            $post = Yii::$app->request->post();
+            $file = UploadedFile::getInstanceByName('Images[attachment]');
+
+            $uploadModel = Yii::createObject(ImageWidgetModel::className());
+            $uploadModel
+                ->setDirName($post['Images']['module'])
+                ->setImages($file)
+                ->getDir();
+
+            $model = (Yii::createObject(Images::className())->findOne(['item_id' => $post['Images']['item_id'], 'module' => $post['Images']['module']])) ? : new Images();
+
+            $model->load($post);
+            $model->validate();
+
+            if ($model->hasErrors()) {
+                $result = ['error' => $model->getFirstError('file')];
+            }
+
+            $uploadModel->uploadImage();
+
+            $model->image_name = $uploadModel->getDirName().'/'.$uploadModel->getImageName();
+
+            $model->module = $post['Images']['module'];
+            $model->item_id = $post['Images']['item_id'];
+            $model->alt = $file->name;
+            $count = $model::find()->andWhere(['module'=>$model->module])->count();
+            $model->sort =  ($count > 0)? $count++ : 0;
+
+            $model->save();
+
+            Yii::$app->response->format = Response::FORMAT_JSON;
+
+            return $result;
+        }
+
+        throw new MethodNotAllowedHttpException();
+    }
+
+    public function actionDeleteImage()
+    {
+        $this->enableCsrfValidation = false;
+
+        if (Yii::$app->request->isAjax && Yii::$app->request->isPost) {
+            $post = Yii::$app->request->post();
+            $model = Yii::createObject(Images::className())->findOne($post['key']);
+
+            if( $model->delete()) {
+
+                unlink(Yii::getAlias('@webroot').'/'.$model->image_name);
+
+                return true;
+            } else {
+                throw new NotFoundHttpException('The requested page doesn`t exists.');
+            }
+        }
+
+        throw new MethodNotAllowedHttpException();
     }
 }

@@ -36,17 +36,17 @@ class Module extends \yii\base\Module
                     'items' => [
                         [
                             'label' => 'Главная',
-                            'url' => ['admin/pages'],
+                            'url' => ['pages/update?id=1'],
                             'template' => '<a href="{url}"><span>{label}</span></a>'
                         ],
                         [
                             'label' => 'Как это работает',
-                            'url' => ['admin/pages'],
+                            'url' => ['pages/update?id=2'],
                             'template' => '<a href="{url}"><span>{label}</span></a>'
                         ],
                         [
                             'label' => 'Политика конфиденциальности',
-                            'url' => ['admin/pages'],
+                            'url' => ['pages/update?id=3'],
                             'template' => '<a href="{url}"><span>{label}</span></a>'
                         ],
                     ]
