@@ -104,9 +104,8 @@ class SiteController extends Controller
 
         $adverts = (! empty($model->options->categories))? $categories->find()->where(['in', 'id', array_values($model->options->categories)])->all(): [];
 
-        $news->category = (! empty($model->options->promo))? array_values((array)$model->options->promo): [];
-        $promValues = array_values( (array)$model->options->promo);
-        $promo = (! empty($promValues[0]))? $news->postsByCat : [];
+        $news->category = (! empty($categories->category))? array_values((array)$model->options->promo): [];
+        $promo = (! empty($categories->category))? $news->postsByCat : [];
 
         return $this->render('index.twig', [
                 'model' => $model,
