@@ -123,7 +123,7 @@ class Pages extends \yii\db\ActiveRecord
         ]]);
 
         $arr = ArrayHelper::map($arr, 'id', 'title');
-
+        $arr = ArrayHelper::merge(['' => 'Выберите категорию'], $arr);
         return $arr;
     }
 
