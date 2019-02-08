@@ -94,16 +94,16 @@ class SiteController extends Controller
         $model->options = json_decode($model->options);
         $model->translation = json_decode($model->translation);
 
-        $categories->catName = array_values((array)$model->options->promo);
-        $categories->category = array_values((array)$model->options->promo);
+        $categories->catName = (! empty($model->options->promo)) ? array_values((array)$model->options->promo) : [];
+        $categories->category = (! empty($model->options->promo)) ? array_values((array)$model->options->promo) : [];
 
         $slider = $model->imagesLinks;
         $advertIds = [];
 
         $adverts = (! empty($model->options->categories))? $categories->find()->where(['in', 'id', array_values($model->options->categories)])->all(): [];
 
-        $news->category = array_values((array)$model->options->promo);
-        $promo = $news->postsByCat;
+        $news->category = (! empty($model->options->promo))? array_values((array)$model->options->promo): [];
+        $promo = (! empty($model->options->promo))? $news->postsByCat : [];
 
         return $this->render('index.twig', [
                 'model' => $model,
