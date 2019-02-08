@@ -42,10 +42,10 @@ AdminAssets::register($this);
             </div>
             <!-- /toggle offscreen menu -->
             <!-- logo -->
-            <a class="brand-logo" href="#">
+            <a class="brand-logo" href="<?= Url::home(true) ?>admin">
                 <span><?= Yii::$app->name ?> Admin</span>
             </a>
-            <a href="#" class="small-menu-visible brand-logo">S</a>
+            <a href="<?= Url::home(true) ?>admin" class="small-menu-visible brand-logo">S</a>
             <!-- /logo -->
         </div>
         <!-- main navigation -->

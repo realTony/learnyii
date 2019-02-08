@@ -1,14 +1,17 @@
-<div class="promo-slider">
-    {% for slide in slider %}
-        <div>
-            <picture>
-                <source srcset="{{ slide }}" media="(max-width: 500px)">
-                <source srcset="{{ slide }}" media="(min-width: 501px)">
-                <img src="{{ slide }}" alt="img">
-            </picture>
-        </div>
-    {% endfor %}
-</div>
+{% if slider  %}
+    <div class="promo-slider">
+        {% for slide in slider %}
+            <div>
+                <picture>
+                    <source srcset="{{ slide }}" media="(max-width: 500px)">
+                    <source srcset="{{ slide }}" media="(min-width: 501px)">
+                    <img src="{{ slide }}" alt="img">
+                </picture>
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
 <div class="form-search">
     <div class="container">
         <a class="search-query" href="#">Поисковый запрос</a>
@@ -37,43 +40,33 @@
         </div>
     </div>
 </div>
+
 <div class="container">
-    <ul class="list-progress">
-        <li>
-            <a href="#">
-                <div class="holder-img">
-                    <i class="fas fa-car"></i>
-                </div>
-                <div class="holder-text">
-                    <strong>ТРАНСПОРТ</strong>
-                    <p>12 980 объявлений</p>
-                </div>
-            </a>
-        </li>
-        <li>
-            <a href="#">
-                <div class="holder-img">
-                    <i class="fas fa-bullhorn"></i>
-                </div>
-                <div class="holder-text">
-                    <strong>РЕКЛАМА</strong>
-                    <p>12 980 объявлений</p>
-                </div>
-            </a>
-        </li>
-        <li>
-            <a href="#">
-                <div class="holder-img">
-                    <i class="fas fa-pencil-ruler"></i>
-                </div>
-                <div class="holder-text">
-                    <strong>ИСПОЛНИТЕЛИ</strong>
-                    <p>12 980 обьявлений</p>
-                </div>
-            </a>
-        </li>
-    </ul>
+    {% if adverts %}
+        <ul class="list-progress">
+            {% for advert in adverts %}
+                <li>
+                    <a href="{{ app.homeUrl }}{{ advert.link }}">
+                        <div class="holder-img">
+                            {% if loop.first %}
+                                <i class="fas fa-car"></i>
+                            {% elseif loop.last %}
+                                <i class="fas fa-bullhorn"></i>
+                            {% else %}
+                                <i class="fas fa-pencil-ruler"></i>
+                            {% endif %}
+                        </div>
+                        <div class="holder-text">
+                            <strong>{{ advert.title }}</strong>
+                            <p>0 {{ t('app', 'объявлений') }}</p>
+                        </div>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 </div>
+
 <div class="holder-section fon-grey relative">
     <div class="container">
         <div class="title-text">
@@ -138,51 +131,67 @@
         </div>
     </div>
 </div>
-<div class="holder-section relative">
+{% if promo %}
+    <div class="holder-section relative">
     <div class="container">
         <div class="title-text">
-            <h1>ПРОМОАКЦИИ</h1>
-            <a class="old-ads" href="#">ВСЕ АКЦИИ</a>
+            {% if news  %}
+            <h1>{{ news.title }}</h1>
+            <a class="old-ads" href="{{ url.to(['news/category/'~news.link]) }}">{{ t('app', 'Все акции') }}</a>
+            {% endif %}
         </div>
         <div class="promotion">
-            <div class="big-promotion">
-                <a href="#" class="holder-img">
-                    <div class="date">
-                        <strong>14</strong>
-                        <span>октября</span>
-                    </div>
-                    <strong class="title">Заголовок акции</strong>
-                    <picture>
-                        <source srcset="images/img-20.jpg" media="(max-width: 850px)">
-                        <source srcset="images/img-5.jpg" media="(min-width: 851px)">
-                        <img src="images/img-5.jpg" alt="img">
-                    </picture>
-                </a>
-            </div>
-            <div class="small-promotion">
-                <a href="#" class="holder-img">
-                    <div class="date">
-                        <strong>14</strong>
-                        <span>октября</span>
-                    </div>
-                    <strong class="title">Заголовок акции</strong>
-                    <img src="images/img-6.jpg" alt="img">
-                </a>
-            </div>
-            <a href="#" class="small-promotion">
-                <div class="holder-img">
-                    <div class="date">
-                        <strong>14</strong>
-                        <span>октября</span>
-                    </div>
-                    <strong class="title">Длтнный заголовок акции, который не помещаеться в одну строку</strong>
-                    <img src="images/img-7.jpg" alt="img">
+            {% for item in promo %}
+                {% if loop.first %}
+                <div class="big-promotion">
+                    <a href="{{ url.to(['news/'~item.link]) }}" class="holder-img">
+                        <div class="date">
+                            <strong>{{ item.created_at |date( 'd') }}</strong>
+                            <span>{{ t('app', item.created_at |date('F', 'M') ) }}</span>
+                        </div>
+                        <strong class="title">{{ item.title }}</strong>
+                        {% if  item.post_image  %}
+                            <picture>
+                                <source srcset="{{ item.post_image }}" media="(max-width: 850px)">
+                                <source srcset="{{ item.post_image }}" media="(min-width: 851px)">
+                                <img src="{{ item.post_image }}" alt="img">
+                            </picture>
+                        {% endif %}
+                    </a>
                 </div>
-            </a>
+                {% elseif loop.last %}
+                    <a href="{{ url.to(['news/'~item.link]) }}" class="small-promotion">
+                        <div class="holder-img">
+                            <div class="date">
+                                <strong>{{ item.created_at |date( 'd') }}</strong>
+                                <span>{{ t('app', item.created_at |date('F', 'M') ) }}</span>
+                            </div>
+                            <strong class="title">{{ item.title }}</strong>
+                            {% if  item.post_image  %}
+                                <img src="{{ item.post_image }}" alt="img">
+                            {% endif %}
+                        </div>
+                    </a>
+                {% else %}
+                    <div class="small-promotion">
+                        <a href="{{ url.to(['news/'~item.link]) }}" class="holder-img">
+                            <div class="date">
+                                <strong>{{ item.created_at |date( 'd') }}</strong>
+                                <span>{{ t('app', item.created_at |date('F', 'M') ) }}</span>
+                            </div>
+                            <strong class="title">{{ item.title }}</strong>
+                            {% if  item.post_image  %}
+                                <img src="{{ item.post_image }}" alt="img">
+                            {% endif %}
+                        </a>
+                    </div>
+                {% endif %}
+            {% endfor %}
         </div>
 
     </div>
 </div>
+{% endif %}
 <div class="accordion">
     <div class="holder-section fon-grey">
         <div class="container">

@@ -28,7 +28,8 @@
         "2amigos/yii2-tinymce-widget": "~1.1",
         "codemix/yii2-localeurls": "^1.7",
         "kartik-v/yii2-widget-fileinput": "@dev",
-        "yurkinx/yii2-image": "^1.2"
+        "yurkinx/yii2-image": "^1.2",
+        "brussens/yii2-bootstrap-select": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

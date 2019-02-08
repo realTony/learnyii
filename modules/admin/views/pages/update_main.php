@@ -9,11 +9,13 @@ use kartik\file\FileInput;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
+use brussens\bootstrap\select\Widget as Select;
 
+$this->title = 'Редактирование: Главная страница';
 ?>
 
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-8">
         <div class="card bg-white m-b">
             <div class="card-header ">
                 <h3 class="text-center m-b-md">Редактировать слайдер</h3>
@@ -65,6 +67,38 @@ use yii\widgets\ActiveForm;
     </div>
     <div class="col-md-6">
         <div class="card bg-white m-b">
+            <div class="card-header">
+                <h3>Категории объявлений</h3>
+            </div>
+            <div class="card-block">
+                <?php
+                    $i = 0;
+
+                    while ($i < 3) {
+                       echo $form->field($model, "options[categories][{$i}]")
+                            ->label(false)
+                            ->widget(Select::className(), [
+                                'options' => [
+                                    'data-live-search' => false,
+                                    'maxOptions' => 4,
+                                ],
+                                'clientOptions' => [
+                                    'liveSearch' => false
+                                ],
+                                'items' => $model->advertList,
+                            ]);
+                       $i++;
+                    }
+
+                ?>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card bg-white m-b">
             <div class="card-header ">
                 <h3 class="text-center m-b-md">Редактировать "Как это работает"</h3>
             </div>
@@ -87,6 +121,29 @@ use yii\widgets\ActiveForm;
                             'toolbar' => "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
                         ]
                     ]);?>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card bg-white m-b">
+            <div class="card-header">
+                <h3>Раздел новостей</h3>
+            </div>
+            <div class="card-block">
+                <?= $form->field($model, "options[promo][{$i}]")
+                        ->label(false)
+                        ->widget(Select::className(), [
+                            'options' => [
+                                'data-live-search' => false,
+                                'maxOptions' => 5,
+                            ],
+                            'clientOptions' => [
+                                'liveSearch' => false
+                            ],
+                            'items' => $model->catList,
+                        ]);
+
+                ?>
             </div>
         </div>
     </div>

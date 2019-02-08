@@ -2,6 +2,7 @@
 
 namespace app\modules\admin\controllers;
 
+use yii\filters\AccessControl;
 use yii\helpers\Url;
 use yii\web\Controller;
 
@@ -12,6 +13,24 @@ class DefaultController extends Controller
 {
     public $layout = 'ml_admin.php';
     private static $menu = [];
+
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['login', 'logout', 'signup'],
+                'rules' => [
+                    [
+                        'allow' => false,
+                        'actions' => [],
+                        'roles' => ['?'],
+                    ]
+                ],
+            ],
+        ];
+    }
+
     /**
      * Renders the index view for the module
      * @return string

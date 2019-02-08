@@ -13,7 +13,6 @@ class Module extends \yii\base\Module
     public $params = [];
     
     public $controllerNamespace = 'app\modules\admin\controllers';
-
     /**
      * {@inheritdoc}
      */
@@ -63,8 +62,13 @@ class Module extends \yii\base\Module
                             'template' => '<a href="{url}"><span>{label}</span></a>'
                         ],
                         [
-                            'label' => 'Создать категорию',
+                            'label' => 'Создать категорию новостей',
                             'url' => ['categories/create'],
+                            'template' => '<a href="{url}"><span>{label}</span></a>'
+                        ],
+                        [
+                            'label' => 'Создать категорию объявлений',
+                            'url' => ['categories/create-adv'],
                             'template' => '<a href="{url}"><span>{label}</span></a>'
                         ],
                     ]
@@ -83,6 +87,42 @@ class Module extends \yii\base\Module
                         [
                             'label' => 'Создать новость',
                             'url' => ['blog/create'],
+                            'template' => '<a href="{url}"><span>{label}</span></a>'
+                        ],
+                    ]
+                ],
+                [
+                    'label' => 'Пользователи',
+                    'url' => ['users'],
+                    'template' => '<a href="#"><i class="icon-users"></i><span>{label}</span></a>',
+                    'controller' => 'users',
+                    'items' => [
+                        [
+                            'label' => 'Список категорий',
+                            'url' => ['admin/categories'],
+                            'template' => '<a href="{url}"><span>{label}</span></a>'
+                        ],
+                        [
+                            'label' => 'Создать категорию',
+                            'url' => ['categories/create'],
+                            'template' => '<a href="{url}"><span>{label}</span></a>'
+                        ],
+                    ]
+                ],
+                [
+                    'label' => 'Настройки',
+                    'url' => ['settings'],
+                    'template' => '<a href="#"><i class="icon-wrench"></i><span>{label}</span></a>',
+                    'controller' => 'settings',
+                    'items' => [
+                        [
+                            'label' => 'Список категорий',
+                            'url' => ['admin/categories'],
+                            'template' => '<a href="{url}"><span>{label}</span></a>'
+                        ],
+                        [
+                            'label' => 'Создать категорию',
+                            'url' => ['categories/create'],
                             'template' => '<a href="{url}"><span>{label}</span></a>'
                         ],
                     ]

@@ -103,6 +103,26 @@ class CategoriesController extends Controller
         ]);
     }
 
+    public function actionCreateAdv()
+    {
+        $model = new Categories();
+        $model->is_blog = 0;
+        $model->updated_at = date('Y-m-d H:i:s');
+
+        $parentCat = ArrayHelper::map($model->find()->all(), 'id', 'title');
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
+
+        return $this->render('create', [
+            'model' => $model,
+            'data' => [
+                'catList' => $parentCat
+            ]
+        ]);
+    }
+
     /**
      * Updates an existing Categories model.
      * If update is successful, the browser will be redirected to the 'view' page.

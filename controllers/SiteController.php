@@ -4,6 +4,8 @@ namespace app\controllers;
 
 use app\models\ImageUpload;
 use app\models\Pages;
+use app\modules\admin\models\Categories;
+use app\modules\admin\models\BlogPosts;
 use app\models\Profile;
 use app\models\RestoreForm;
 use app\models\User;
@@ -11,7 +13,6 @@ use app\models\AjaxValidationTrait;
 use app\widgets\LanguageSwitcher;
 use dektrium\user\models\RecoveryForm;
 use dektrium\user\traits\EventTrait;
-use http\Url;
 use Yii;
 use yii\bootstrap\Html;
 use yii\filters\AccessControl;
@@ -37,13 +38,18 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout'],
+                'only' => ['account', 'logout'],
                 'rules' => [
                     [
                         'actions' => ['logout'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
+                    [
+                        'allow' => true,
+                        'actions' => ['account'],
+                        'roles' => ['?']
+                    ]
                 ],
             ],
             'verbs' => [
@@ -82,14 +88,29 @@ class SiteController extends Controller
     public function actionIndex()
     {
         $model = Yii::createObject(Pages::className())->find()->where(['link' => 'main'])->one();
+        $categories = Yii::createObject(Categories::className());
+        $news = Yii::createObject(BlogPosts::className());
 
         $model->options = json_decode($model->options);
         $model->translation = json_decode($model->translation);
+
+        $categories->catName = array_values((array)$model->options->promo);
+        $categories->category = array_values((array)$model->options->promo);
+
         $slider = $model->imagesLinks;
+        $advertIds = [];
+
+        $adverts = (! empty($model->options->categories))? $categories->find()->where(['in', 'id', array_values($model->options->categories)])->all(): [];
+
+        $news->category = array_values((array)$model->options->promo);
+        $promo = $news->postsByCat;
 
         return $this->render('index.twig', [
                 'model' => $model,
-                'slider' => $slider
+                'slider' => $slider,
+                'adverts' => $adverts,
+                'news' => $categories->category,
+                'promo' => $promo
         ]);
     }
 

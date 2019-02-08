@@ -12,6 +12,8 @@ return [
     'admin/<action>' => 'admin/admin/<action>',
     'categories/<link:[A-Za-z0-9_-]+>' => 'categories/index',
     'uk/categories/<link:[A-Za-z0-9_-]+>' => 'categories/index',
+    'advertisement/<name>' => 'advertisement/category',
+    'advertisement/<link>/<sub>' => 'advertisement/sub-category',
     'news/category/<link>' => 'news/category',
     'uk/news/category/<link>' => 'news/category',
     'news/<link>' => 'news/post',

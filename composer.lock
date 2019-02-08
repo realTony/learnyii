@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "623867ffd7535caa932b8bbddc2abd4d",
+    "content-hash": "ebfdb2a54cb70e4a968016d8573695b7",
     "packages": [
         {
             "name": "2amigos/yii2-tinymce-widget",
@@ -203,6 +203,28 @@
             ]
         },
         {
+            "name": "bower-asset/bootstrap-select",
+            "version": "v1.7.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/snapappointments/bootstrap-select.git",
+                "reference": "265257d035dd3d7e42a5500164d8a2195511e6ac"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/snapappointments/bootstrap-select/zipball/265257d035dd3d7e42a5500164d8a2195511e6ac",
+                "reference": "265257d035dd3d7e42a5500164d8a2195511e6ac",
+                "shasum": null
+            },
+            "require": {
+                "bower-asset/jquery": ">=1.8"
+            },
+            "type": "bower-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
             "name": "bower-asset/inputmask",
             "version": "3.3.11",
             "source": {
@@ -280,6 +302,49 @@
             "license": [
                 "MIT"
             ]
+        },
+        {
+            "name": "brussens/yii2-bootstrap-select",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/brussens/yii2-bootstrap-select.git",
+                "reference": "3f26422d79409ea6e6514a8a32250687c43ce0d0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/brussens/yii2-bootstrap-select/zipball/3f26422d79409ea6e6514a8a32250687c43ce0d0",
+                "reference": "3f26422d79409ea6e6514a8a32250687c43ce0d0",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/bootstrap-select": "1.7.5",
+                "yiisoft/yii2": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "brussens\\bootstrap\\select\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Brusenskiy Dmitry",
+                    "email": "brussens@nativeweb.ru"
+                }
+            ],
+            "description": "Bootstrap select widget for Yii2",
+            "keywords": [
+                "extension",
+                "select",
+                "widget",
+                "yii"
+            ],
+            "time": "2015-10-31T22:01:33+00:00"
         },
         {
             "name": "cebe/markdown",
