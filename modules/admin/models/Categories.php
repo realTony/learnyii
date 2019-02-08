@@ -131,6 +131,11 @@ class Categories extends \yii\db\ActiveRecord
         $this->category = ($this->findOne(['id' => $id]));
     }
 
+    public function getCategory()
+    {
+        return (! empty($this->category)) ? $this->category : [];
+    }
+
     public function getParentCatList()
     {
         return $this->find()->where(['parent_id' => $this->category->id])->all();
