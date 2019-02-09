@@ -8,6 +8,8 @@ return [
     'admin/blog' => 'admin/blog/index',
     'admin/pages' => 'admin/pages/index',
     'admin/categories' => 'admin/categories/index',
+    'admin/users' => 'admin/user/index',
+    'admin/settings' => 'admin/settings/index',
     'admin/pages/edit/<link:[A-Za-z0-9_-]+>' => 'admin/pages/update-static',
     'admin/<action>' => 'admin/admin/<action>',
     'categories/<link:[A-Za-z0-9_-]+>' => 'categories/index',

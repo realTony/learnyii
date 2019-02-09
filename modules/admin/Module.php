@@ -93,21 +93,9 @@ class Module extends \yii\base\Module
                 ],
                 [
                     'label' => 'Пользователи',
-                    'url' => ['users'],
-                    'template' => '<a href="#"><i class="icon-users"></i><span>{label}</span></a>',
-                    'controller' => 'users',
-                    'items' => [
-                        [
-                            'label' => 'Список категорий',
-                            'url' => ['admin/categories'],
-                            'template' => '<a href="{url}"><span>{label}</span></a>'
-                        ],
-                        [
-                            'label' => 'Создать категорию',
-                            'url' => ['categories/create'],
-                            'template' => '<a href="{url}"><span>{label}</span></a>'
-                        ],
-                    ]
+                    'url' => ['admin/users'],
+                    'controller' => 'user',
+                    'template' => '<a href="{url}"><i class="icon-users"></i><span>{label}</span></a>',
                 ],
                 [
                     'label' => 'Настройки',
