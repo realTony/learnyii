@@ -60,12 +60,20 @@
     {% endif %}
     </div>
     <div class="mobile-nav-btn">
-        <a href="#">
-            <img src="{{ app.homeUrl }}images/bg-33.png" alt="img">
+        <!-- Mobile create advertisement -->
+        <a href="">
+            <img src="{{ app.homeUrl }}images/bg-33.png" alt="create advertisement">
         </a>
-        <a href="#">
-            <img src="{{ app.homeUrl }}images/bg-34.png" alt="img">
+        <!-- Mobile login -->
+        {% if app.user.isGuest == true %}
+        <a href="{{ url.to(['/account#login']) }}">
+            <img src="{{ app.homeUrl }}images/bg-34.png" alt="login">
         </a>
+        {% else %}
+            <a class="btn-profile" href="#">
+                <img src="{{ getAvatar(app.user.id) }}" alt="{{ getAvatar(app.user.id) }}">
+            </a>
+        {% endif %}
     </div>
     <a class="open-menu" href="#"></a>
     {{ languageSwitcher_widget({'options': {'class': 'list-language'}}) }}
