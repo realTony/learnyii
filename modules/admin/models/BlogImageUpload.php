@@ -33,7 +33,6 @@ class BlogImageUpload extends ImageUpload
         {
             //Save image
             $this->isUploadExists();
-
             return $this->saveImage();
         }else{
             return false;
