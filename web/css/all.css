@@ -1827,6 +1827,9 @@ p .bold{
 .login-registration .holder-input input:hover{
     border-color: #303033;
 }
+.login-registration .holder-input.has-error input{
+    border-color: #ff6b01;
+}
 .holder-checkbox{
     margin: 0 0 25px;
 }

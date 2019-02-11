@@ -47,7 +47,7 @@ class RegisterForm extends RegistrationForm
 			// username, email, password, re-entred password must be not empty
             [['username', 'email', 'password', 'password_repeat', 'rules_agreement'], 'required'],
             // rememberMe must be a boolean value
-            ['rules_agreement', 'required', 'requiredValue' => 1],
+            ['rules_agreement', 'required', 'requiredValue' => 1, 'message' => Yii::t('app', 'Подтвердите согласие с условиями использования')],
             ['rules_agreement', 'boolean'],
             //Set default value for rules
             ['rules_agreement', 'default', 'value' => 0],
