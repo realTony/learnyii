@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'title',
             'description:ntext',
             'seo_text:ntext',
-            'seo_title',
+//            'seo_title',
             'link',
             'parent_id',
             'is_blog',
