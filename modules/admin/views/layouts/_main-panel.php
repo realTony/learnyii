@@ -1,3 +1,10 @@
+<?php
+
+use yii\helpers\Html;
+use yii\helpers\Url;
+use yii\widgets\ActiveForm;
+
+?>
 <div class="main-panel">
     <!-- top header -->
     <div class="header navbar">
@@ -37,7 +44,14 @@
                         <a href="javascript:;">Настройки</a>
                     </li>
                     <li>
-                        <a href="extras-signin.html">Выйти</a>
+                        <?php $form = ActiveForm::begin([
+                                'id' => 'logout-form',
+                                'method' => 'POST',
+                                'action' => Url::to('/site/logout')
+                        ])?>
+                        <?= Html::submitButton(Yii::t('app', 'Выйти'), ['id' => 'logout', 'style' => 'display:none']) ?>
+                        <a id='user_logout' href=""><?= (Yii::t('app', 'Выйти')) ?></a>
+                        <?php ActiveForm::end() ?>
                     </li>
                 </ul>
             </li>

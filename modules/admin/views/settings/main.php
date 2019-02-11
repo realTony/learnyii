@@ -1,5 +1,6 @@
 <?php
 
+use yii\bootstrap\Alert;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\ActiveForm;
@@ -12,41 +13,37 @@ $this->title = 'Settings';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="settings-index">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card bg-white m-b">
+                <div class="card-header">
+                    <h3>Настройки сайта</h3>
+                </div>
+                <div class="card-block">
+                    <?php foreach (Yii::$app->session->getAllFlashes() as $type => $message): ?>
+                        <?php if (in_array($type, ['success', 'danger', 'warning', 'info'])): ?>
+                            <?= Alert::widget([
+                                'options' => ['class' => 'alert-dismissible alert-' . $type],
+                                'body' => $message
+                            ]) ?>
+                        <?php endif ?>
+                    <?php endforeach ?>
+                    <?php $form = ActiveForm::begin(); ?>
 
-<!--    <h1>--><?//= Html::encode($this->title) ?><!--</h1>-->
-<!--    --><?php //// echo $this->render('_search', ['model' => $searchModel]); ?>
-<!---->
-<!--    <p>-->
-<!--        --><?//= Html::a('Create Settings', ['create'], ['class' => 'btn btn-success']) ?>
-<!--    </p>-->
-<!---->
-<!--    --><?//= GridView::widget([
-//        'dataProvider' => $dataProvider,
-//        'filterModel' => $searchModel,
-//        'columns' => [
-//            ['class' => 'yii\grid\SerialColumn'],
-//
-//            'id',
-//            'name',
-//            'option_value:ntext',
-//
-//            ['class' => 'yii\grid\ActionColumn'],
-//        ],
-//    ]); ?>
+                    <?= $form->field($model, 'site_name')->label('Название сайта')->textInput(['maxlength' => true]) ?>
+                    <?= $form->field($model, 'site_email')->label('E-mail сайта')->input('email', ['maxlength' => true]) ?>
+                    <?= $form->field($model, 'site_telegram')->label('Telegram')->textInput(['maxlength' => true]) ?>
+                    <?= $form->field($model, 'site_facebook')->label('Facebook')->textInput(['maxlength' => true]) ?>
+                    <?= $form->field($model, 'site_viber')->label('Viber')->textInput(['maxlength' => true]) ?>
+                    <?= $form->field($model, 'site_instagram')->label('Instagram')->textInput(['maxlength' => true]) ?>
 
-    <div class="settings-form">
+                    <div class="form-group">
+                        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+                    </div>
 
-        <?php $form = ActiveForm::begin(); ?>
-
-        <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
-
-        <?= $form->field($model, 'option_value')->textarea(['rows' => 6]) ?>
-
-        <div class="form-group">
-            <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+                    <?php ActiveForm::end(); ?>
+                </div>
+            </div>
         </div>
-
-        <?php ActiveForm::end(); ?>
-
     </div>
 </div>

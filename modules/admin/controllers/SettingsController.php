@@ -5,6 +5,7 @@ namespace app\modules\admin\controllers;
 use Yii;
 use app\models\Settings;
 use app\models\SettingsSearch;
+use app\modules\admin\models\SettingsFormModel;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -58,15 +59,23 @@ class SettingsController extends Controller
 
     public function actionMain()
     {
-        $model = new Settings();
-        $settings = $model->find()->all();
+        $model = new SettingsFormModel();
+        $settings = Yii::createObject(Settings::className())->find()->all();
+        $propList = array_keys(get_object_vars($model));
 
-        $searchModel = new SettingsSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        foreach ($settings as $option) {
+            $name = $option['name'];
+            $val = $option['option_value'];
+            $model->$name = $val;
+        }
 
+        if ($model->load(Yii::$app->request->post()) && $model->save() ) {
+            Yii::$app->session->setflash( 'success', 'Saved');
+        }
         return $this->render('main', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+            'model' => $model
+//            'searchModel' => $searchModel,
+//            'dataProvider' => $dataProvider,
         ]);
     }
 

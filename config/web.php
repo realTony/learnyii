@@ -3,6 +3,7 @@
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 $urlRules = require __DIR__.'/urlRules.php';
+$allowedActions = require __DIR__.'/allowedActions.php';
 $config = parse_ini_file(__DIR__.'/../../secure/stickit.ini', true);
 $config = [
     'id' => 'stickit',
@@ -152,24 +153,7 @@ $config = [
     ],
     'as access' => [
         'class' => 'mdm\admin\components\AccessControl',
-        'allowActions' => [
-            'site/*',
-//            'admin/*',
-//            'myaccount/*',
-//            'rbac/*',
-//            'gii/*',
-//            'debug/*',
-//            'categories/*',
-            'images/*',
-            'news/*',
-            'advertisement/*'
-//            'some-controller/some-action',
-            // The actions listed here will be allowed to everyone including guests.
-            // So, 'admin/*' should not appear here in the production, of course.
-            // But in the earlier stages of your development, you may probably want to
-            // add a lot of actions here until you finally completed setting up rbac,
-            // otherwise you may not even take a first step.
-        ]
+        'allowActions' => $allowedActions,
     ],
     'modules' =>[
         'user' => [

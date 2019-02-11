@@ -40,6 +40,10 @@ class m190208_230032_create_settings_table extends Migration
                 'option_value' => ' '
             ],
             [
+                'name' => 'site_viber',
+                'option_value' => ' '
+            ],
+            [
                 'name' => 'site_maintenance',
                 'option_value' => 'Off'
             ],

@@ -23,77 +23,77 @@ class Module extends \yii\base\Module
             'items' => [
                 [
                     'label' => 'Dashboard',
-                    'url' => ['admin'],
+                    'url' => ['/admin/default/index'],
                     'controller' => 'default',
                     'template' => '<a href="#"><i class="icon-compass"></i><span>{label}</span></a>',
                 ],
                 [
                     'label' => 'Страницы',
-                    'url' => ['admin/pages'],
+                    'url' => ['/admin/pages'],
                     'template' => '<a href="#"><i class="icon-folder"></i><span>{label}</span></a>',
                     'controller' => 'pages',
                     'items' => [
                         [
                             'label' => 'Главная',
-                            'url' => ['pages/update?id=1'],
+                            'url' => ['/admin/pages/update?id=1'],
                             'template' => '<a href="{url}"><span>{label}</span></a>'
                         ],
                         [
                             'label' => 'Как это работает',
-                            'url' => ['pages/update?id=2'],
+                            'url' => ['/admin/pages/update?id=2'],
                             'template' => '<a href="{url}"><span>{label}</span></a>'
                         ],
                         [
                             'label' => 'Политика конфиденциальности',
-                            'url' => ['pages/update?id=3'],
+                            'url' => ['/admin/pages/update?id=3'],
                             'template' => '<a href="{url}"><span>{label}</span></a>'
                         ],
                     ]
                 ],
                 [
                     'label' => 'Категории',
-                    'url' => ['categories'],
+                    'url' => ['/admin/categories'],
                     'template' => '<a href="#"><i class="icon-folder"></i><span>{label}</span></a>',
                     'controller' => 'categories',
                     'items' => [
                         [
                             'label' => 'Список категорий',
-                            'url' => ['admin/categories'],
+                            'url' => ['/admin/categories'],
                             'template' => '<a href="{url}"><span>{label}</span></a>'
                         ],
                         [
                             'label' => 'Создать категорию новостей',
-                            'url' => ['categories/create'],
+                            'url' => ['/admin/categories/create'],
                             'template' => '<a href="{url}"><span>{label}</span></a>'
                         ],
                         [
                             'label' => 'Создать категорию объявлений',
-                            'url' => ['categories/create-adv'],
+                            'url' => ['/admin/categories/create-adv'],
                             'template' => '<a href="{url}"><span>{label}</span></a>'
                         ],
                     ]
                 ],
                 [
                     'label' => 'Новости',
-                    'url' => ['admin/blog'],
+                    'url' => ['/admin/blog'],
                     'template' => '<a href="#"><i class="icon-folder"></i><span>{label}</span></a>',
                     'controller' => 'blog',
                     'items' => [
                         [
                             'label' => 'Список новостей',
-                            'url' => ['admin/blog'],
+                            'url' => ['/admin/blog'],
                             'template' => '<a href="{url}"><span>{label}</span></a>'
                         ],
                         [
                             'label' => 'Создать новость',
-                            'url' => ['blog/create'],
+                            'url' => ['/admin/blog/create'],
                             'template' => '<a href="{url}"><span>{label}</span></a>'
                         ],
                     ]
                 ],
                 [
                     'label' => 'Пользователи',
-                    'url' => ['admin/users'],
+                    'url' => ['/admin/users'],
                     'controller' => 'user',
                     'template' => '<a href="{url}"><i class="icon-users"></i><span>{label}</span></a>',
                 ],
@@ -104,13 +104,8 @@ class Module extends \yii\base\Module
                     'controller' => 'settings',
                     'items' => [
                         [
-                            'label' => 'Список категорий',
-                            'url' => ['admin/categories'],
-                            'template' => '<a href="{url}"><span>{label}</span></a>'
-                        ],
-                        [
-                            'label' => 'Создать категорию',
-                            'url' => ['categories/create'],
+                            'label' => 'Основные настройки сайта',
+                            'url' => ['/admin/settings/index'],
                             'template' => '<a href="{url}"><span>{label}</span></a>'
                         ],
                     ]

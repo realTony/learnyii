@@ -42,6 +42,7 @@ class PagesController extends Controller
                     'delete' => ['POST'],
                     'delete-image' => ['POST'],
                     'sort-image' => ['POST'],
+                    'save-slide-image' => ['POST'],
                     'save-image' => ['POST'],
                 ],
             ],
@@ -220,6 +221,50 @@ class PagesController extends Controller
             return $result;
         }
         throw new MethodNotAllowedHttpException();
+    }
+
+    public function actionSaveSlideImage()
+    {
+        $this->enableCsrfValidation = false;
+
+        if (Yii::$app->request->isAjax && Yii::$app->request->isPost) {
+            $post = Yii::$app->request->post();
+            $dir = Yii::getAlias('@webroot').'/uploads/'.strtolower($post['Images']['module']).'/';
+
+            if (!file_exists($dir)) {
+                FileHelper::createDirectory($dir);
+            }
+
+            $file = UploadedFile::getInstanceByName('Images[attachment]');
+            $model = new Images();
+            $model->load($post);
+            $model->validate();
+            if ($model->hasErrors()) {
+                $result = ['error' => $model->getFirstError('file')];
+            }
+
+            $model->image_name = strtotime('now').'_'.Yii::$app->getSecurity()->generateRandomString(6).'.'.$file->extension;
+
+            if ($file->saveAs($dir.$model->image_name)) {
+                $slide = Yii::$app->image->load($dir.$model->image_name);
+                $slide->background('#FFF', 0);
+                $slide->resize(null, 500, \yii\image\drivers\Image::PRECISE)->save($dir.$model->image_name, 85);
+            }
+
+            $model->image_name = '/uploads/'.strtolower($post['Images']['module']).'/'.$model->image_name;
+            $model->module = $post['Images']['module'];
+            $model->item_id = $post['Images']['item_id'];
+            $model->alt = $file->name;
+            $count = $model::find()->andWhere(['module'=>$model->module])->count();
+            $model->sort =  ($count > 0)? $count++ : 0;
+
+            $model->save();
+
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return $result;
+        }
+        throw new MethodNotAllowedHttpException();
+
     }
 
     public function actionDeleteImage()

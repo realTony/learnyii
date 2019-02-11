@@ -422,6 +422,12 @@
     cardControls();
     accordion();
     apps();
+
+    $('#user_logout').on('click', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      $('#logout').trigger('click');
+    });
   }
   init();
 })(jQuery);

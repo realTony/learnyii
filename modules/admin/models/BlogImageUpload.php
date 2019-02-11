@@ -4,6 +4,7 @@ namespace app\modules\admin\models;
 
 use app\models\ImageUpload;
 use Yii;
+use yii\helpers\FileHelper;
 use yii\web\UploadedFile;
 
 class BlogImageUpload extends ImageUpload
@@ -28,12 +29,10 @@ class BlogImageUpload extends ImageUpload
     public function uploadImage(UploadedFile $file, $currentImage )
     {
         $this->post_image = $file;
-
         if($this->validate())
         {
             //Save image
             $this->isUploadExists();
-            $this->deleteCurrentImage($currentImage);
 
             return $this->saveImage();
         }else{
@@ -50,8 +49,17 @@ class BlogImageUpload extends ImageUpload
     {
         $filename = $this->generateFilename();
         $uploadFolder = parent::__get('uploadFolder');
+        $dir = Yii::getAlias('@webroot').$uploadFolder;
         $this->isUploadExists();
-        $this->post_image->saveAs(Yii::getAlias('@webroot').$uploadFolder.$filename);
-        return $this->getUploadFolder().$filename;
+        if ($this->post_image->saveAs($dir.$filename)) {
+            $thumbnail = Yii::$app->image->load($dir. $filename);
+
+            $thumbnail->background('#FFF', 0);
+            if (! is_dir($dir.'thumbnails')) {
+                FileHelper::createDirectory($dir.'thumbnails');
+            }
+            $thumbnail->resize(290, null, \yii\image\drivers\Image::PRECISE)->save($dir.'/thumbnails/'.$filename, 85);
+        }
+        return ['image' => $this->getUploadFolder().$filename, 'thumbnails' => $this->getUploadFolder().'thumbnails/'.$filename ];
     }
 }

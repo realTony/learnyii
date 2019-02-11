@@ -106,9 +106,14 @@ class BlogPosts extends \yii\db\ActiveRecord
         $this->translation = (! empty($this->translation) )? json_encode($this->translation) :'';
 
         if(! empty( $file ) ) {
-            $this->post_image = $image->uploadImage($file, $this->post_image);
+            $savedImage = $image->uploadImage($file, $post->post_image);
+            $image->deleteCurrentImage($post->post_thumbnail);
+            $image->deleteCurrentImage($post->post_image);
+            $this->post_image = $savedImage['image'];
+            $this->post_thumbnail = $savedImage['thumbnails'];
         } else {
             $this->post_image = $post->post_image;
+            $this->post_thumbnail = $post->post_thumbnail;
         }
 
 

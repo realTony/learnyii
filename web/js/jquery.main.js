@@ -40,7 +40,8 @@ $(document).ready(function(){
         autoplaySpeed: 4000,
         speed: 300,
         slidesToShow: 1,
-        slidesToScroll: 1
+        slidesToScroll: 1,
+        adaptiveHeight: true
     });
 
     if( $('#account-panel').is('ul') ){

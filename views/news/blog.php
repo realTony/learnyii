@@ -79,11 +79,11 @@ $this->params['breadcrumbs'] = $breadcrumbs;
                     foreach ($models as $model) {
                         ?>
                             <li class="grid-item">
-                            <div class="holder-img">
-                                <?php if(! empty($model->post_image) ): ?>
-                                    <img src="<?= $model->post_image ?>" alt="<?= $model->title ?>_image">
-                                <?php endif;?>
-                            </div>
+                            <?php if(! empty($model->post_thumbnail) ): ?>
+                                <div class="holder-img">
+                                        <img src="<?= (! empty($model->post_thumbnail))? $model->post_thumbnail: $model->post_image ?>" alt="<?= $model->title ?>_image">
+                                </div>
+                            <?php endif;?>
                             <div class="holder-text">
                                 <a class="title-link" href="<?= Url::toRoute($model->link)?>"><?= $model->title ?></a>
                                 <p><?= TextExcerption::excerptText($model->description, 110); ?></p>
@@ -94,11 +94,12 @@ $this->params['breadcrumbs'] = $breadcrumbs;
                     }
                 ?>
             </ul>
-            <?php if (! empty($pages)):?>
+
+            <?php if (! empty($pages) && $pages->pageSize < $pages->totalCount):?>
             <div class="holder-pagination">
-<!--                <a class="prev-page" href="#">-->
-<!--                    <i class="fas fa-arrow-left"></i>-->
-<!--                </a>-->
+                <a class="prev-page" href="#">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
                 <?php
                     if(! empty( $pages) ) {
                         echo LinkPager::widget([
@@ -106,9 +107,9 @@ $this->params['breadcrumbs'] = $breadcrumbs;
                         ]);
                     }
                 ?>
-<!--                <a class="next-page" href="#">-->
-<!--                    <i class="fas fa-arrow-right"></i>-->
-<!--                </a>-->
+                <a class="next-page" href="#">
+                    <i class="fas fa-arrow-right"></i>
+                </a>
             </div>
             <?php endif; ?>
         </div>

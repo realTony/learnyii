@@ -52,10 +52,10 @@ $this->title = $name;
 <div class="container">
     <div class="not-found">
         <div class="holder-img">
-            <img src="images/bg-46.png" alt="img">
+            <img src="<?= \yii\helpers\Url::home(true)?>images/bg-46.png" alt="img">
         </div>
         <strong>Что-то пошло <br>не так...</strong>
-        <p>К сожалению такой страницы не существует. <a href="#">Вернитесь на главную,</a> либо попробуйте найти нужное вам объявление с помощью категорий.</p>
+        <p>К сожалению такой страницы не существует. <a href="<?= \yii\helpers\Url::home(true) ?>">Вернитесь на главную,</a> либо попробуйте найти нужное вам объявление с помощью категорий.</p>
     </div>
 </div>
 <div class="inform-nav">
