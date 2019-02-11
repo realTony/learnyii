@@ -105,7 +105,7 @@ class Module extends \yii\base\Module
                     'items' => [
                         [
                             'label' => 'Основные настройки сайта',
-                            'url' => ['/admin/settings/index'],
+                            'url' => ['/admin/settings/main'],
                             'template' => '<a href="{url}"><span>{label}</span></a>'
                         ],
                     ]

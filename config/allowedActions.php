@@ -9,6 +9,9 @@ return [
 //            'debug/*',
 //            'categories/*',
     'images/*',
+    'account/*',
+    'account#login',
+    'account#register',
     'news/*',
     'advertisement/*'
 //            'some-controller/some-action',
