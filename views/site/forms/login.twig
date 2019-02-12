@@ -1,3 +1,4 @@
+{{ use('app/widgets/SocialAuth') }}
 {% set form = active_form_begin({
     'id': 'login-form',
     'enableAjaxValidation': true,
@@ -20,19 +21,8 @@
         'class': 'btn-orange',
     }) | raw }}
     <a class="forgot" href="#">{{ t('app', 'Забыли пароль?') }}</a>
-    {#<div class="in-network">#}
-        {#<a class="btn-network" href="#">#}
-            {#<div class="holder-img">#}
-                {#<img src="images/bg-53.png" alt="img">#}
-            {#</div>#}
-            {#<span>{{ t('app', 'Войти через Facebook') }}</span>#}
-        {#</a>#}
-        {#<a class="btn-network" href="#">#}
-            {#<div class="holder-img">#}
-                {#<img src="images/bg-54.png" alt="img">#}
-            {#</div>#}
-            {#<span>{{ t('app', 'Войти через Google') }}</span>#}
-        {#</a>#}
-    {#</div>#}
+    {{ social_auth_widget({
+        'baseAuthUrl' : ['site/auth'],
+    }) }}
 </fieldset>
 {{ active_form_end() }}

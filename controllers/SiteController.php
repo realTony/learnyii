@@ -15,13 +15,11 @@ use dektrium\user\models\RecoveryForm;
 use dektrium\user\traits\EventTrait;
 use Yii;
 use yii\bootstrap\Html;
-use yii\filters\AccessControl;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\Response;
-use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\RegisterForm;
-use app\models\ContactForm;
 use yii\widgets\ActiveForm;
 
 class SiteController extends Controller
@@ -29,7 +27,7 @@ class SiteController extends Controller
     use AjaxValidationTrait;
     use EventTrait;
 
-    public $successUrl = 'Success';
+    public $successUrl = 'myaccount';
     /**
      * {@inheritdoc}
      */
@@ -217,6 +215,9 @@ class SiteController extends Controller
     public function successCallback($client)
     {
         $attributes = $client->getUserAttributes();
+        echo "<pre>";
+        print_r($attributes);
+        echo "</pre>";die;
         $user = User::find()->where(['email'=> $attributes['email']])->one();
         if(!empty($user)){
             Yii::$app->user->login($user);

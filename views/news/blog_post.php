@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\Breadcrumbs;
 
 $options = json_decode($model->options);
@@ -100,34 +101,18 @@ $this->params['breadcrumbs'] = $breadcrumbs;
             <?= Html::decode($options->content) ?>
 
             <div class="share">
-                <span class="share-title">Поделиться</span>
-                <ul class="social-list">
-                    <li>
-                        <a href="#">
-                            <?= Html::img('@web/images/bg-7.png', ['alt' => 'Instagram'] )?>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <?= Html::img('@web/images/bg-8.png', ['alt' => 'Facebook'] )?>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <?= Html::img('@web/images/bg-9.png', ['alt' => 'Viber'] )?>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <?= Html::img('@web/images/bg-30.png', ['alt' => 'Whatsapp'] )?>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <?= Html::img('@web/images/bg-31.png', ['alt' => 'Telegram'] )?>
-                        </a>
-                    </li>
-                </ul>
+                <span class="share-title"><?=\Yii::t('app', 'Поделиться') ?></span>
+                <?= \ymaker\social\share\widgets\SocialShare::widget([
+                    'configurator'  => 'socialShare',
+                    'url'           => Url::toRoute($model->link, true),
+                    'title'         => $model->title,
+                    'description'   => $model->description,
+                    'imageUrl'      => Url::to('@web'.$model->post_image, true),
+                    'containerOptions' => [
+                            'tag' => 'ul',
+                            'class' => 'social-list'
+                    ]
+                ]); ?>
             </div>
         </div>
     </div>

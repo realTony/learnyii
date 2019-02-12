@@ -1,5 +1,12 @@
 <?php
 
+use ymaker\social\share\drivers\Facebook;
+use ymaker\social\share\drivers\Telegram;
+use ymaker\social\share\drivers\Viber;
+use ymaker\social\share\drivers\WhatsApp;
+use yii\helpers\Html;
+use yii\helpers\Url;
+
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 $urlRules = require __DIR__.'/urlRules.php';
@@ -35,21 +42,47 @@ $config = [
         'authClientCollection' => [
             'class' => 'yii\authclient\Collection',
             'clients' => [
+                'facebook' => [
+                    'class' => 'yii\authclient\clients\Facebook',
+                    'authUrl' => 'https://www.facebook.com/dialog/oauth?display=popup',
+                    'clientId' => $config['oauth_facebook_clientId'],
+                    'clientSecret' => $config['oauth_facebook_clientSecret']
+                ],
                 'google' => [
                     'class' => 'yii\authclient\clients\Google',
                     'clientId' => $config['oauth_google_clientId'],
                     'clientSecret' => $config['oauth_google_clientSecret']
                 ],
-                'facebook' => [
-                    'class' => 'yii\authclient\clients\Facebook',
-                    'clientId' => $config['oauth_facebook_clientId'],
-                    'clientSecret' => $config['oauth_facebook_clientSecret']
-                ]
             ]
         ],
         'image' => [
             'class' => 'yii\image\ImageDriver',
             'driver' => 'GD',  //GD or Imagick
+        ],
+        'socialShare' => [
+            'class' => \ymaker\social\share\configurators\Configurator::class,
+            'socialNetworks' => [
+                'facebook' => [
+                    'class' => Facebook::className(),
+                    'label' => Html::img(Url::to('/images/bg-8.png'), ['alt' => 'Facebook']),
+//                    'options' => ['class' => 'fb'],
+                ],
+                'viber' => [
+                    'class' => Viber::className(),
+                    'label' => Html::img(Url::to('/images/bg-9.png'), ['alt' => 'Viber']),
+                ],
+                'whatsapp' => [
+                    'class' => WhatsApp::className(),
+                    'label' => Html::img(Url::to('/images/bg-30.png'), ['alt' => 'Whatsapp']),
+                ],
+                'telegram' => [
+                    'class' => Telegram::className(),
+                    'label' => Html::img(Url::to('/images/bg-31.png'), ['alt' => 'Telegram']),
+                ]
+            ],
+            'options' => [
+                'class' => 'social-network',
+            ],
         ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
@@ -78,8 +111,8 @@ $config = [
                         'lang' => 'Yii'
                     ],
                     'uses' => [
-                               'yii\helpers\Html',
-                                'yii\widgets\Menu'
+                                'yii\helpers\Html',
+                                'yii\widgets\Menu',
                     ],
                     'functions' => array(
                         't' => 'Yii::t',
