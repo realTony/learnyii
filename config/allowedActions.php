@@ -2,9 +2,9 @@
 
 return [
     'site/*',
-//            'admin/*',
-//            'myaccount/*',
-            'rbac/*',
+    'myaccount/*',
+    'rbac/*',
+    'user/*',
 //            'gii/*',
 //            'debug/*',
 //            'categories/*',
