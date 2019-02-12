@@ -215,9 +215,6 @@ class SiteController extends Controller
     public function successCallback($client)
     {
         $attributes = $client->getUserAttributes();
-        echo "<pre>";
-        print_r($attributes);
-        echo "</pre>";die;
         $user = User::find()->where(['email'=> $attributes['email']])->one();
         if(!empty($user)){
             Yii::$app->user->login($user);
