@@ -3,7 +3,7 @@ body {
     color:#000;
     font: 400 14px/1 "montserrat", "Arial",sans-serif;
     background:#fff;
-	-webkit-font-smoothing: antialiased;
+    -webkit-font-smoothing: antialiased;
 }
 img {
     display: block;
@@ -38,10 +38,10 @@ a:focus{
     -webkit-tap-highlight-color: transparent; /* For some Androids */
 }
 input, textarea, select {
-   font:100% "montserrat", "Arial",sans-serif;
+    font:100% "montserrat", "Arial",sans-serif;
     vertical-align:middle;
     -webkit-appearance:none;
-   -webkit-border-radius: 0;
+    -webkit-border-radius: 0;
 }
 input:not([type="radio"], [type="checkbox"]), textarea, select {
     font:100% "montserrat", "Arial",sans-serif;
@@ -52,10 +52,10 @@ form, fieldset {
     margin:0;
     padding:0;
     border-style:none;
-	min-width: 0;
+    min-width: 0;
 }
 fieldset {
-     /*max-width: 100%;*/
+    /*max-width: 100%;*/
     /*display: table-cell;*/
 }
 header,
@@ -114,16 +114,16 @@ input:focus::-moz-placeholder {
     color:transparent;
 }
 /*input:hover::-webkit-input-placeholder {*/
-    /*color:#303033;*/
+/*color:#303033;*/
 /*}*/
 /*input:hover:-moz-placeholder {*/
-    /*color:#303033;*/
+/*color:#303033;*/
 /*}*/
 /*input:hover:-ms-input-placeholder {*/
-    /*color:#303033;*/
+/*color:#303033;*/
 /*}*/
 /*input:hover::-moz-placeholder {*/
-    /*color:#303033;*/
+/*color:#303033;*/
 /*}*/
 textarea:focus::-webkit-input-placeholder {
     color:transparent;
@@ -143,7 +143,7 @@ textarea:focus::-moz-placeholder {
 html,body {
     height: 100%;
     margin: 0;
-     /*min-width: 1270px;*/
+    /*min-width: 1270px;*/
     min-width: 350px;
     -webkit-text-size-adjust: none;
 }
@@ -353,6 +353,12 @@ html,body {
 }
 .social a:hover{
     opacity: 0.4;
+}
+.promo-slider .slick-slide .img{
+    padding-top: 26.04%;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-size: cover;
 }
 .promo-slider:after,
 .promo-slider:before{
@@ -623,7 +629,7 @@ h1{
     text-transform: uppercase;
 }
 .title-text h1{
-   padding: 7px 220px 0 0;
+    padding: 7px 220px 0 0;
     position: relative;
 }
 .title-text h1:before{
@@ -853,7 +859,7 @@ h1{
     right: 0;
     bottom: 0;
     height: 79px;
-   /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#000000+0,ffffff+100&0.4+0,0+100 */
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#000000+0,ffffff+100&0.4+0,0+100 */
     background: -moz-linear-gradient(bottom, rgba(0,0,0,0.4) 0%, rgba(255,255,255,0) 100%); /* FF3.6-15 */
     background: -webkit-linear-gradient(bottom, rgba(0,0,0,0.4) 0%,rgba(255,255,255,0) 100%); /* Chrome10-25,Safari5.1-6 */
     background: linear-gradient(to top, rgba(0,0,0,0.4) 0%,rgba(255,255,255,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
@@ -907,7 +913,7 @@ h1{
     line-height: 20px;
 }
 .accordion .holder-section.fon-grey{
-   padding: 33px 0 0;
+    padding: 33px 0 0;
 }
 .proposal-list{
     font-size: 0;
@@ -1189,7 +1195,7 @@ h1{
     margin: 0 26px 0 0;
 }
 #footer .social li a:hover{
-     color: #99999a!important;
+    color: #99999a!important;
 }
 #footer .social li:last-child{
     margin: 0;
@@ -2399,6 +2405,16 @@ p .bold{
 .checkbox input:checked + span{
     color: #ff6a00;
 }
+
+input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
 .submit{
     display: block;
     width: 100%;
@@ -2692,6 +2708,7 @@ h1 span{
     display: block;
     margin: 0 auto 29px;
     width: 110px;
+    height: 110px;
 }
 .seller.clone .holder-text{
     text-align: center;
@@ -3148,9 +3165,9 @@ hr{
 .up{
     display: none;
     position: fixed;
-    z-index: 999;
-    opacity: 1!important;
+    z-index: 200;
     right: 15px;
+    opacity: 0.5;
     bottom: 15px;
     background: #ffffff;
     border: 5px solid transparent;
@@ -3175,12 +3192,11 @@ hr{
 }
 .up:hover{
     border: 5px solid #ff6a00;
-    opacity: 0.5!important;
 }
 
-    /* =============================================================================
-        HasLayot
-        ========================================================================== */
+/* =============================================================================
+    HasLayot
+    ========================================================================== */
 .group:after {
     display:block;
     content:"";
@@ -3234,7 +3250,7 @@ hr{
         height: 48px;
     }
     .list-language {
-         position: absolute;
+        position: absolute;
     }
     .btn-ads{
         padding: 9px 27px;
@@ -3527,7 +3543,7 @@ hr{
         padding: 33px 0 0;
     }
     /*.content .title-text h1, .title-text h1 {*/
-        /*padding-top: 0px;*/
+    /*padding-top: 0px;*/
     /*}*/
     .content .title-text h1:before, .title-text h1:before {
         left: -75px;
@@ -3929,9 +3945,9 @@ hr{
         margin: 0 0 21px;
     }
     .holder-area textarea {
-         height: 150px;
+        height: 150px;
         font-size: 11px;
-     }
+    }
     .list-img{
         margin: 0 0 0 -11px;
     }
@@ -4339,7 +4355,7 @@ hr{
         margin: 0 0 40px;
     }
     .list-progress strong {
-            font-size: 21px;
+        font-size: 21px;
     }
     h1 {
         font-size: 30px;
@@ -4411,7 +4427,7 @@ hr{
     }
     .promotion .title, .promotion .small-promotion .title {
         left: 30px;
-		padding: 0 10px 0 0;
+        padding: 0 10px 0 0;
     }
     .promotion .date {
         top: 24px;
@@ -5247,7 +5263,7 @@ hr{
     }
     .list-progress .holder-text {
         padding: 9px 0 0 18px;
-}
+    }
     .list-progress strong{
         font-size: 15px;
         margin: 0 0 6px;
@@ -5386,6 +5402,3 @@ hr{
         top: 65%
     }
 }
-
-
-

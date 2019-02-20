@@ -15,7 +15,7 @@ class m190208_230032_create_settings_table extends Migration
         $this->createTable('{{%settings}}', [
             'id' => $this->primaryKey(),
             'name' => $this->string(191),
-            'option_value' => $this->text()->notNull()
+            'option_value' => $this->text()
         ], 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB');
 
         $options = [
@@ -25,23 +25,23 @@ class m190208_230032_create_settings_table extends Migration
             ],
             [
                 'name' => 'site_email',
-                'option_value' => ' '
+                'option_value' => ''
             ],
             [
                 'name' => 'site_telegram',
-                'option_value' => ' '
+                'option_value' => ''
             ],
             [
                 'name' => 'site_facebook',
-                'option_value' => ' '
+                'option_value' => ''
             ],
             [
                 'name' => 'site_instagram',
-                'option_value' => ' '
+                'option_value' => ''
             ],
             [
                 'name' => 'site_viber',
-                'option_value' => ' '
+                'option_value' => ''
             ],
             [
                 'name' => 'site_maintenance',

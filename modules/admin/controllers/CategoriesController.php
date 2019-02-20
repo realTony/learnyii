@@ -109,7 +109,7 @@ class CategoriesController extends Controller
         $model->is_blog = 0;
         $model->updated_at = date('Y-m-d H:i:s');
 
-        $parentCat = ArrayHelper::map($model->find()->all(), 'id', 'title');
+        $parentCat = ArrayHelper::map($model->find()->where(['is_blog' => 0])->all(), 'id', 'title');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);

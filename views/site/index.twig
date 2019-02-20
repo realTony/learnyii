@@ -1,45 +1,15 @@
+{{ use('app/widgets/SearchAdverts') }}
 {% if slider  %}
     <div class="promo-slider">
         {% for slide in slider %}
             <div>
-                <picture>
-                    <source srcset="{{ slide }}" media="(max-width: 500px)">
-                    <source srcset="{{ slide }}" media="(min-width: 501px)">
-                    <img src="{{ slide }}" alt="img">
-                </picture>
+                <div class="img" style="background-image: url({{ slide }});"></div>
             </div>
         {% endfor %}
     </div>
 {% endif %}
 
-<div class="form-search">
-    <div class="container">
-        <a class="search-query" href="#">Поисковый запрос</a>
-        <div class="holder-form-search">
-            <span class="bg-search"></span>
-            <form>
-                <fieldset>
-                    <a class="closed-search-form" href="#"></a>
-                    <div class="search-input">
-                        <input type="text" placeholder="Поисковый запрос">
-                    </div>
-                    <div class="category-input">
-                        <select name="dropdown" class="dropdown">
-                            <option>Категория</option>
-                            <option>Категория1</option>
-                            <option>Категория2</option>
-                            <option>Категория3</option>
-                        </select>
-                    </div>
-                    <div class="city-input ui-widget">
-                        <input class="tags-city" type="text" placeholder="Город">
-                    </div>
-                    <input class="btn-search" type="submit" value="искать">
-                </fieldset>
-            </form>
-        </div>
-    </div>
-</div>
+{{ search_adverts_widget() }}
 
 <div class="container">
     {% if adverts %}

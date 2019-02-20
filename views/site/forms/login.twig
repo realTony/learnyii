@@ -14,8 +14,8 @@
     }
 }) %}
 <fieldset>
-    {{ form.field(loginModel, 'email').label(false).input('email',{'placeholder':'E-Mail'}) | raw }}
-    {{ form.field(loginModel, 'password').label(false).passwordInput({'placeholder':'Пароль'}) | raw }}
+    {{ form.field(loginModel, 'email').label(false).input('email',{'placeholder':'E-Mail', 'readonly':true}) | raw }}
+    {{ form.field(loginModel, 'password').label(false).passwordInput({'placeholder':'Пароль', 'readonly':true}) | raw }}
     {{ form.field(loginModel, 'rememberMe', {'options' : {'class':'holder-checkbox'}, 'template':"<label>{input}<span><i class='fas fa-check'></i> "~ t('app', 'Запомнить меня')}).label(false).checkbox([], false) | raw }}
     {{ submitButton(t('app','Войти'), {
         'class': 'btn-orange',

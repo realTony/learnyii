@@ -226,7 +226,7 @@ class PagesController extends Controller
     public function actionSaveSlideImage()
     {
         $this->enableCsrfValidation = false;
-
+        
         if (Yii::$app->request->isAjax && Yii::$app->request->isPost) {
             $post = Yii::$app->request->post();
             $dir = Yii::getAlias('@webroot').'/uploads/'.strtolower($post['Images']['module']).'/';

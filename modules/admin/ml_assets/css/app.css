@@ -1173,6 +1173,7 @@ figure:hover:before {
     background-color: transparent; }
   .main-panel > .header .header-avatar {
     width: 1.5rem;
+    height: 1.5rem;
     margin-top: -0.1rem; }
   .main-panel > .header::before {
     content: '';

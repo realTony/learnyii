@@ -11,6 +11,8 @@ use yii\web\Controller;
 use yii\web\UploadedFile;
 use app\modules\myaccount\models\EditProfileForm;
 use app\modules\myaccount\models\ChangePassword;
+use app\modules\myaccount\models\CreateAdvertisementPost;
+use app\modules\admin\models\Categories;
 
 /**
  * Default controller for the `user` module
@@ -86,6 +88,34 @@ class DefaultController extends Controller
             'changePassword' => $changePassword,
             'uploadImage' => $uploadImage,
             'profile' => $profile,
+            'user' => $user,
+            'breadcrumbs' => self::$breadcrumbs
+        ]);
+    }
+
+    public function actionCreateAdvertisement()
+    {
+        $model = Yii::createObject(CreateAdvertisementPost::className());
+        $user = User::findOne(['id'=>Yii::$app->user->getId()]);
+
+        if( Yii::$app->user->isGuest ){
+            Yii::$app->response->redirect(['account#login']);
+        }
+        self::$breadcrumbs = [
+            ['label' => Yii::t('app', 'Личный кабинет'), 'url' => [ Url::toRoute(['/myaccount']) ]],
+            ['label' => Yii::t('app', 'Создать объявление')],
+        ];
+
+        if( $model->load(Yii::$app->request->post()) && $model->createAdvertisement() ){
+
+        } else if(! empty( $model->errors) ) {
+            echo "<pre>";
+            print_r($model->errors);
+            echo "</pre>";
+        }
+
+        return $this->render('create_advertisement', [
+            'model' => $model,
             'user' => $user,
             'breadcrumbs' => self::$breadcrumbs
         ]);

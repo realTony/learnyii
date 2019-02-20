@@ -108,6 +108,11 @@ class Module extends \yii\base\Module
                             'url' => ['/admin/settings/main'],
                             'template' => '<a href="{url}"><span>{label}</span></a>'
                         ],
+                        [
+                            'label' => 'Настройки меню',
+                            'url' => ['/admin/settings/menu'],
+                            'template' => '<a href="{url}"><span>{label}</span></a>'
+                        ],
                     ]
                 ],
             ],

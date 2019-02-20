@@ -123,7 +123,8 @@ $config = [
                         'csrfMetatags' => 'yii\helpers\Html::csrfMetaTags',
                         'getAvatar' => 'app\models\Profile::getUserAvatar',
                         'getUsername' => 'app\models\Profile::getUsername',
-                        'getUserDate' => 'app\models\Profile::getUserDate'
+                        'getUserDate' => 'app\models\Profile::getUserDate',
+                        'getMenu' => 'app\models\Menu::getSiteMenu',
                     ),
                     'filters' => [
                         'print_r' => 'print_r',

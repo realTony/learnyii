@@ -10,6 +10,7 @@ $this->title = $model->title;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Pages'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
+//$this->title = 'Страницы сайта';
 ?>
 <div class="pages-view">
 
@@ -29,10 +30,10 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
+//            'id',
             'title',
             'link',
-            'seo_title',
+//            'seo_title',
             'seo_text:ntext',
             'options:ntext',
             'translation:ntext',

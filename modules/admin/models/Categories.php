@@ -141,9 +141,16 @@ class Categories extends \yii\db\ActiveRecord
         return $this->find()->where(['parent_id' => $this->category->id])->all();
     }
 
-//    public function getAdvertisement()
-//    {
-//        return $this->find()->where(['is_blog' ])
-//    }
+    public function getAdvertisement()
+    {
+        return ArrayHelper::map($this->find()->where(['is_blog' => 0])->andWhere(['parent_id'=>null])->all(),'id', 'title');
+    }
+
+    public function getSubAdvertisement()
+    {
+        $sub = $this->find()->where(['is_blog' => 0])->andWhere(['not', ['parent_id' => null]])->all();
+
+        return ArrayHelper::map($sub,'id', 'title');
+    }
 
 }

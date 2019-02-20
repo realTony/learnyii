@@ -1,9 +1,8 @@
 {{ set(this, 'title', t('app', 'Регистрация')) }}
 {{ use('yii\\widgets\\ActiveForm') }}
 {{ use('yii/helpers/Url') }}
-{% block search_form %}
-    {% include 'forms/search.twig' %}
-{% endblock %}
+{{ use('app/widgets/SearchAdverts') }}
+{{ search_adverts_widget() }}
 <div class="promo-block" style="background-image: url({{ app.homeUrl }}images/bg-51.png)">
     <div class="container">
         <div class="login-registration">

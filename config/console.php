@@ -2,7 +2,7 @@
 
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
-
+$secure = parse_ini_file(__DIR__.'/../../secure/stickit.ini', true);
 $config = [
     'id' => 'basic-console',
     'basePath' => dirname(__DIR__),

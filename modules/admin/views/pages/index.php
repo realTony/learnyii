@@ -6,15 +6,14 @@ use yii\widgets\Pjax;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\PagesSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
-
-$this->title = Yii::t('app', 'Pages');
+$this->title = 'Страницы сайта';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="pages-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php Pjax::begin(); ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+<!--    --><?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
         <?= Html::a(Yii::t('app', 'Create Pages'), ['create'], ['class' => 'btn btn-success']) ?>
@@ -29,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'title',
             'link',
-            'seo_title',
+//            'seo_title',
             'seo_text:ntext',
             //'options:ntext',
             //'translation:ntext',

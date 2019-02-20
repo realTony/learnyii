@@ -298,7 +298,7 @@ $(document).ready(function(){
     //range-slider
     initUi();
 
-
+    resetAutocomplete();
 });
 
 function initUi(){
@@ -530,5 +530,16 @@ function initDropDistrict(){
     });
 }
 
+function resetAutocomplete() {
+    if( $('input').is('[type=email]')) {
+        $('input').on('focus', function (e) {
+            if( $(this).attr('readonly') == true || $(this).is('[readonly]')){
+                $(this).removeAttr('readonly');
+                $(this).trigger('blur');
+                $(this).trigger('focus');
+            }
+        })
+    }
+}
 
 

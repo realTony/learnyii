@@ -210,7 +210,17 @@ class SiteController extends Controller
         ]);
     }
 
+    public function actionPage($link)
+    {
+        $model = Yii::createObject(Pages::className())->find()->where(['link' => $link])->one();
 
+        $model->options = json_decode($model->options);
+        $model->translation = json_decode($model->translation);
+
+        return $this->render('policy.twig', [
+            'model' => $model
+        ]);
+    }
 
     public function successCallback($client)
     {
@@ -221,7 +231,7 @@ class SiteController extends Controller
         }else{
             $session = Yii::$app->session;
             $session['attributes'] = $attributes;
-            $this->successUrl = \yii\helpers\Url::to(['site/account']);
+            $this->successUrl = \yii\helpers\Url::to(['account#login']);
         }
     }
 }
