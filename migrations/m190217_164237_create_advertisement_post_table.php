@@ -23,10 +23,12 @@ class m190217_164237_create_advertisement_post_table extends Migration
             'distancePerMonth' => $this->float()->notNull(),
             'condition' => $this->string(),
             'adv_type' => $this->integer(),
-            'stickig_area' => $this->integer(),
+            'sticking_area' => $this->integer(),
             'authorId' => $this->integer()->notNull(),
             'showEmail' => $this->boolean()->notNull()->defaultValue(false),
-            'published_at' => $this->dateTime()
+            'isPremium' => $this->boolean()->notNull()->defaultValue(false),
+            'coverage_type' => $this->boolean()->notNull()->defaultValue(false),
+            'published_at' => $this->dateTime()->defaultExpression('CURRENT_TIMESTAMP')
         ], 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB');
     }
 

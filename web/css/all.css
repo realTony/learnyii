@@ -764,6 +764,8 @@ h1{
 .list-announcements .holder-img{
     position: relative;
     margin: 0 0 29px;
+    max-height: 290px;
+    overflow: hidden;
 }
 .list-announcements .holder-img:before{
     content: '';
@@ -2153,6 +2155,7 @@ p .bold{
 .seller .holder-img{
     margin: 0 auto 29px;
     width: 110px;
+    height: 110px;
     overflow: hidden;
     border-radius: 50%;
     -webkit-border-radius: 50%;
@@ -4800,7 +4803,7 @@ hr{
     .edit-list li {
         margin: 0 0 0 8px !important;
     }
-    .aside-profile.hide{
+    .aside-profile.ghost{
         display: none;
     }
 }

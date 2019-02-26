@@ -2,10 +2,14 @@
 
 namespace app\modules\myaccount\controllers;
 
+use app\models\AdvertisementPost;
+use app\models\Images;
 use app\models\ImageUpload;
 use app\models\Profile;
 use app\models\User;
 use Yii;
+use yii\data\Pagination;
+use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\UploadedFile;
@@ -95,7 +99,9 @@ class DefaultController extends Controller
 
     public function actionCreateAdvertisement()
     {
-        $model = Yii::createObject(CreateAdvertisementPost::className());
+        $model = Yii::createObject(AdvertisementPost::className());
+        $imgModel = Yii::createObject(Images::className());
+
         $user = User::findOne(['id'=>Yii::$app->user->getId()]);
 
         if( Yii::$app->user->isGuest ){
@@ -106,18 +112,103 @@ class DefaultController extends Controller
             ['label' => Yii::t('app', 'Создать объявление')],
         ];
 
-        if( $model->load(Yii::$app->request->post()) && $model->createAdvertisement() ){
 
-        } else if(! empty( $model->errors) ) {
-            echo "<pre>";
-            print_r($model->errors);
-            echo "</pre>";
+        if( $model->load(Yii::$app->request->post()) && $id = $model->createAdvertisement() ){
+            return $this->redirect(['posts']);
         }
 
-        return $this->render('create_advertisement', [
+        return $this->render('_advertisement_form', [
             'model' => $model,
+            'imageModel' => $imgModel,
             'user' => $user,
             'breadcrumbs' => self::$breadcrumbs
+        ]);
+    }
+
+
+    public function actionUpdateAdvertisement($id)
+    {
+        if( Yii::$app->user->isGuest ){
+            Yii::$app->response->redirect(['account#login']);
+        }
+
+        $model = AdvertisementPost::findOne($id);
+        self::$breadcrumbs = [
+            ['label' => Yii::t('app', 'Личный кабинет'), 'url' => [ Url::toRoute(['/myaccount']) ]],
+            ['label' => Yii::t('app', 'Редактировать объявление')],
+        ];
+
+        if( $model->load(Yii::$app->request->post()) && $model->createAdvertisement() ){
+            return $this->redirect(['posts']);
+        }
+
+        return $this->render('_advertisement_form', [
+            'model' => $model,
+            'breadcrumbs' => self::$breadcrumbs
+        ]);
+    }
+
+    /**
+     * Remove Advertisement post item
+     * @param $id
+     * @return mixed
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
+     */
+    public function actionDelete($id)
+    {
+        AdvertisementPost::findOne($id)->delete();
+
+        return $this->redirect(['posts']);
+    }
+
+    public function actionUpdateCat()
+    {
+        if( Yii::$app->request->isAjax) {
+            $post = Yii::$app->request->post();
+
+            $id = $post['id'];
+            $cat = new Categories();
+            $cat->parent = $id;
+            $list  = $cat->parents;
+            $options = '<option value="">'.Yii::t('app', 'Подкатегория').'</option>';
+
+            foreach ( $list as $item => $val) {
+                $options .= '<option value="'.$item.'">'.$val.'</option>';
+            }
+
+            return $options;
+        }
+
+        return false;
+    }
+
+    /**
+     * User posts
+     * @return mixed
+     */
+    public function actionPosts()
+    {
+        $user = User::findOne(['id'=>Yii::$app->user->getId()]);
+        $model = new AdvertisementPost();
+        $advPosts = $model
+            ->find()
+            ->where(['authorId' => $user->id]);
+
+        $countQuery = clone $advPosts;
+        $pages = new Pagination([
+            'totalCount' => $countQuery->count(),
+            'pageSize' => 5,
+
+        ]);
+        $models = $advPosts->offset($pages->offset)
+            ->limit($pages->limit)
+            ->all();
+
+        return $this->render('user_posts', [
+            'models' => $models,
+            'pages' => $pages,
+            'user' => $user,
         ]);
     }
 

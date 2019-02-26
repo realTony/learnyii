@@ -1,5 +1,6 @@
 {{ use('yii\\widgets\\Breadcrumbs') }}
 {{ use('app/widgets/SearchAdverts') }}
+{{ use('app/widgets/UserBar') }}
 {{ search_adverts_widget() }}
 <div class="holder-crumbs">
     <div class="container">
@@ -22,23 +23,9 @@
         <h1>{{ t('app', 'Личный кабинет') }}</h1>
     </div>
     <div class="group-content">
-        <div class="aside-left">
-            <div class="aside-profile hide">
-                <div class="seller clone">
-                    <div class="holder-img">
-                        <img src="{{ getAvatar(app.user.id) }}" alt="img">
-                    </div>
-                    <div class="holder-text">
-                        <a href="{{  url.toRoute('/myaccount/') }}" class="name">{{ user.username }}</a>
-                        <span>{{ t('app', 'Дата регистрации') }}</span>
-                        <span class="date">{{ user.created_at | date('d.m.Y') }}</span>
-                    </div>
-                </div>
-                {% block myaccount_navbar %}
-                    {% include 'myaccount_navbar.twig' %}
-                {% endblock %}
-            </div>
-        </div>
+        {{ user_bar_widget({
+            'user' : user
+        }) |raw }}
         <div class="content">
             <div class="user-message">
                 <a href="#"><i class="fas fa-comments"></i> Сообщения<span>22</span></a>

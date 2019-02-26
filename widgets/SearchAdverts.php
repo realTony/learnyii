@@ -9,40 +9,47 @@
 namespace app\widgets;
 
 
+use Yii;
 use yii\base\Widget;
+use yii\widgets\ActiveForm;
+use app\models\SiteSearch;
+use \app\modules\admin\models\Categories;
+use app\models\Cities;
 
 class SearchAdverts extends Widget
 {
     public function run()
     {
+        $model = \Yii::createObject(SiteSearch::className());
+        $categories = Yii::createObject(Categories::className());
+        $subList = array_merge([0 => Yii::t('app', 'Категория')], $categories->subAdvertisement);
+        $cities = Yii::createObject(Cities::className())->cities;
         ?>
         <div class="form-search">
             <div class="container">
                 <a class="search-query" href="#">Поисковый запрос</a>
                 <div class="holder-form-search">
                     <span class="bg-search"></span>
-                    <form>
+                    <?php $form = ActiveForm::begin(); ?>
                         <fieldset>
                             <a class="closed-search-form" href="#"></a>
-                            <div class="search-input">
-                                <input type="text" placeholder="Поисковый запрос">
-                            </div>
-                            <div class="category-input">
-                                <select name="dropdown" class="dropdown">
-                                    <option>Категория</option>
-                                    <option>Категория1</option>
-                                    <option>Категория2</option>
-                                    <option>Категория3</option>
-                                </select>
-                            </div>
+                            <?= $form->field($model,'textRequest', ['options' => ['class' => 'search-input', 'tag' => 'div']])
+                                ->label(false)
+                                ->textInput(['placeholder' => \Yii::t('app', 'Поисковый запрос')])?>
+                            <?= $form->field($model, 'categoryId', ['options' => ['class' => 'category-input', 'tag' => 'div']])
+                                ->label(false)
+                                ->dropDownList($subList, ['class' => 'dropdown']) ?>
                             <div class="city-input ui-widget">
                                 <input class="tags-city" type="text" placeholder="Город">
                             </div>
                             <input class="btn-search" type="submit" value="искать">
                         </fieldset>
-                    </form>
+                    <?php ActiveForm::end(); ?>
                 </div>
             </div>
+            <script id="autocomplete-cities">
+                var avaibleCities = JSON.parse('<?= json_encode($cities) ?>');
+            </script>
         </div>
         <?php
     }

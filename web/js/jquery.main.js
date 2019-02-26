@@ -109,6 +109,42 @@ $(document).ready(function(){
             $('#edit-image-form').trigger('submit');
         });
     });
+    $('.list-img').find('input[type=file]').on('change', function (e) {
+        var fileSrc  = e.target.files;
+
+
+        if (fileSrc) {
+            var images = Object.values(fileSrc);
+            images.forEach(function(element) {
+                var reader = new FileReader();
+                reader.onloadend = function () {
+                    var image = new Image();
+                    image.src = reader.result;
+
+                    var img = '<li><a href="#" class="holder-img"><i class="fas fa-times-circle"></i></a></li>';
+                    $('#add-adv-image').before(img);
+                    $('.list-img').find('.holder-img:last').append(image);
+                    $('.list-img').find('.holder-img:last > img').css({'width':'130px', 'height':'130px'});
+                }
+                reader.readAsDataURL(element);
+            });
+        }
+    });
+    $('body').on('click','a.holder-img', function (e) {
+        e.preventDefault();
+
+       $(this).parents('li').remove();
+    });
+
+
+    $('#createPost').find('select#category_id').on('change', function(e) {
+        var form = $('#createPost');
+        var _csrf = form.find('input[name="_csrf"]').val();
+        $.post( "/myaccount/default/update-cat", { id: $(this).val(),_csrf: _csrf })
+            .done(function( data ) {
+                $('#subcat_id').html(data).dropdown('update');
+            });
+    });
     $('#delete-photo').on('click', function (e) {
         e.preventDefault();
         e.stopPropagation();
@@ -509,8 +545,8 @@ function initDropCity(){
          "Лисичанск",
          "Каменец-Подольский"
     ];
-    $( ".tags-city" ).autocomplete({
-        source: availableTags
+    $( ".tags-city").autocomplete({
+        source: Object.values(avaibleCities)
     });
 }
 function initDropDistrict(){

@@ -1,146 +1,38 @@
 <?php
 
 use yii\helpers\Url;
+use yii\widgets\Breadcrumbs;
+use yii\widgets\LinkPager;
+use app\components\TextExcerption;
+use \app\modules\admin\models\Categories;
 
+$this->params['breadcrumbs'] = $breadcrumbs;
 ?>
 
-<div class="form-search">
-    <div class="container">
-        <a class="search-query" href="#">Поисковый запрос</a>
-        <div class="holder-form-search">
-            <span class="bg-search"></span>
-            <form>
-                <fieldset>
-                    <a class="closed-search-form" href="#"></a>
-                    <div class="search-input">
-                        <input type="text" placeholder="Поисковый запрос">
-                    </div>
-                    <div class="category-input">
-                        <select name="dropdown" class="dropdown">
-                            <option>Категория</option>
-                            <option>Категория1</option>
-                            <option>Категория2</option>
-                            <option>Категория3</option>
-                        </select>
-                    </div>
-                    <div class="city-input ui-widget">
-                        <input class="tags-city" type="text" placeholder="Город">
-                    </div>
-                    <input class="btn-search" type="submit" value="искать">
-                </fieldset>
-            </form>
-        </div>
-    </div>
-</div>
+<?= \app\widgets\SearchAdverts::widget(); ?>
+
 <div class="holder-crumbs">
     <div class="container">
         <div class="holder-bread-crumbs">
-            <ul class="bread-crumbs">
-                <li>
-                    <a href="#">Главная</a>
-                </li>
-                <li>Название категории</li>
-            </ul>
+            <?php
+            echo Breadcrumbs::widget([
+                'options' => [
+                    'class' => 'bread-crumbs'
+                ],
+                'itemTemplate' => "<li>{link}</li>\n", // template for all links
+                'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+            ]);
+            ?>
         </div>
     </div>
 </div>
+
 <div class="container">
     <div class="group-content">
-        <div class="aside-left">
-            <form class="holder-aside-left">
-                <fieldset>
-                    <div class="aside-accordion">
-                        <span class="title">Транспорт</span>
-                        <div class="expanded">
-                            <ul>
-                                <li><a href="#">Легковые автомобили <sup><small>(12)</small></sup></a></li>
-                                <li><a href="#">Мото <sup><small>(12)</small></sup></a></li>
-                                <li><a href="#">Прицепы <sup><small>(12)</small></sup></a></li>
-                                <li><a href="#">Грузовики <sup><small>(12)</small></sup></a></li>
-                                <li><a href="#">Автобусы <sup><small>(12)</small></sup></a></li>
-                                <li><a href="#">Велосипеды <sup><small>(12)</small></sup></a></li>
-                                <li><a href="#">Другое <sup><small>(12)</small></sup></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="aside-accordion">
-                        <span class="title">Реклама</span>
-                        <div class="expanded">
-                            <ul>
-                                <li><a href="#">Полная обклейка <sup><small>(12)</small></sup></a></li>
-                                <li><a href="#">Частичная обклейка <sup><small>(12)</small></sup></a></li>
-                                <li><a href="#">Навесная реклама <sup><small>(12)</small></sup></a></li>
-                                <li><a href="#">Реклама в салоне <sup><small>(12)</small></sup></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="aside-accordion">
-                        <span class="title">Исполнители</span>
-                        <div class="expanded">
-                            <ul>
-                                <li><a href="#">Типографии <sup><small>(12)</small></sup></a></li>
-                                <li><a href="#">Дизайнеры <sup><small>(12)</small></sup></a></li>
-                                <li><a href="#">Поклейщики <sup><small>(12)</small></sup></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="aside-accordion">
-                        <span class="title">Цена (грн/мес)</span>
-                        <div class="expanded">
-                            <div class="range-slider">
-                                <div class="slider-range">
-                                    <input type="text" class="min_max_currentmin_currentmax" value="0/11000/1600/10000">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="aside-accordion">
-                        <span class="title">Область поклейки</span>
-                        <div class="expanded">
-                            <ul class="list-checkbox">
-                                <li>
-                                    <label class="checkbox">
-                                        <input type="checkbox" name="n">
-                                        <span><i class="fas fa-check"></i> Полная обклейка</span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label class="checkbox">
-                                        <input type="checkbox" name="n" checked>
-                                        <span><i class="fas fa-check"></i> Частичная обклейка</span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label class="checkbox">
-                                        <input type="checkbox" name="n">
-                                        <span><i class="fas fa-check"></i> Навесная реклама</span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label class="checkbox">
-                                        <input type="checkbox" name="n">
-                                        <span><i class="fas fa-check"></i> Реклама в салоне</span>
-                                    </label>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="aside-accordion">
-                        <span class="title">пробег (км/мес)</span>
-                        <div class="expanded">
-                            <div class="range-slider">
-                                <div class="slider-range">
-                                    <input type="text" class="min_max_currentmin_currentmax" value="0/2000/300/1000">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <input class="submit" type="submit" value="применить">
-                </fieldset>
-            </form>
-        </div>
+        <?= \app\widgets\AdvertisementFilter::widget() ?>
+
         <div class="content">
-            <h1>Название категории</h1>
+            <h1><?= $catInfo->title; ?></h1>
             <div class="holder-filters">
                 <span class="filters">фильтры</span>
                 <div class="block-filter">
@@ -177,232 +69,60 @@ use yii\helpers\Url;
                 </div>
             </div>
             <ul class="list-announcements">
-                <li class="premium">
-                    <a class="like-star" href="#">&#160;</a>
-                    <a href="#">
-                        <div class="holder-img">
-                            <img src="<?= Url::home(true); ?>/images/img-1.jpg" alt="img">
-                        </div>
-                        <div class="holder-text">
-                            <div class="group">
-                                <div class="topic">
-                                    <span>Заголовок объявления</span>
-                                    <p>Транспорт</p>
-                                </div>
-                                <strong>500 <sup><small>грн/мес</small></sup></strong>
-                            </div>
-                            <div class="overflow-text">
-                                <span class="region"><em>Харьков</em>, <em>Немышлянский район</em></span>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In finibus, urna eu blandit lacinia, mi metus malesuada mauris, nec tempor eros purus quis ipsum. Pellentesque et leo mollis, imperdiet diam eget, ornare justo. Aenean finibus suscipit scelerisque... Lorem ipsum dolor sit amet, consectetur adipiscing elit. In finibus, urna eu blandit lacinia, mi metus malesuada mauris, nec tempor eros purus quis ipsum. Pellentesque et leo mollis, imperdiet diam eget, ornare justo. Aenean finibus suscipit scelerisque...</p>
-                            </div>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a class="like-star" href="#">&#160;</a>
-                    <a href="#">
-                        <div class="holder-img">
-                            <img src="<?= Url::home(true); ?>/images/img-2.jpg" alt="img">
-                        </div>
-                        <div class="holder-text">
-                            <div class="group">
-                                <div class="topic">
-                                    <span>Заголовок объявления</span>
-                                    <p>Транспорт</p>
-                                </div>
-                                <strong>500 <sup><small>грн/мес</small></sup></strong>
-                            </div>
-                            <div class="overflow-text">
-                                <span class="region"><em>Харьков</em>, <em>Немышлянский район</em></span>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In finibus, urna eu blandit lacinia, mi metus malesuada mauris, nec tempor eros purus quis ipsum. Pellentesque et leo mollis, imperdiet diam eget, ornare justo. Aenean finibus suscipit scelerisque...</p>
-                            </div>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a class="like-star" href="#">&#160;</a>
-                    <a href="#">
-                        <div class="holder-img">
-                            <img src="<?= Url::home(true); ?>/images/img-3.jpg" alt="img">
-                        </div>
-                        <div class="holder-text">
-                            <div class="group">
-                                <div class="topic">
-                                    <span>Заголовок объявления</span>
-                                    <p>Транспорт</p>
-                                </div>
-                                <strong>500 <sup><small>грн/мес</small></sup></strong>
-                            </div>
-                            <div class="overflow-text">
-                                <span class="region"><em>Харьков</em>, <em>Немышлянский район</em></span>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In finibus, urna eu blandit lacinia, mi metus malesuada mauris, nec tempor eros purus quis ipsum. Pellentesque et leo mollis, imperdiet diam eget, ornare justo. Aenean finibus suscipit scelerisque...</p>
-                            </div>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a class="like-star" href="#">&#160;</a>
-                    <a href="#">
-                        <div class="holder-img">
-                            <img src="<?= Url::home(true); ?>/images/img-1.jpg" alt="img">
-                        </div>
-                        <div class="holder-text">
-                            <div class="group">
-                                <div class="topic">
-                                    <span>Заголовок объявления</span>
-                                    <p>Транспорт</p>
-                                </div>
-                                <strong>500 <sup><small>грн/мес</small></sup></strong>
-                            </div>
-                            <div class="overflow-text">
-                                <span class="region"><em>Харьков</em>, <em>Немышлянский район</em></span>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In finibus, urna eu blandit lacinia, mi metus malesuada mauris, nec tempor eros purus quis ipsum. Pellentesque et leo mollis, imperdiet diam eget, ornare justo. Aenean finibus suscipit scelerisque...</p>
-                            </div>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a class="like-star" href="#">&#160;</a>
-                    <a href="#">
-                        <div class="holder-img">
-                            <img src="<?= Url::home(true); ?>/images/img-2.jpg" alt="img">
-                        </div>
-                        <div class="holder-text">
-                            <div class="group">
-                                <div class="topic">
-                                    <span>Заголовок объявления</span>
-                                    <p>Транспорт</p>
-                                </div>
-                                <strong>500 <sup><small>грн/мес</small></sup></strong>
-                            </div>
-                            <div class="overflow-text">
-                                <span class="region"><em>Харьков</em>, <em>Немышлянский район</em></span>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In finibus, urna eu blandit lacinia, mi metus malesuada mauris, nec tempor eros purus quis ipsum. Pellentesque et leo mollis, imperdiet diam eget, ornare justo. Aenean finibus suscipit scelerisque...</p>
-                            </div>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a class="like-star" href="#">&#160;</a>
-                    <a href="#">
-                        <div class="holder-img">
-                            <img src="<?= Url::home(true); ?>/images/img-3.jpg" alt="img">
-                        </div>
-                        <div class="holder-text">
-                            <div class="group">
-                                <div class="topic">
-                                    <span>Заголовок объявления</span>
-                                    <p>Транспорт</p>
-                                </div>
-                                <strong>500 <sup><small>грн/мес</small></sup></strong>
-                            </div>
-                            <div class="overflow-text">
-                                <span class="region"><em>Харьков</em>, <em>Немышлянский район</em></span>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In finibus, urna eu blandit lacinia, mi metus malesuada mauris, nec tempor eros purus quis ipsum. Pellentesque et leo mollis, imperdiet diam eget, ornare justo. Aenean finibus suscipit scelerisque...</p>
-                            </div>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a class="like-star" href="#">&#160;</a>
-                    <a href="#">
-                        <div class="holder-img">
-                            <img src="<?= Url::home(true); ?>/images/img-1.jpg" alt="img">
-                        </div>
-                        <div class="holder-text">
-                            <div class="group">
-                                <div class="topic">
-                                    <span>Заголовок объявления</span>
-                                    <p>Транспорт</p>
-                                </div>
-                                <strong>500 <sup><small>грн/мес</small></sup></strong>
-                            </div>
-                            <div class="overflow-text">
-                                <span class="region"><em>Харьков</em>, <em>Немышлянский район</em></span>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In finibus, urna eu blandit lacinia, mi metus malesuada mauris, nec tempor eros purus quis ipsum. Pellentesque et leo mollis, imperdiet diam eget, ornare justo. Aenean finibus suscipit scelerisque...</p>
-                            </div>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a class="like-star" href="#">&#160;</a>
-                    <a href="#">
-                        <div class="holder-img">
-                            <img src="<?= Url::home(true); ?>/images/img-2.jpg" alt="img">
-                        </div>
-                        <div class="holder-text">
-                            <div class="group">
-                                <div class="topic">
-                                    <span>Заголовок объявления</span>
-                                    <p>Транспорт</p>
-                                </div>
-                                <strong>500 <sup><small>грн/мес</small></sup></strong>
-                            </div>
-                            <div class="overflow-text">
-                                <span class="region"><em>Харьков</em>, <em>Немышлянский район</em></span>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In finibus, urna eu blandit lacinia, mi metus malesuada mauris, nec tempor eros purus quis ipsum. Pellentesque et leo mollis, imperdiet diam eget, ornare justo. Aenean finibus suscipit scelerisque...</p>
-                            </div>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a class="like-star" href="#">&#160;</a>
-                    <a href="#">
-                        <div class="holder-img">
-                            <img src="<?= Url::home(true); ?>/images/img-3.jpg" alt="img">
-                        </div>
-                        <div class="holder-text">
-                            <div class="group">
-                                <div class="topic">
-                                    <span>Заголовок объявления</span>
-                                    <p>Транспорт</p>
-                                </div>
-                                <strong>500 <sup><small>грн/мес</small></sup></strong>
-                            </div>
-                            <div class="overflow-text">
-                                <span class="region"><em>Харьков</em>, <em>Немышлянский район</em></span>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In finibus, urna eu blandit lacinia, mi metus malesuada mauris, nec tempor eros purus quis ipsum. Pellentesque et leo mollis, imperdiet diam eget, ornare justo. Aenean finibus suscipit scelerisque...</p>
-                            </div>
-                        </div>
-                    </a>
-                </li>
+                <?php
+                foreach ($models as $model) {
+                    $img = Url::home(true).'/'.$model->images[0]['image_name'];
+                    $categories = Yii::createObject(Categories::className());
+                    $categories->category = $model->category_id;
+                    $cat  = $categories->category;
+
+                    ?>
+                            <li>
+                                <a class="like-star" href="#">&#160;</a>
+                                <a href="<?= Url::to('/advertisement/page/'.$model->id)?>">
+                                    <div class="holder-img">
+                                        <?php if(! empty($model->images)): ?>
+                                            <img src="<?= $img ?>" alt="<?= $model->images[0]['alt']?>">
+                                        <?php endif?>
+                                    </div>
+                                    <div class="holder-text">
+                                        <div class="group">
+                                            <div class="topic">
+                                                <span><?= $model->title ?></span>
+                                                <p><?= $cat->title; ?></p>
+                                            </div>
+                                            <strong><?= $model->pricePerMonth; ?> <sup><small><?= Yii::t('app', 'грн/мес')?></small></sup></strong>
+                                        </div>
+                                        <div class="overflow-text">
+                                            <span class="region"><em>Харьков</em>, <em>Немышлянский район</em></span>
+                                            <p><?= TextExcerption::excerptText($model->description, 110); ?></p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                    <?php
+                }
+                ?>
             </ul>
 
 
-            <div class="holder-pagination">
-                <a class="prev-page" href="#">
-                    <i class="fas fa-arrow-left"></i>
-                </a>
-                <ul class="pagination">
-                    <li>
-                        <a href="#">1</a>
-                    </li>
-                    <li class="active">
-                        <a href="#">2</a>
-                    </li>
-                    <li>
-                        <a href="#">3</a>
-                    </li>
-                    <li>
-                        <a href="#">4</a>
-                    </li>
-                    <li>
-                        <a href="#">5</a>
-                    </li>
-                    <li>
-                        <a href="#">6</a>
-                    </li>
-                    <li>
-                        <a href="#">7</a>
-                    </li>
-                    <li>
-                        <a href="#">8</a>
-                    </li>
-                </ul>
-                <a class="next-page" href="#">
-                    <i class="fas fa-arrow-right"></i>
-                </a>
-            </div>
+            <?php if (! empty($pages) && $pages->pageSize < $pages->totalCount):?>
+                <div class="holder-pagination">
+                    <a class="prev-page" href="#">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                    <?php
+                    if(! empty( $pages) ) {
+                        echo LinkPager::widget([
+                            'pagination' => $pages,
+                        ]);
+                    }
+                    ?>
+                    <a class="next-page" href="#">
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            <?php endif; ?>
         </div>
     </div>
 </div>

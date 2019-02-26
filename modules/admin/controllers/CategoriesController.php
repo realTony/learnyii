@@ -109,7 +109,7 @@ class CategoriesController extends Controller
         $model->is_blog = 0;
         $model->updated_at = date('Y-m-d H:i:s');
 
-        $parentCat = ArrayHelper::map($model->find()->where(['is_blog' => 0])->all(), 'id', 'title');
+        $parentCat = ArrayHelper::map($model->find()->where(['is_blog' => 0, 'parent_id' => null])->all(), 'id', 'title');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -133,6 +133,25 @@ class CategoriesController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $model->updated_at = date('Y-m-d H:i:s');
+        $parentCat = ArrayHelper::map($model->find()->all(), 'id', 'title');
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
+
+        return $this->render('update', [
+            'model' => $model,
+            'data' => [
+                'catList' => $parentCat
+            ]
+        ]);
+    }
+
+    public function actionUpdateAdv($id)
+    {
+        $model = $this->findModel($id);
+        $model->is_blog = 0;
         $model->updated_at = date('Y-m-d H:i:s');
         $parentCat = ArrayHelper::map($model->find()->all(), 'id', 'title');
 

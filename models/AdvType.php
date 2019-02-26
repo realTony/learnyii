@@ -6,20 +6,20 @@ use Yii;
 use yii\helpers\ArrayHelper;
 
 /**
- * This is the model class for table "{{%sticking_areas}}".
+ * This is the model class for table "{{%adv_type}}".
  *
  * @property int $id
- * @property string $title
+ * @property string $name
  * @property string $translation
  */
-class StickingAreas extends \yii\db\ActiveRecord
+class AdvType extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return '{{%sticking_areas}}';
+        return '{{%adv_type}}';
     }
 
     /**
@@ -28,7 +28,7 @@ class StickingAreas extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'translation'], 'string', 'max' => 255],
+            [['name', 'translation'], 'string', 'max' => 255],
         ];
     }
 
@@ -39,23 +39,23 @@ class StickingAreas extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'title' => Yii::t('app', 'Title'),
+            'name' => Yii::t('app', 'Name'),
             'translation' => Yii::t('app', 'Translation'),
         ];
     }
 
     /**
      * {@inheritdoc}
-     * @return StickingAreasQuery the active query used by this AR class.
+     * @return AdvTypeQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new StickingAreasQuery(get_called_class());
+        return new AdvTypeQuery(get_called_class());
     }
 
-    public function getStickingAreas()
+    public function getTypes()
     {
-        $res =  ArrayHelper::map($this->find()->all(),'id', 'title');
+        $res = ArrayHelper::map($this->find()->all(), 'id', 'name');
         return $res;
     }
 }

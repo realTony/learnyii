@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Tony
- * Date: 30.01.2019
- * Time: 3:08
- */
 
 namespace app\components;
 
@@ -20,15 +14,15 @@ class TextExcerption
 
         if(strlen($text) > $max_length) {
             if($keep_word) {
-                $text = substr($text, 0, $max_length + 1);
+                $text = mb_substr($text, 0, $max_length + 1);
 
                 if($last_space = strrpos($text, ' ')) {
-                    $text = substr($text, 0, $last_space);
+                    $text = mb_substr($text, 0, $last_space);
                     $text = rtrim($text);
                     $text .=  $cut_off;
                 }
             } else {
-                $text = substr($text, 0, $max_length);
+                $text = mb_substr($text, 0, $max_length);
                 $text = rtrim($text);
                 $text .=  $cut_off;
             }

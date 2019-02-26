@@ -36,71 +36,37 @@
         </ul>
     {% endif %}
 </div>
-
+{% if posts %}
 <div class="holder-section fon-grey relative">
     <div class="container">
         <div class="title-text">
             <h1>НОВЫЕ ОБЪЯВЛЕНИЯ</h1>
-            <a class="old-ads" href="#">ВСЕ ОБЪЯВЛЕНИЯ</a>
+            <a class="old-ads" href="{{ url.to(['/advertisement']) }}">{{ t('app', 'ВСЕ ОБЪЯВЛЕНИЯ') }}</a>
         </div>
         <div class="slider-announcements">
             <ul class="list-announcements">
-                <li class="premium">
-                    <a class="like-star" href="#">&#160;</a>
-                    <a href="#">
-                        <div class="holder-img">
-                            <img src="images/img-1.jpg" alt="img">
-                        </div>
-                        <div class="holder-text">
-                            <span>Заголовок объявления</span>
-                            <p>Транспорт</p>
-                            <strong>500 <sup><small>грн/мес</small></sup></strong>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a class="like-star" href="#">&#160;</a>
-                    <a href="#">
-                        <div class="holder-img">
-                            <img src="images/img-2.jpg" alt="img">
-                        </div>
-                        <div class="holder-text">
-                            <span>Заголовок объявления</span>
-                            <p>Транспорт</p>
-                            <strong>500 <sup><small>грн/мес</small></sup></strong>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a class="like-star" href="#">&#160;</a>
-                    <a href="#">
-                        <div class="holder-img">
-                            <img src="images/img-3.jpg" alt="img">
-                        </div>
-                        <div class="holder-text">
-                            <span>Заголовок объявления</span>
-                            <p>Транспорт</p>
-                            <strong>500 <sup><small>грн/мес</small></sup></strong>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a class="like-star" href="#">&#160;</a>
-                    <a href="#">
-                        <div class="holder-img">
-                            <img src="images/img-4.jpg" alt="img">
-                        </div>
-                        <div class="holder-text">
-                            <span>Заголовок объявления</span>
-                            <p>Транспорт</p>
-                            <strong>500 <sup><small>грн/мес</small></sup></strong>
-                        </div>
-                    </a>
-                </li>
+                {% for item in posts %}
+                    <li >
+                        <a class="like-star" href="#">&#160;</a>
+                        <a href="#">
+                            <div class="holder-img">
+                                {% if item.images[0].image_name  %}
+                                <img src="{{ item.images[0].image_name }}" alt="{{ item.images[0].alt }}">
+                                {% endif %}
+                            </div>
+                            <div class="holder-text">
+                                <span>{{ item.title }}</span>
+                                <p>Транспорт</p>
+                                <strong>{{ item.pricePerMonth }} <sup><small>{{ t('app', 'грн/мес') }}</small></sup></strong>
+                            </div>
+                        </a>
+                    </li>
+                {% endfor %}
             </ul>
         </div>
     </div>
 </div>
+{% endif %}
 {% if promo %}
     <div class="holder-section relative">
     <div class="container">

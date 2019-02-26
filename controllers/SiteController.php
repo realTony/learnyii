@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\AdvertisementPost;
 use app\models\ImageUpload;
 use app\models\Pages;
 use app\modules\admin\models\Categories;
@@ -88,6 +89,8 @@ class SiteController extends Controller
         $model = Yii::createObject(Pages::className())->find()->where(['link' => 'main'])->one();
         $categories = Yii::createObject(Categories::className());
         $news = Yii::createObject(BlogPosts::className());
+        $advertisement = (Yii::createObject(AdvertisementPost::className()))
+            ->find()->orderBy('isPremium DESC, published_at DESC')->limit(4)->all();
 
         $model->options = json_decode($model->options);
         $model->translation = json_decode($model->translation);
@@ -109,6 +112,7 @@ class SiteController extends Controller
                 'model' => $model,
                 'slider' => $slider,
                 'adverts' => $adverts,
+                'posts' => $advertisement,
                 'news' => $categories->category,
                 'promo' => $promo
         ]);
