@@ -1,5 +1,7 @@
 <?php
 
+use app\widgets\SearchAdverts;
+use app\widgets\SimilarNews;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\Breadcrumbs;
@@ -7,34 +9,7 @@ use yii\widgets\Breadcrumbs;
 $options = json_decode($model->options);
 $this->params['breadcrumbs'] = $breadcrumbs;
 ?>
-<div class="form-search">
-    <div class="container">
-        <a class="search-query" href="#">Поисковый запрос</a>
-        <div class="holder-form-search">
-            <span class="bg-search"></span>
-            <form>
-                <fieldset>
-                    <a class="closed-search-form" href="#"></a>
-                    <div class="search-input">
-                        <input type="text" placeholder="Поисковый запрос">
-                    </div>
-                    <div class="category-input">
-                        <select name="dropdown" class="dropdown">
-                            <option>Категория</option>
-                            <option>Категория1</option>
-                            <option>Категория2</option>
-                            <option>Категория3</option>
-                        </select>
-                    </div>
-                    <div class="city-input ui-widget">
-                        <input class="tags-city" type="text" placeholder="Город">
-                    </div>
-                    <input class="btn-search" type="submit" value="искать">
-                </fieldset>
-            </form>
-        </div>
-    </div>
-</div>
+<?= SearchAdverts::widget() ?>
 <div class="holder-crumbs">
     <div class="container">
         <div class="holder-bread-crumbs">
@@ -59,37 +34,13 @@ $this->params['breadcrumbs'] = $breadcrumbs;
 <div class="container">
     <div class="group-content revers">
         <div class="aside-right">
-            <div class="aside">
-                <span class="aside-title">Похожие новости</span>
-                <div class="aside-content">
-                    <ul class="similar-news">
-                        <li>
-                            <a href="#"><?= $model->title; ?></a>
-                            <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In finibus, urna eu blandit lacinia, mi metus...</span>
-                        </li>
-                        <li>
-                            <a href="#">Заголовок похожей статьи</a>
-                            <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In finibus, urna eu blandit lacinia, mi metus...</span>
-                        </li>
-                        <li>
-                            <a href="#">Заголовок похожей статьи</a>
-                            <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In finibus, urna eu blandit lacinia, mi metus...</span>
-                        </li>
-                        <li>
-                            <a href="#">Заголовок похожей статьи</a>
-                            <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In finibus, urna eu blandit lacinia, mi metus...</span>
-                        </li>
-                        <li>
-                            <a href="#">Заголовок похожей статьи</a>
-                            <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In finibus, urna eu blandit lacinia, mi metus...</span>
-                        </li>
-                        <li>
-                            <a href="#">Заголовок похожей статьи</a>
-                            <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In finibus, urna eu blandit lacinia, mi metus...</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+        <?= SimilarNews::widget([
+                'category' => $model->category_id,
+                'currentId' => $model->id,
+                'options' => [
+
+                ]
+        ]);?>
         </div>
         <div class="content">
             <div class="title-text">

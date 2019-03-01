@@ -9,104 +9,101 @@
 namespace app\widgets;
 
 
+use app\models\StickingAreas;
 use Yii;
 use yii\base\Widget;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\ActiveForm;
+use \app\modules\admin\models\Categories;
 
 class AdvertisementFilter extends Widget
 {
     public $options;
+    public $filter;
 
     public function run()
     {
+        $cat = new Categories();
+        $catList = $cat->advList;
         ?>
             <div class="aside-left">
-                <?php $form = ActiveForm::begin(); ?>
-<!--                <form class="holder-aside-left">-->
+                <?php $form = ActiveForm::begin([
+                        'options' => [
+                                'class' => 'holder-aside-left'
+                        ]
+                ]);
+                $stickingAreas = (new StickingAreas())->find()->all();
+                $stickingAreas = ArrayHelper::map($stickingAreas, 'id', 'title');
+                ?>
                 <fieldset>
-                    <div class="aside-accordion">
-                        <span class="title">Транспорт</span>
-                        <div class="expanded">
-                            <ul>
-                                <li><a href="#">Легковые автомобили <sup><small>(12)</small></sup></a></li>
-                                <li><a href="#">Мото <sup><small>(12)</small></sup></a></li>
-                                <li><a href="#">Прицепы <sup><small>(12)</small></sup></a></li>
-                                <li><a href="#">Грузовики <sup><small>(12)</small></sup></a></li>
-                                <li><a href="#">Автобусы <sup><small>(12)</small></sup></a></li>
-                                <li><a href="#">Велосипеды <sup><small>(12)</small></sup></a></li>
-                                <li><a href="#">Другое <sup><small>(12)</small></sup></a></li>
-                            </ul>
+                    <?php foreach ($catList as $item):?>
+                        <div class="aside-accordion">
+                            <span class="title"><?= $item['title'] ?></span>
+                            <div class="expanded">
+                                <ul>
+                                    <?php foreach ($item['subList'] as $li => $val ):?>
+                                    <?php
+                                        $cat = new Categories();
+                                        $cat->category = $li;
+                                        $quantity = $cat->advertisementCount;
+
+                                    ?>
+                                        <li><a href="<?= Url::to(['/'.$cat->category['link']]) ?>"><?= $val ?> <sup><small>(<?= $quantity ?>)</small></sup></a></li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </div>
                         </div>
-                    </div>
+                    <?php endforeach; ?>
                     <div class="aside-accordion">
-                        <span class="title">Реклама</span>
-                        <div class="expanded">
-                            <ul>
-                                <li><a href="#">Полная обклейка <sup><small>(12)</small></sup></a></li>
-                                <li><a href="#">Частичная обклейка <sup><small>(12)</small></sup></a></li>
-                                <li><a href="#">Навесная реклама <sup><small>(12)</small></sup></a></li>
-                                <li><a href="#">Реклама в салоне <sup><small>(12)</small></sup></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="aside-accordion">
-                        <span class="title">Исполнители</span>
-                        <div class="expanded">
-                            <ul>
-                                <li><a href="#">Типографии <sup><small>(12)</small></sup></a></li>
-                                <li><a href="#">Дизайнеры <sup><small>(12)</small></sup></a></li>
-                                <li><a href="#">Поклейщики <sup><small>(12)</small></sup></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="aside-accordion">
-                        <span class="title">Цена (грн/мес)</span>
+                        <span class="title"><?= Yii::t('app', 'Цена (грн/мес)')?></span>
                         <div class="expanded">
                             <div class="range-slider">
                                 <div class="slider-range">
-                                    <input type="text" class="min_max_currentmin_currentmax" value="0/11000/1600/10000">
+                                    <input type="text" class="min_max_currentmin_currentmax" value="0/11000/<?= $this->filter['minPrice'].'/'.$this->filter['maxPrice']?>">
+                                    <?= $form->field($this->filter, 'minPrice', ['options' => ['id' => 'minDistance']])
+                                        ->label(false)->textInput(['type'=> 'hidden', 'class' => 'minVal', 'name' => 'minPrice', 'value' => $this->filter['minPrice']])?>
+                                    <?= $form->field($this->filter, 'maxPrice', ['options' => ['id' => 'maxDistance']])
+                                        ->label(false)->textInput(['type'=> 'hidden', 'class' => 'maxVal', 'name' => 'maxPrice','value' => $this->filter['maxPrice']])?>
+
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="aside-accordion">
-                        <span class="title">Область поклейки</span>
+                        <span class="title"><?= Yii::t('app', 'Область поклейки') ?></span>
                         <div class="expanded">
-                            <ul class="list-checkbox">
-                                <li>
-                                    <label class="checkbox">
-                                        <input type="checkbox" name="n">
-                                        <span><i class="fas fa-check"></i> Полная обклейка</span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label class="checkbox">
-                                        <input type="checkbox" name="n" checked>
-                                        <span><i class="fas fa-check"></i> Частичная обклейка</span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label class="checkbox">
-                                        <input type="checkbox" name="n">
-                                        <span><i class="fas fa-check"></i> Навесная реклама</span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label class="checkbox">
-                                        <input type="checkbox" name="n">
-                                        <span><i class="fas fa-check"></i> Реклама в салоне</span>
-                                    </label>
-                                </li>
-                            </ul>
+                            <?=
+                            $form->field($this->filter, 'stickingArea', [
+                                    'options' => [
+                                            'tag' => 'ul',
+                                            'class' => 'list-checkbox'
+                                    ]
+                            ])
+                                ->label(false)
+                                ->checkboxList($stickingAreas, ['item' => function($index, $label, $name, $checked, $value){
+                                    $checkedLabel = $checked ? 'checked' : '';
+                                    $inputId = str_replace(['[', ']'], ['', ''], $name) . '_' . $index;
+
+                                    return "<li><label  class='checkbox' for=$inputId>
+                                    <input type='checkbox' name=$name value=$value id=$inputId $checkedLabel>
+                                    <span><i class=\"fas fa-check\"></i> $label </span>
+                                    </label></li>";
+                                }, 'name' => 'stickingArea' ]);
+                            ?>
                         </div>
                     </div>
                     <div class="aside-accordion">
-                        <span class="title">пробег (км/мес)</span>
+                        <span class="title"><?= Yii::t('app', 'пробег (км/мес)')?></span>
                         <div class="expanded">
                             <div class="range-slider">
                                 <div class="slider-range">
-                                    <input type="text" class="min_max_currentmin_currentmax" value="0/2000/300/1000">
+                                    <?= $form->field($this->filter, 'minDistance', ['options' => ['id' => 'minDistance']])
+                                        ->label(false)->textInput(['type'=> 'hidden', 'class' => 'minVal', 'name' => 'minDistance', 'value' => $this->filter['minDistance']]) ?>
+                                    <?= $form->field($this->filter, 'maxDistance', ['options' => ['id' => 'maxDistance']])
+                                        ->label(false)->textInput(['type'=> 'hidden', 'class' => 'maxVal', 'name' => 'maxDistance', 'value' => $this->filter['maxDistance']]) ?>
+                                    <input type="text" class="min_max_currentmin_currentmax" value="0/2000/<?= $this->filter['minDistance'].'/'.$this->filter['maxDistance']?>">
                                 </div>
                             </div>
                         </div>
@@ -114,7 +111,6 @@ class AdvertisementFilter extends Widget
                     <?= Html::submitButton(Yii::t('app', 'Применить'), ['class' => 'submit']); ?>
                 </fieldset>
                 <?php ActiveForm::end(); ?>
-<!--            </form>-->
             </div>
         <?php
     }

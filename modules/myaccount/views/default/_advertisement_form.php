@@ -93,10 +93,10 @@ $types  =  $types->types;
                     <hr>
                     <ul class="list-add-del">
                         <li>
-                            <?= $form->field($model, 'city', ['options' => ['class' => 'holder-input', 'tag' => 'div']])
+                            <?= $form->field($model, 'city[]', ['options' => ['class' => 'holder-input', 'tag' => 'div']])
                                 ->label(false)
                                 ->textInput([ 'maxlength' => true, 'placeholder' => Yii::t('app', 'Город'), 'class' => 'input tags-city']) ?>
-                            <?= $form->field($model, 'city_district',
+                            <?= $form->field($model, 'city_district[]',
                                 ['options' => ['class' => 'holder-input', 'tag' => 'div'], 'template' => '<a class="btn-change add-input" href="#"></a>{input}{error}'])
                                 ->label(false)
                                 ->textInput([ 'maxlength' => true, 'placeholder' => Yii::t('app', 'Район'), 'class' => 'input']) ?>

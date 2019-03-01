@@ -112,9 +112,14 @@ class DefaultController extends Controller
             ['label' => Yii::t('app', 'Создать объявление')],
         ];
 
+        if(Yii::$app->request->post()) {
+            $post = Yii::$app->request->post();
+            $model->cities = (! empty($post['AdvertisementPost']['city']) )? $post['AdvertisementPost']['city'] : [];
+            $model->district = (! empty($post['AdvertisementPost']['city_district']) )? $post['AdvertisementPost']['city_district'] : [];
+        }
 
         if( $model->load(Yii::$app->request->post()) && $id = $model->createAdvertisement() ){
-            return $this->redirect(['posts']);
+            return $this->redirect(['myaccount/posts']);
         }
 
         return $this->render('_advertisement_form', [

@@ -32,6 +32,7 @@ class AdvertisementPost extends \yii\db\ActiveRecord
 {
     use ImagesTrait;
     use StickingAreasTrait;
+    use CitiesTrait;
 
     public $city;
     public $city_district;
@@ -115,7 +116,6 @@ class AdvertisementPost extends \yii\db\ActiveRecord
     {
         $user = \Yii::$app->user->id;
         $this->authorId = $user;
-
         $this->image_items = UploadedFile::getInstances($this, 'image_items');
 
         return parent::beforeValidate();
@@ -126,10 +126,6 @@ class AdvertisementPost extends \yii\db\ActiveRecord
         if(! $this->validate()) {
             return false;
         } else {
-            $cities = new Cities();
-            $districts = new CityRegions();
-            $advCityRegions = new AdvertiseCitiesRegions();
-
 
             if($this->save()) {
 
@@ -173,6 +169,25 @@ class AdvertisementPost extends \yii\db\ActiveRecord
                     $imageModel->save();
 
                 }
+                $i = 0;
+                foreach ($this->city as $city) {
+                    $cities = new Cities();
+                    $districts = new CityRegions();
+
+                    $advCityRegions = new AdvertiseCitiesRegions();
+                    $cityId = $cities->find()->where(['like', 'name', $city])->one();
+                    $districtId = 0;
+
+                    if(! empty($this->city_district[$i])) {
+                        $districtId = $districts->find()->where(['like', 'region', $this->city_district[$i]])->one();
+                    }
+
+                    $advCityRegions->city_id = $cityId['id'];
+                    $advCityRegions->advertise_id = $this->id;
+                    $advCityRegions->region_id = $districtId['id'];
+
+                    $i++;
+                }
 
             } else {
                return false;
@@ -184,5 +199,25 @@ class AdvertisementPost extends \yii\db\ActiveRecord
     public function getAdvCount()
     {
         return $this->find()->where(['authorId' => Yii::$app->user->id])->count();
+    }
+
+    public function setCities($cities)
+    {
+        $this->city = $cities;
+    }
+
+    public function getCity()
+    {
+        return $this->city;
+    }
+
+    public function setDistrict($district)
+    {
+        $this->city_district = $district;
+    }
+
+    public function getDistrict()
+    {
+        return $this->city_district;
     }
 }

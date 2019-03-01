@@ -238,8 +238,25 @@ $(document).ready(function(){
         slidesToScroll: 1
     });
 
+    $('.prev-page').on('click', function (e) {
+       e.preventDefault();
+       e.stopPropagation();
+       $('.pagination').find('.prev > a').trigger('click');
+    });
 
+    $('.next-page').on('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        $('.pagination').find('.next > a').trigger('click');
+    });
 
+    $('#sortingForm').find('input').on('blur', function (e) {
+        $('#sortingForm').trigger('submit');
+    });
+
+    $('#sortingForm').find('select').on('change', function (e) {
+        $('#sortingForm').trigger('submit');
+    });
     // popp-form
     $(".forgot").click(function(){
         $('.for-login, .form-recovery').addClass("active");
@@ -303,9 +320,15 @@ $(document).ready(function(){
     $(document).on('click','.btn-change', function(e){
         e.preventDefault();
         var thisEl = $(this);
+        var parents = {
+          city: $('#advertisementpost-city'),
+          district: $('#advertisementpost-city_district')
+        };
+        var cityName = parents.city.attr('name');
+        var districtName = parents.district.attr('name');
         if($(this).hasClass('add-input')){
             var numsList = $('.list-add-del');
-            lastNum = '<li><div class="holder-input"><input class="input" type="text" placeholder="Город"></div><div class="holder-input"><a class="btn-change add-input" href="#"></a><input class="input" type="text" placeholder="Район"></div></li>';
+            lastNum = '<li><div class="holder-input"><input class="input" type="text" name="'+cityName+'" placeholder="'+parents.city.attr('placeholder')+'"></div><div class="holder-input"><a class="btn-change add-input" href="#"></a><input class="input" name="'+districtName+'" type="text" placeholder="'+parents.district.attr('placeholder')+'"></div></li>';
             numsList.append(lastNum);
             thisEl.removeClass('add-input');
         } else{
@@ -353,9 +376,12 @@ function initUi(){
                 $(this).closest('.range-slider').find('input.to').val(ui.values[1]);
             },
             change: function(event, ui) {
+                var wrapper = $(this).closest('.range-slider');
                 $(ui.handle).html('<span>'+ui.value+'</span>');
-                $(this).closest('.range-slider').find('input.from').val(ui.values[0]);
-                $(this).closest('.range-slider').find('input.to').val(ui.values[1]);
+                wrapper.find('input.from').val(ui.values[0]);
+                wrapper.find('input.to').val(ui.values[1]);
+                wrapper.find('.minVal').val(ui.values[0]);
+                wrapper.find('.maxVal').val(ui.values[1]);
             }
         });
         $( ".ui-slider-handle",_slider).html("<span>"+_slider.slider('values',1)+"</span>");

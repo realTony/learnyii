@@ -98,10 +98,10 @@
                     <a href="{{  url.toRoute('/myaccount/edit') }}"><i class="fas fa-pencil-alt"></i> {{ t('app', 'Редактировать профиль') }}</a>
                 </li>
                 <li>
-                    <a href="#"><i class="fas fa-plus-circle"></i> Создать объявление</a>
+                    <a href="{{  url.toRoute('/myaccount/create') }}"><i class="fas fa-plus-circle"></i> {{ t('app', 'Создать объявление') }}</a>
                 </li>
-                <li class="active">
-                    <a href="#"><i class="fas fa-tags"></i> Мои объявления<sup><small>(12)</small></sup></a>
+                <li>
+                    <a href="{{  url.toRoute('/myaccount/posts') }}"><i class="fas fa-tags"></i> {{ t('app', 'Мои объявления') }}<sup><small>(12)</small></sup></a>
                 </li>
                 <li>
                     <a href="#"><i class="fas fa-star"></i> Избранное</a>

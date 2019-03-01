@@ -76,15 +76,18 @@ use ymaker\social\share\widgets\SocialShare;
                     </div>
                     <div class="item">
                         <div class="holder-block">
-                            <strong class="heading">Районы города</strong>
+                            <strong class="heading"><?= Yii::t('app', 'Районы города') ?></strong>
                             <div class="expanded">
-                                <span class="title">Районы города</span>
+                                <span class="title"><?= Yii::t('app', 'Районы города') ?></span>
+                                <?php
+                                    if(! empty($model->cityNames) && ! empty($model->districtNames)):
+                                ?>
                                 <ul class="address-list">
-                                    <li><i class="fas fa-map-marker-alt"></i> Шевченковский</li>
-                                    <li><i class="fas fa-map-marker-alt"></i> Киевский</li>
-                                    <li><i class="fas fa-map-marker-alt"></i> Слободской</li>
-                                    <li><i class="fas fa-map-marker-alt"></i> Основянский</li>
+                                    <?php foreach ( $model->districtNames as $districtName): ?>
+                                        <li><i class="fas fa-map-marker-alt"></i> <?= $districtName ?></li>
+                                    <?php endforeach; ?>
                                 </ul>
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>

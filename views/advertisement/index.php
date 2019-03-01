@@ -1,9 +1,11 @@
 <?php
 
+use app\widgets\SortingForm;
 use yii\helpers\Url;
 use yii\widgets\Breadcrumbs;
 use yii\widgets\LinkPager;
 use app\components\TextExcerption;
+use yii\widgets\Pjax;
 
 $this->params['breadcrumbs'] = $breadcrumbs;
 ?>
@@ -13,8 +15,7 @@ $this->params['breadcrumbs'] = $breadcrumbs;
 <div class="holder-crumbs">
     <div class="container">
         <div class="holder-bread-crumbs">
-            <?php
-            echo Breadcrumbs::widget([
+            <?= Breadcrumbs::widget([
                 'options' => [
                     'class' => 'bread-crumbs'
                 ],
@@ -33,40 +34,21 @@ $this->params['breadcrumbs'] = $breadcrumbs;
         <div class="content">
             <h1><?= Yii::t('app', 'Все объявления')?></h1>
             <div class="holder-filters">
-                <span class="filters">фильтры</span>
+                <span class="filters"><?= Yii::t('app', 'Фильтры')?></span>
                 <div class="block-filter">
 
                 </div>
             </div>
-            <div class="form-content">
-                <form>
-                    <fieldset>
-                        <div class="group">
-                            <div class="holder-input">
-                                <div class="city-input ui-widget">
-                                    <input class="tags-city" type="text" placeholder="Город">
-                                </div>
-                                <div class="city-input ui-widget">
-                                    <input class="district" type="text" placeholder="Район">
-                                </div>
-                            </div>
-                            <div class="category-input">
-                                <select name="dropdown" class="dropdown">
-                                    <option>По возрастанию цены</option>
-                                    <option>По убыванию цены</option>
-                                    <option>По популярности</option>
-                                </select>
-                            </div>
-                        </div>
-                    </fieldset>
-                </form>
-                <div class="holder-view">
-                    <a class="view-list" href="#">
-                        <i class="fas fa-th-large"></i>
-                        <i class="fas fa-list"></i>
-                    </a>
-                </div>
-            </div>
+            <?= SortingForm::widget([
+                'filter' => $filter,
+                'viewButton' => true
+            ])?>
+            <?php Pjax::begin([
+                'id' => 'search-sort',
+                'enablePushState' => false,
+                'timeout' => false,
+                'formSelector' => '#sortingForm'
+            ]) ?>
             <ul class="list-announcements">
                 <?php
                 foreach ($models as $model) {
@@ -102,6 +84,16 @@ $this->params['breadcrumbs'] = $breadcrumbs;
                     <?php
                 }
                 ?>
+                <li>
+                    <a href="#">
+                        <div class="load-more">
+                            <div>
+                                <i class="fas fa-sync-alt"></i>
+                                <span><?= Yii::t('app', 'Загрузить еще 30 объявлений')?></span>
+                            </div>
+                        </div>
+                    </a>
+                </li>
             </ul>
 
 
@@ -122,6 +114,7 @@ $this->params['breadcrumbs'] = $breadcrumbs;
                     </a>
                 </div>
             <?php endif; ?>
+            <?php Pjax::end(); ?>
         </div>
     </div>
 </div>

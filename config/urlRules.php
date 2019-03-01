@@ -31,6 +31,7 @@ return [
     'news/<link>' => 'news/post',
     'uk/news/<link>' => 'news/post',
     'news' => 'news/index',
+    'search' => 'search/index',
     '<link:[A-Za-z0-9_-]+>' => 'site/page',
 
 ];

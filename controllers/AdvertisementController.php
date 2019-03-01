@@ -4,7 +4,10 @@
 namespace app\controllers;
 
 
+use app\models\AdvertisementFilter;
 use app\models\AdvertisementPost;
+use app\models\AdvertisementPostSearch;
+use app\models\AdvSearch;
 use app\models\Profile;
 use app\modules\admin\models\Categories;
 use yii\helpers\Url;
@@ -20,23 +23,28 @@ class AdvertisementController extends Controller
     {
         $model = new AdvertisementPost();
         $advCategories = new Categories();
+        $searchModel = new AdvertisementPostSearch();
+        $filter = new AdvSearch();
+        $dataProvider = $searchModel->searchCat(Yii::$app->request->queryParams);
 
-        $advPosts = $model
-            ->find();
+        if(! empty(Yii::$app->request->queryParams)) {
+            $requested = Yii::$app->request->queryParams;
+            $dataProvider = $searchModel->searchCat($requested);
+        }
+
+        $advPosts = $model;
         $breadcrumbs = ['label' => Yii::t('app', 'Все объявления')];
-        $countQuery = clone $advPosts;
+
         $pages = new Pagination([
-            'totalCount' => $countQuery->count(),
-            'pageSize' => 9,
+            'totalCount' => $dataProvider->getTotalCount(),
+            'pageSize' => $dataProvider->getCount(),
 
         ]);
-
-        $models = $advPosts->offset($pages->offset)
-            ->limit($pages->limit)
-            ->all();
+;
 
         return $this->render('index', [
-            'models' => $models,
+            'models' => $dataProvider->getModels(),
+            'filter' => $filter,
             'pages' => $pages,
             'breadcrumbs' => $breadcrumbs
         ]);
@@ -47,24 +55,28 @@ class AdvertisementController extends Controller
         $user = User::findOne(['id'=>$id]);
         $breadcrumbs = ['label' => Yii::t('app', 'Все объявления пользователя').' '.$user->username];
         $model = new AdvertisementPost();
-        $advPosts = $model
-            ->find()
-            ->where(['authorId' => $user->id]);
+        $searchModel = new AdvertisementPostSearch();
+        $filter = new AdvSearch();
+        $dataProvider = $searchModel->searchUser(Yii::$app->request->queryParams);
 
-        $countQuery = clone $advPosts;
+        if(! empty(Yii::$app->request->queryParams)) {
+            $requested = Yii::$app->request->queryParams;
+            $requested['user_id'] = $user->id;
+            $dataProvider = $searchModel->searchUser($requested);
+        }
+
         $pages = new Pagination([
-            'totalCount' => $countQuery->count(),
-            'pageSize' => 5,
+            'totalCount' => $dataProvider->getTotalCount(),
+            'pageSize' => $dataProvider->getCount(),
 
         ]);
-        $models = $advPosts->offset($pages->offset)
-            ->limit($pages->limit)
-            ->all();
+
 
         return $this->render('user', [
             'breadcrumbs' => $breadcrumbs,
+            'filter' => $filter,
             'user' => $user,
-            'models' => $models,
+            'models' => $dataProvider->getModels(),
             'pages' => $pages,
         ]);
     }
@@ -77,27 +89,47 @@ class AdvertisementController extends Controller
     {
         $model = new AdvertisementPost();
         $advCategories = new Categories();
+        $filter = new AdvSearch();
+        $asideFilter = new AdvertisementFilter();
+        $searchModel = new AdvertisementPostSearch();
         $catId = $advCategories->find()->where(['like', 'link', 'advertisement/'.$name]) ->andWhere(['is_blog' => 0]) ->one();
 
-        $advPosts = $model
-                    ->find()
-                    ->where(['category_id' => $catId]);
+
+        if(! empty(Yii::$app->request->queryParams)) {
+            $requested = Yii::$app->request->queryParams;
+
+            if(Yii::$app->request->isPost) {
+                $post = Yii::$app->request->post();
+                $requested  = array_merge($requested, $post );
+                $asideFilter->minPrice = $requested['minPrice'];
+                $asideFilter->maxPrice = $requested['maxPrice'];
+                $asideFilter->minDistance = $requested['minDistance'];
+                $asideFilter->maxDistance = $requested['maxDistance'];
+                $asideFilter->stickingArea = $requested['stickingArea'];
+            }
+
+            $requested['category_id'] = $catId->id;
+            $dataProvider = $searchModel->searchCat($requested);
+        }
+
+
+        $advPosts = $model;
         $breadcrumbs = [
             ['label' => Yii::t('app', 'Объявления'), 'url' => Url::to('/advertisement')],
             ['label' => Yii::t('app', $catId->title)]
         ];
-        $countQuery = clone $advPosts;
+//        $countQuery = clone $advPosts;
         $pages = new Pagination([
-            'totalCount' => $countQuery->count(),
-            'pageSize' => 9,
+            'totalCount' => $dataProvider->getTotalCount(),
+            'pageSize' => $dataProvider->getCount(),
 
         ]);
-        $models = $advPosts->offset($pages->offset)
-            ->limit($pages->limit)
-            ->all();
+
 
         return $this->render('category', [
-            'models' => $models,
+            'models' => $dataProvider->getModels(),
+            'filter' => $filter,
+            'sideFilter' => $asideFilter,
             'pages' => $pages,
             'breadcrumbs' => $breadcrumbs,
             'catInfo' => $catId
@@ -106,7 +138,46 @@ class AdvertisementController extends Controller
 
     public function actionSubCategory($sub)
     {
-        return $this->render('category');
+        $model = new AdvertisementPost();
+        $advCategories = new Categories();
+        $filter = new AdvSearch();
+        $searchModel = new AdvertisementPostSearch();
+        $catId = $advCategories->find()->where(['like', 'link', $sub]) ->andWhere(['is_blog' => 0]) ->one();
+
+
+        if(! empty(Yii::$app->request->queryParams)) {
+            $requested = Yii::$app->request->queryParams;
+            $requested['subCat_id'] = $catId->id;
+            $dataProvider = $searchModel->searchCat($requested);
+        }
+
+        $advCategories->parent = $catId->id;
+        $parentCat = $advCategories->parents;
+        foreach ($advCategories->children as $id => $title) {
+
+            $advCategories->parent = $id;
+            $parentCat = $advCategories->children;
+        }
+        $breadcrumbs = [
+            ['label' => Yii::t('app', 'Объявления'), 'url' => Url::to('/advertisement')],
+            ['label' => Yii::t('app', $parentCat->title), 'url' => Url::to('/'.$parentCat->link)],
+            ['label' => Yii::t('app', $catId->title)]
+        ];
+//        $countQuery = clone $advPosts;
+        $pages = new Pagination([
+            'totalCount' => $dataProvider->getTotalCount(),
+            'pageSize' => $dataProvider->getCount(),
+
+        ]);
+
+
+        return $this->render('category', [
+            'models' => $dataProvider->getModels(),
+            'filter' => $filter,
+            'pages' => $pages,
+            'breadcrumbs' => $breadcrumbs,
+            'catInfo' => $catId
+        ]);
     }
 
     public function actionAdvertise($id)

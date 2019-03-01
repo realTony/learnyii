@@ -2,6 +2,7 @@
 
 namespace app\modules\admin\models;
 
+use app\models\AdvertisementPost;
 use app\models\ImagesTrait;
 use app\modules\admin\models\LinksExtension;
 use yii\helpers\Url;
@@ -171,5 +172,36 @@ class Categories extends \yii\db\ActiveRecord
         $sub = ArrayHelper::map($sub,'id', 'title');
 
         return $sub;
+    }
+
+    public function getChildren() {
+        $sub = $this->find()->where(['is_blog' => 0])->andWhere(['id' => $this->parent])->all();
+        $parent = $this->find()->andWhere(['id' => $sub[0]->parent_id]);
+
+        return $parent;
+    }
+
+    public function getAdvList()
+    {
+        $advParents = $this->advertisement;
+        $listArray = [];
+
+        foreach ( $advParents as $item => $val) {
+            $this->parent = $item;
+            $arr = [
+                'title' => $val,
+                'subList' => $this->parents,
+            ];
+            $listArray[$item] = $arr;
+        }
+
+        return $listArray;
+    }
+
+    public function getAdvertisementCount()
+    {
+        $cat = $this->category;
+
+        return (new AdvertisementPost())->find()->where(['subCat_id' => $cat->id])->count();
     }
 }

@@ -3,11 +3,13 @@
 use app\components\TextExcerption;
 use app\widgets\FooterInfo;
 use app\widgets\SearchAdverts;
+use app\widgets\SortingForm;
 use app\widgets\UserBar;
 use yii\helpers\Url;
 use yii\widgets\Breadcrumbs;
 use \app\modules\admin\models\Categories;
 use yii\widgets\LinkPager;
+use yii\widgets\Pjax;
 
 $this->params['breadcrumbs'] = $breadcrumbs;
 ?>
@@ -127,41 +129,21 @@ $this->params['breadcrumbs'] = $breadcrumbs;
                 </div>
             </div>
             <div class="holder-filters">
-                <span class="filters">фильтры</span>
+                <span class="filters"><?= Yii::t('app', 'Фильтры')?></span>
                 <div class="block-filter">
 
                 </div>
             </div>
-            <div class="form-content">
-                <form>
-                    <fieldset>
-                        <div class="group">
-                            <div class="holder-input">
-                                <div class="city-input ui-widget">
-                                    <input class="tags-city" type="text" placeholder="Город">
-                                </div>
-                                <div class="city-input ui-widget">
-                                    <input class="district" type="text" placeholder="Район">
-                                </div>
-                            </div>
-                            <div class="category-input">
-                                <select name="dropdown" class="dropdown">
-                                    <option>По возрастанию цены</option>
-                                    <option>По убыванию цены</option>
-                                    <option>По популярности</option>
-                                </select>
-                            </div>
-                        </div>
-                    </fieldset>
-                </form>
-                <div class="holder-view">
-                    <a class="view-list" href="#">
-                        <i class="fas fa-th-large"></i>
-                        <i class="fas fa-list"></i>
-                    </a>
-                </div>
-            </div>
-
+            <?= SortingForm::widget([
+                'filter' => $filter,
+                'viewButton' => true
+            ]) ?>
+            <?php Pjax::begin([
+                'id' => 'search-sort',
+                'enablePushState' => false,
+                'timeout' => false,
+                'formSelector' => '#sortingForm'
+            ]) ?>
             <?php if(! empty($models)): ?>
                 <ul class="list-announcements">
                     <?php foreach ($models as $item): ?>
@@ -186,16 +168,32 @@ $this->params['breadcrumbs'] = $breadcrumbs;
                                             <span><?= $item->title ?></span>
                                             <p><?= $cat->title ?></p>
                                         </div>
-                                        <strong><?= $item->pricePerMonth ?> <sup><small>грн/мес</small></sup></strong>
+                                        <strong><?= $item->pricePerMonth ?> <sup><small><?= Yii::t('app', 'грн/мес')?></small></sup></strong>
                                     </div>
                                     <div class="overflow-text">
-                                        <span class="region"><em>Харьков</em>, <em>Немышлянский район</em></span>
+                                        <?php
+                                        if(! empty($item->cityNames) && ! empty($item->districtNames)):
+                                            ?>
+                                            <?php foreach ( $item->districtNames as $districtName): ?>
+                                            <span class="region"><em><?= $item->cityNames[0] ?></em>, <em><?= $districtName ?></em></span>
+                                        <?php endforeach; ?>
+                                        <?php endif; ?>
                                         <p><?= TextExcerption::excerptText($item->description, 110); ?></p>
                                     </div>
                                 </div>
                             </a>
                         </li>
                     <?php endforeach;?>
+                    <li>
+                        <a href="#">
+                            <div class="load-more">
+                                <div>
+                                    <i class="fas fa-sync-alt"></i>
+                                    <span><?= Yii::t('app', 'Загрузить еще 30 объявлений')?></span>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
                 </ul>
             <?php endif; ?>
             <?php if (! empty($pages) && $pages->pageSize < $pages->totalCount):?>
@@ -215,6 +213,7 @@ $this->params['breadcrumbs'] = $breadcrumbs;
                     </a>
                 </div>
             <?php endif; ?>
+            <?php Pjax::end(); ?>
         </div>
     </div>
 </div>

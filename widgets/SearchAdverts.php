@@ -1,14 +1,10 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Tony
- * Date: 16.02.2019
- * Time: 15:13
- */
 
 namespace app\widgets;
 
 
+use yii\helpers\Html;
+use yii\helpers\Url;
 use Yii;
 use yii\base\Widget;
 use yii\widgets\ActiveForm;
@@ -22,27 +18,30 @@ class SearchAdverts extends Widget
     {
         $model = \Yii::createObject(SiteSearch::className());
         $categories = Yii::createObject(Categories::className());
-        $subList = array_merge([0 => Yii::t('app', 'Категория')], $categories->subAdvertisement);
         $cities = Yii::createObject(Cities::className())->cities;
         ?>
         <div class="form-search">
             <div class="container">
-                <a class="search-query" href="#">Поисковый запрос</a>
+                <a class="search-query" href="#"><?= Yii::t('app', 'Поисковый запрос')?></a>
                 <div class="holder-form-search">
                     <span class="bg-search"></span>
-                    <?php $form = ActiveForm::begin(); ?>
+                    <?php $form = ActiveForm::begin([
+                            'action' => Url::toRoute('/search'),
+                            'method' => 'GET'
+                    ]); ?>
                         <fieldset>
                             <a class="closed-search-form" href="#"></a>
                             <?= $form->field($model,'textRequest', ['options' => ['class' => 'search-input', 'tag' => 'div']])
                                 ->label(false)
-                                ->textInput(['placeholder' => \Yii::t('app', 'Поисковый запрос')])?>
+                                ->textInput(['placeholder' => \Yii::t('app', 'Поисковый запрос'), 'name' => 'textRequest'])?>
                             <?= $form->field($model, 'categoryId', ['options' => ['class' => 'category-input', 'tag' => 'div']])
                                 ->label(false)
-                                ->dropDownList($subList, ['class' => 'dropdown']) ?>
-                            <div class="city-input ui-widget">
-                                <input class="tags-city" type="text" placeholder="Город">
-                            </div>
-                            <input class="btn-search" type="submit" value="искать">
+                                ->dropDownList($categories->subAdvertisement, ['class' => 'dropdown',  'name' => 'categoryId', 'prompt' => Yii::t('app','Категория')]) ?>
+                            <?= $form->field($model,'city', ['options' => ['class' => 'city-input ui-widget', 'tag' => 'div']])
+                                ->label(false)
+                                ->textInput(['class' => 'tags-city', 'name' => 'city', 'placeholder' => Yii::t('app', 'Город')])?>
+
+                            <?= Html::submitButton(Yii::t('app', 'Искать'), ['class' => 'btn-search']) ?>
                         </fieldset>
                     <?php ActiveForm::end(); ?>
                 </div>
