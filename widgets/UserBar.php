@@ -71,41 +71,6 @@ class UserBar extends Widget
                 else:
                 ?>
                     <div class="accordion-inform">
-<!--                        <div class="item">-->
-<!--                            <div class="holder-block">-->
-<!--                                <strong class="heading">--><?//= Yii::t('app', 'Контактная информация') ?><!--</strong>-->
-<!--                                <div class="expanded">-->
-<!--                                    <span class="title">--><?//= Yii::t('app', 'Контактная информация') ?><!--</span>-->
-<!--                                    <ul class="list-contakt">-->
-<!--                                        --><?php //if(! empty($profile->phone)):?>
-<!--                                            <li>-->
-<!--                                                <i class="fas fa-phone"></i> <a href="tel:--><?//= $profile->phone ?><!--">--><?//= $profile->phone ?><!--</a>-->
-<!--                                            </li>-->
-<!--                                        --><?php //endif; ?>
-<!--                                        --><?php //if(! empty($profile->viber)):?>
-<!--                                            <li>-->
-<!--                                                <i class="fab fa-viber"></i> <a href="viber://chat?number=--><?//= $profile->viber ?><!--">--><?//= $profile->viber ?><!--</a>-->
-<!--                                            </li>-->
-<!--                                        --><?php //endif; ?>
-<!--                                        --><?php //if(! empty($profile->telegram)):?>
-<!--                                            <li>-->
-<!--                                                <i class="fab fa-telegram-plane"></i> <a href="tg://--><?//= $profile->telegram ?><!--">--><?//= $profile->telegram ?><!--</a>-->
-<!--                                            </li>-->
-<!--                                        --><?php //endif; ?>
-<!--                                        --><?php //if(! empty($profile->whatsapp)):?>
-<!--                                            <li>-->
-<!--                                                <i class="fab fa-whatsapp"></i> <a href="https://wa.me/--><?//= $profile->whatsapp ?><!--">--><?//= $profile->whatsapp ?><!--</a>-->
-<!--                                            </li>-->
-<!--                                        --><?php //endif; ?>
-<!--                                        --><?php //if(! empty($model->showEmail) && $model->showEmail):?>
-<!--                                            <li>-->
-<!--                                                <i class="far fa-envelope"></i> <a href='mailto:--><?//= $user->email ?><!--'>--><?//= $user->email ?><!--</a>-->
-<!--                                            </li>-->
-<!--                                        --><?php //endif; ?>
-<!--                                    </ul>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
                         <div class="item">
                             <span class="title visible"><?= Yii::t('app', 'Контактная информация') ?></span>
                             <ul class="list-contakt">
