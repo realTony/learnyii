@@ -6,7 +6,7 @@ namespace app\components;
 class TextExcerption
 {
 
-    public function excerptText($text, $max_length = 140, $cut_off = '...', $keep_word = false)
+    public static function excerptText($text, $max_length = 140, $cut_off = '...', $keep_word = false)
     {
         if(strlen($text) <= $max_length) {
             return $text;

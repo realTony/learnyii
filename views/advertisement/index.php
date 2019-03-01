@@ -29,7 +29,9 @@ $this->params['breadcrumbs'] = $breadcrumbs;
 
 <div class="container">
     <div class="group-content">
-        <?= \app\widgets\AdvertisementFilter::widget() ?>
+        <?= \app\widgets\AdvertisementFilter::widget([
+            'filter' => $sideFilter
+        ]) ?>
 
         <div class="content">
             <h1><?= Yii::t('app', 'Все объявления')?></h1>

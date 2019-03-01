@@ -23,16 +23,27 @@ class AdvertisementController extends Controller
     {
         $model = new AdvertisementPost();
         $advCategories = new Categories();
+        $asideFilter = new AdvertisementFilter();
         $searchModel = new AdvertisementPostSearch();
         $filter = new AdvSearch();
         $dataProvider = $searchModel->searchCat(Yii::$app->request->queryParams);
 
-        if(! empty(Yii::$app->request->queryParams)) {
+//        if(! empty(Yii::$app->request->queryParams)) {
             $requested = Yii::$app->request->queryParams;
-            $dataProvider = $searchModel->searchCat($requested);
-        }
 
-        $advPosts = $model;
+            if(Yii::$app->request->isPost) {
+                $post = Yii::$app->request->post();
+                $requested  = array_merge($requested, $post );
+                $asideFilter->minPrice = $requested['minPrice'];
+                $asideFilter->maxPrice = $requested['maxPrice'];
+                $asideFilter->minDistance = $requested['minDistance'];
+                $asideFilter->maxDistance = $requested['maxDistance'];
+                $asideFilter->stickingArea = $requested['stickingArea'];
+            }
+
+            $dataProvider = $searchModel->searchCat($requested);
+//        }
+
         $breadcrumbs = ['label' => Yii::t('app', 'Все объявления')];
 
         $pages = new Pagination([
@@ -45,6 +56,7 @@ class AdvertisementController extends Controller
         return $this->render('index', [
             'models' => $dataProvider->getModels(),
             'filter' => $filter,
+            'sideFilter' => $asideFilter,
             'pages' => $pages,
             'breadcrumbs' => $breadcrumbs
         ]);
@@ -141,6 +153,7 @@ class AdvertisementController extends Controller
         $model = new AdvertisementPost();
         $advCategories = new Categories();
         $filter = new AdvSearch();
+        $asideFilter = new AdvertisementFilter();
         $searchModel = new AdvertisementPostSearch();
         $catId = $advCategories->find()->where(['like', 'link', $sub]) ->andWhere(['is_blog' => 0]) ->one();
 
@@ -148,6 +161,17 @@ class AdvertisementController extends Controller
         if(! empty(Yii::$app->request->queryParams)) {
             $requested = Yii::$app->request->queryParams;
             $requested['subCat_id'] = $catId->id;
+
+            if(Yii::$app->request->isPost) {
+                $post = Yii::$app->request->post();
+                $requested  = array_merge($requested, $post );
+                $asideFilter->minPrice = $requested['minPrice'];
+                $asideFilter->maxPrice = $requested['maxPrice'];
+                $asideFilter->minDistance = $requested['minDistance'];
+                $asideFilter->maxDistance = $requested['maxDistance'];
+                $asideFilter->stickingArea = $requested['stickingArea'];
+            }
+
             $dataProvider = $searchModel->searchCat($requested);
         }
 
@@ -174,6 +198,7 @@ class AdvertisementController extends Controller
         return $this->render('category', [
             'models' => $dataProvider->getModels(),
             'filter' => $filter,
+            'sideFilter' => $asideFilter,
             'pages' => $pages,
             'breadcrumbs' => $breadcrumbs,
             'catInfo' => $catId
