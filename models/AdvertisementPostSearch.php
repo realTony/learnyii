@@ -131,10 +131,17 @@ class AdvertisementPostSearch extends AdvertisementPost
 
         $query->leftJoin('{{%advertise_cities_regions}} `cr`','{{%advertisement_post}}.`id` = `cr`.`advertise_id`');
         // grid filtering conditions
-        $query->andFilterWhere([
-            'category_id' => $params['category_id'],
-            'subCat_id' => $params['subCat_id'],
-        ]);
+        if( ! empty($params['category_id'])) {
+            $query->andFilterWhere([
+                'category_id' => $params['category_id'],
+            ]);
+        }
+        if( !empty($params['subCat_id'])) {
+            $query->andFilterWhere([
+                'subCat_id' => $params['subCat_id'],
+            ]);
+        }
+
         if(! empty($params['city'])) {
             $query->andFilterWhere(['`cr`.`city_id`' => $cityId['id']]);
         }
