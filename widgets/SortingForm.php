@@ -51,7 +51,7 @@ class SortingForm extends Widget
                 </div>
             </fieldset>
             <?php ActiveForm::end(); ?>
-            <? if( $this->viewButton ) : ?>
+            <?php if( $this->viewButton ) : ?>
                 <div class="holder-view">
                     <a class="view-list" href="#">
                         <i class="fas fa-th-large"></i>
