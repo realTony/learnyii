@@ -4880,7 +4880,7 @@ hr{
     .holder-form-search{
         display: none;
         position: absolute;
-        z-index: 9999;
+        z-index: 5;
         left: 0;
         right: 0;
         top: 50%;
