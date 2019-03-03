@@ -74,7 +74,7 @@ use app\modules\admin\models\Categories;
                     ?>
                     <li>
                         <a class="like-star" href="#">&#160;</a>
-                        <a href="<?= Url::to(['/advertisement/page/']).$item->id ?>">
+                        <a href="<?= Url::to(['/advertisement/page/'.$item->id]) ?>">
                             <div class="holder-img">
                                 <?php if(! empty($item->images[0]['image_name']) && $item->images[0]['image_name'] != '' ): ?>
                                 <img src="<?= $item->images[0]['image_name'] ?>" alt="<?= $item->images[0]['alt']?>">
