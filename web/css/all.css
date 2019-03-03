@@ -4579,9 +4579,8 @@ hr{
         border-bottom: 1px solid #e1e1e6;
     }
     .seller {
-        margin: 0 -30px 30px;
+        margin: 0 0 30px;
         display: flex;
-        width: 100%;
     }
     .seller .holder-img{
         display: table-cell;
