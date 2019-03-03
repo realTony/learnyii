@@ -4580,7 +4580,7 @@ hr{
     }
     .seller {
         margin: 0 -30px 30px;
-        display: table;
+        display: flex;
         width: 100%;
     }
     .seller .holder-img{
