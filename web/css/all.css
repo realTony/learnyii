@@ -3173,7 +3173,7 @@ hr{
 .up{
     display: none;
     position: fixed;
-    z-index: 200;
+    z-index: 2;
     right: 15px;
     opacity: 0.5;
     bottom: 15px;

@@ -43,7 +43,6 @@ $(document).ready(function(){
         slidesToScroll: 1,
         adaptiveHeight: true
     });
-
     if( $('#account-panel').is('ul') ){
         var hash = window.location.hash;
         if( typeof hash != 'undefined' && hash != ''){
