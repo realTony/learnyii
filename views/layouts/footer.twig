@@ -1,8 +1,9 @@
 {{ use('app/widgets/SocialList') }}
+{{ use('/yii/helpers/Html') }}
 <footer id="footer">
     <div class="container">
         <div class="holder-block">
-            <strong class="f-logo"><a href="{{ app.homeUrl }}">{{ app.name }}</a></strong>
+            <a href="{{ app.homeUrl }}"> <strong class="f-logo">{{ app.name }}</strong></a>
             <span class="copyright">&#169; {{ "now"|date("Y") }} Stick It. {{ t('app', 'Все права защищены.') }}</span>
         </div>
         <div class="holder-block">

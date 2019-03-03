@@ -18,6 +18,7 @@ use Yii;
 use yii\bootstrap\Html;
 use yii\helpers\Url;
 use yii\web\Controller;
+use yii\web\NotFoundHttpException;
 use yii\web\Response;
 use app\models\LoginForm;
 use app\models\RegisterForm;
@@ -108,7 +109,7 @@ class SiteController extends Controller
         $news->category = (! empty($categories->category))? array_values((array)$model->options->promo): [];
         $promo = (! empty($categories->category))? $news->postsByCat : [];
 
-        return $this->render('index.twig', [
+        return $this->render('index', [
                 'model' => $model,
                 'slider' => $slider,
                 'adverts' => $adverts,
@@ -218,12 +219,17 @@ class SiteController extends Controller
     {
         $model = Yii::createObject(Pages::className())->find()->where(['link' => $link])->one();
 
-        $model->options = json_decode($model->options);
-        $model->translation = json_decode($model->translation);
+        if(! empty($model)) {
+            $model->options = (!empty($model->options))? json_decode($model->options) : [];
+            $model->translation = (!empty($model->translation))? json_decode($model->translation) : [];
 
-        return $this->render('policy.twig', [
-            'model' => $model
-        ]);
+            return $this->render('policy.twig', [
+                'model' => $model
+            ]);
+        } else {
+            throw new NotFoundHttpException();
+        }
+
     }
 
     public function successCallback($client)

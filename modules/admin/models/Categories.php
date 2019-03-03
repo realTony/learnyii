@@ -204,4 +204,11 @@ class Categories extends \yii\db\ActiveRecord
 
         return (new AdvertisementPost())->find()->where(['subCat_id' => $cat->id])->count();
     }
+
+    public function getTotalCount()
+    {
+        $cat = $this->category;
+
+        return (new AdvertisementPost())->find()->where(['category_id' => $cat->id])->count();
+    }
 }

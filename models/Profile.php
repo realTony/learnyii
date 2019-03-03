@@ -88,7 +88,7 @@ class Profile extends \yii\db\ActiveRecord
     {
         $profile = Profile::findOne(['user_id' => $id]);
 
-        return (! empty($profile->profile_image)) ? $profile->profile_image : '/images/empty_user.jpg';
+        return (! empty($profile->profile_image) && is_file(Yii::getAlias('@webroot').$profile->profile_image)) ? $profile->profile_image : '/images/empty_user.jpg';
     }
 
     public static function getUsername( $id )
