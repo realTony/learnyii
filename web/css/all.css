@@ -3666,6 +3666,7 @@ hr{
     .seller .holder-img {
         margin: 0 auto 22px;
         width: 82px;
+        height: 82px;
     }
     .seller .name{
         font-size: 11px;
