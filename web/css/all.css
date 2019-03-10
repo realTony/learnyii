@@ -395,12 +395,12 @@ html,body {
     border: none;
     padding: 0;
     text-indent: -9999px;
-    background: url("../images/bg-12.png") no-repeat;
+    background: url("../images/svg/left.svg") no-repeat;
     width: 52px;
     height: 22px;
 }
 .promo-slider .slick-next{
-    background: url("../images/bg-13.png") no-repeat;
+    background: url("../images/svg/right.svg") no-repeat;
 }
 .promo-slider .slick-prev:hover,
 .promo-slider .slick-next:hover{
@@ -1885,6 +1885,11 @@ p .bold{
     color: #787880;
     text-decoration-color: rgba(48,48,51,0.3);
 }
+.holder-checkbox span i{
+    margin: 0 10px 0 0;
+    color: transparent;
+}
+/*
 .holder-checkbox input[type="checkbox"]+span:before{
     content:"";
     position: absolute;
@@ -1896,6 +1901,35 @@ p .bold{
     -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
+*/
+.holder-checkbox input[type="checkbox"]+span:before{
+    content:"";
+    position: absolute;
+    left: -4px;
+    top: -1px;
+    width: 20px;
+    height: 20px;
+    border: 1px solid #303033;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.holder-checkbox input[type="checkbox"]+span:before{
+    content:"";
+    position: absolute;
+    left: -4px;
+    top: -1px;
+    width: 20px;
+    height: 20px;
+    border: 1px solid #303033;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.holder-checkbox input[type="checkbox"]:checked+span:before{
+    opacity: 0;
+}
+.holder-checkbox input[type="checkbox"]:checked+span i,
 .holder-checkbox input[type="checkbox"]:checked+span{
     color: #ff6a00;
 }
@@ -4270,9 +4304,18 @@ hr{
     }
     .open-menu{
         display: block;
-        background: url("../images/bg-28.png") no-repeat;
+        /*background: url("../images/bg-28.png") no-repeat;*/
+        background: #f7f7fa;
+        font-size: 14px;
+        line-height: 30px;
+        text-align: center;
         width: 30px;
         height: 30px;
+    }
+    .open-menu i{
+        display: inline-block;
+        vertical-align: middle;
+        margin: -2px 0 0;
     }
     .holder-nav {
         display: none!important;
@@ -5092,6 +5135,12 @@ hr{
         width: 100%;
         margin: 0 0 21px;
     }
+    .promo-slider .slick-prev,
+    .promo-slider .slick-next{
+        width: 26px;
+        height: 11px;
+        background-size: cover;
+    }
 
 }
 @media screen and (max-width: 580px){
@@ -5231,9 +5280,26 @@ hr{
     .mobile-nav-btn a{
         display: inline-block;
         vertical-align: top;
+        text-align: center;
+        color: #000000;
+        font-size: 14px;
         margin: 0 5px;
         width: 30px;
         height: 30px;
+        line-height: 30px;
+        border: 2px solid #ff6a00;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+    .mobile-nav-btn a i{
+        display: inline-block;
+        vertical-align: middle;
+        margin: -7px 0 0;
+    }
+    .mobile-nav-btn a + a{
+        background: #f7f7fa;
+        border-color: transparent;
     }
     .promo-slider .slick-prev, .promo-slider .slick-next {
         top: 100%;
