@@ -30,7 +30,12 @@ $this->params['breadcrumbs'] = $breadcrumbs;
 <div class="container">
     <div class="group-content">
         <?= \app\widgets\AdvertisementFilter::widget([
-            'filter' => $sideFilter
+            'filter' => $sideFilter,
+            'options' => [
+                    'user_id' => false,
+                    'use_wrapper' => true,
+                    'show_filters' => false
+            ]
         ]) ?>
 
         <div class="content">
@@ -55,8 +60,8 @@ $this->params['breadcrumbs'] = $breadcrumbs;
                 <?php
                 foreach ($models as $model) {
                     ?>
-                    <li>
-                        <a class="like-star" href="#">&#160;</a>
+                    <li <?php if($model->isPremium):?>class="premium" <?php endif ?>>
+                        <a class="like-star" href="#" data-id="<?= $model->id ?>">&#160;</a>
                         <a href="<?= Url::to('/advertisement/page/'.$model->id)?>">
                             <?php if(! empty($model->images)):
                                 $img = Url::home(true).'/'.$model->images[0]['image_name'];
@@ -77,8 +82,14 @@ $this->params['breadcrumbs'] = $breadcrumbs;
                                     <strong><?= $model->pricePerMonth; ?> <sup><small><?= Yii::t('app', 'грн/мес')?></small></sup></strong>
                                 </div>
                                 <div class="overflow-text">
-                                    <span class="region"><em>Харьков</em>, <em>Немышлянский район</em></span>
-                                    <p><?= TextExcerption::excerptText($model->description, 110); ?></p>
+                                    <div class="overflow-text">
+                                        <?php if(! empty($model->cityNames) && ! empty($model->districtNames)): ?>
+                                            <?php foreach ( $model->districtNames as $districtName): ?>
+                                                <span class="region"><em><?= $model->cityNames[0] ?></em>, <em><?= $districtName ?></em></span>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
+                                        <p><?= TextExcerption::excerptText($model->description, 110); ?></p>
+                                    </div>
                                 </div>
                             </div>
                         </a>
@@ -86,16 +97,39 @@ $this->params['breadcrumbs'] = $breadcrumbs;
                     <?php
                 }
                 ?>
-                <li>
-                    <a href="#">
-                        <div class="load-more">
-                            <div>
-                                <i class="fas fa-sync-alt"></i>
-                                <span><?= Yii::t('app', 'Загрузить еще 30 объявлений')?></span>
-                            </div>
-                        </div>
-                    </a>
-                </li>
+                <?php if( $data->getCount() > 1):?>
+                <?php
+                    $counter = $data->getTotalCount();
+                    $curr = ((int) $pages->page)+2;
+                    $maxLimit = $curr * (int) $pages->pageSize;
+                    $itemsLeft = ($maxLimit < $data->getTotalCount()) ? $pages->pageSize : ($data->getTotalCount() - $maxLimit) + $pages->pageSize;
+                    $txt = Yii::t('app', ' объявлений');
+
+                    switch ($itemsLeft) {
+                        case 1:
+                            $txt = Yii::t('app', ' объявление');
+                            break;
+                        case 2:
+                        case 3:
+                        case 4:
+                            $txt = Yii::t('app', ' объявления');
+                            break;
+                    }
+
+                ?>
+                    <?php if( $itemsLeft > 0): ?>
+                        <li class="ajax-load">
+                            <a class="ajax-load" href="#">
+                                <div class="load-more">
+                                    <div>
+                                        <i class="fas fa-sync-alt"></i>
+                                        <span><?= Yii::t('app', 'Загрузить еще '). ($itemsLeft). $txt ?></span>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    <?php endif; ?>
+                <?endif; ?>
             </ul>
 
 

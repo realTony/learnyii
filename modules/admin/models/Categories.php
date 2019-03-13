@@ -4,6 +4,7 @@ namespace app\modules\admin\models;
 
 use app\models\AdvertisementPost;
 use app\models\ImagesTrait;
+use app\models\User;
 use app\modules\admin\models\LinksExtension;
 use yii\helpers\Url;
 use Yii;
@@ -210,5 +211,82 @@ class Categories extends \yii\db\ActiveRecord
         $cat = $this->category;
 
         return (new AdvertisementPost())->find()->where(['category_id' => $cat->id])->count();
+    }
+    
+    public function catByUser($id)
+    {
+        $user = User::findOne($id);
+        $parents = [];
+        $catList = (new AdvertisementPost())
+            ->find()
+            ->select('`category_id`')
+            ->where(['authorId' => $id])
+            ->groupBy('category_id')
+            ->asArray()
+            ->all();
+
+        $i = 0;
+
+        foreach ($catList as $cat) {
+            $parents[] = $cat['category_id'];
+        }
+
+        $parentsData = $this
+            ->find()
+            ->where(['is_blog' => 0])
+            ->andWhere(['in', 'id', $parents])
+            ->all();
+        $parentsData = ArrayHelper::map($parentsData, 'id', 'title');
+
+        $parents = [];
+
+        foreach ($parentsData as $item => $title) {
+            $parents[$item]['title'] = $title;
+        }
+
+        if(! empty($catList)) {
+            foreach ($catList as $item) {
+                $subList  = (new AdvertisementPost())
+                    ->find()
+                    ->select('subCat_id')
+                    ->where(['authorId' => $id])
+                    ->andWhere(['category_id' => $item['category_id']])
+                    ->groupBy('subCat_id')
+                    ->asArray()
+                    ->all();
+                $sub = [];
+                foreach ($subList as $subItem) {
+                    $subData = $this
+                        ->find()
+                        ->where(['is_blog' => 0])
+                        ->andWhere(['in', 'id', $subItem['subCat_id']])
+                        ->all();
+
+                    $res = ArrayHelper::map($subData, 'id', 'title');
+
+                    foreach ( $res as $key => $val) {
+                        $sub[$key] = $val;
+                    }
+
+                }
+
+                $parents[$item['category_id']]['subList'] = $sub;
+                $i++;
+            }
+
+
+            return $parents;
+        }
+
+        return false;
+    }
+    
+    public function countUserCat($id, $user_id)
+    {
+        return (new AdvertisementPost())
+            ->find()
+            ->where(['subCat_id' => $id])
+            ->andWhere(['authorId' => $user_id])
+            ->count();
     }
 }

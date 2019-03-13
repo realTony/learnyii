@@ -32,8 +32,15 @@ $this->params['breadcrumbs'] = $breadcrumbs;
 <div class="container">
     <div class="group-content">
         <?= \app\widgets\AdvertisementFilter::widget([
-                'filter' => $sideFilter
-        ]) ?>
+                'filter' => $sideFilter,
+                'options' => [
+                        'show_filters' => true,
+                        'sub_only' => true,
+                        'cat_id' => (!empty($catInfo->parent_id))? $catInfo->parent_id : $catInfo->id,
+                        'user_id' => false,
+                        'use_wrapper' => true
+                ]
+        ]); ?>
 
         <div class="content">
             <h1><?= $catInfo->title; ?></h1>
@@ -56,14 +63,14 @@ $this->params['breadcrumbs'] = $breadcrumbs;
             <ul class="list-announcements">
                 <?php
                 foreach ($models as $model) {
-                    $img = Url::home(true).'/'.$model->images[0]['image_name'];
+                    $img = (! empty($model->images[0])) ? Url::home(true).'/'.$model->images[0]['image_name']: '';
                     $categories = Yii::createObject(Categories::className());
                     $categories->category = $model->category_id;
                     $cat  = $categories->category;
 
                     ?>
-                            <li>
-                                <a class="like-star" href="#">&#160;</a>
+                    <li <?php if($model->isPremium):?>class="premium" <?php endif ?>>
+                                <a class="like-star" href="#" data-id="<?= $model->id ?>">&#160;</a>
                                 <a href="<?= Url::to('/advertisement/page/'.$model->id)?>">
                                     <div class="holder-img">
                                         <?php if(! empty($model->images)): ?>
@@ -93,17 +100,36 @@ $this->params['breadcrumbs'] = $breadcrumbs;
                             </li>
                     <?php
                 }
+
+                $counter = $data->getTotalCount();
+                $curr = ((int) $pages->page)+2;
+                $maxLimit = $curr * (int) $pages->pageSize;
+                $itemsLeft = ($maxLimit < $data->getTotalCount()) ? $pages->pageSize : ($data->getTotalCount() - $maxLimit) + $pages->pageSize;
+                $txt = Yii::t('app', ' объявлений');
+
+                switch ($itemsLeft) {
+                    case 1:
+                        $txt = Yii::t('app', ' объявление');
+                        break;
+                    case 2:
+                    case 3:
+                    case 4:
+                        $txt = Yii::t('app', ' объявления');
+                        break;
+                }
                 ?>
-                <li>
-                    <a href="#">
-                        <div class="load-more">
-                            <div>
-                                <i class="fas fa-sync-alt"></i>
-                                <span><?= Yii::t('app', 'Загрузить еще 30 объявлений')?></span>
+                <?php if( $itemsLeft > 0): ?>
+                    <li class="ajax-load">
+                        <a href="#">
+                            <div class="load-more">
+                                <div>
+                                    <i class="fas fa-sync-alt"></i>
+                                    <span><?= Yii::t('app', 'Загрузить еще '). ($itemsLeft). $txt ?></span>
+                                </div>
                             </div>
-                        </div>
-                    </a>
-                </li>
+                        </a>
+                    </li>
+                <?php endif; ?>
             </ul>
 
 

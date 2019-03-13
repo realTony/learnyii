@@ -10,6 +10,7 @@ use Yii;
 use yii\data\ActiveDataProvider;
 use yii\data\Pagination;
 use yii\web\Controller;
+use app\modules\admin\models\Categories;
 
 class SearchController extends Controller
 {
@@ -35,13 +36,13 @@ class SearchController extends Controller
 
             $models = $dataRes->getModels();
 
-            return $this->render('results', [
-                'title' => $queriedItem,
-                'pages' => $pages,
-                'model' => $models,
-                'filter' => $filter,
-                'breadcrumbs' => $breadcrumbs
-            ]);
+//            return $this->render('results', [
+//                'title' => $queriedItem,
+//                'pages' => $pages,
+//                'model' => $models,
+//                'filter' => $filter,
+//                'breadcrumbs' => $breadcrumbs
+//            ]);
 
             return $this->render('not-found', [
                 'title' => '',

@@ -28,6 +28,7 @@ class UserBar extends Widget
 
     public function run()
     {
+        $profile = (new Profile())->findOne(['user_id' => $this->user->id]);
         if(empty($this->options) || empty($this->options['public_bar']) || ! $this->options['public_bar']):
 
             if($this->options['has_wrapper']) {
@@ -38,7 +39,7 @@ class UserBar extends Widget
                 echo Html::beginTag('div', ['class' => ($this->options['has_wrapper']) ? 'seller clone': 'seller']);
                 ?>
                     <div class="holder-img">
-                        <img src="<?= Profile::getUserAvatar( Yii::$app->user->id) ?>" alt="profile_image">
+                        <img src="<?= Profile::getUserAvatar( $this->user->id) ?>" alt="profile_image">
                     </div>
                     <div class="holder-text">
                         <a href="<?= Url::toRoute('/myaccount') ?>" class="name"><?= $this->user['username'] ?></a>
@@ -74,21 +75,29 @@ class UserBar extends Widget
                         <div class="item">
                             <span class="title visible"><?= Yii::t('app', 'Контактная информация') ?></span>
                             <ul class="list-contakt">
-                                <li>
-                                    <i class="fas fa-phone"></i> <a href="tel:(096) 925-99-56">(096) 925-99-56</a>
-                                </li>
-                                <li>
-                                    <i class="fab fa-viber"></i> <a href="viber://chat?number=3800969259956">(096) 925-99-56</a>
-                                </li>
-                                <li>
-                                    <i class="fab fa-telegram-plane"></i> <a href="tg://breyger">breyger</a>
-                                </li>
-                                <li>
-                                    <i class="fab fa-viber"></i> <a href="viber://chat?number=3800969259956">(096) 925-99-56</a>
-                                </li>
-                                <li>
-                                    <i class="far fa-envelope"></i> <a href='mailto&#58;&#98;r%6&#53;&#37;79ge&#114;&#64;g&#109;%&#54;1i%&#54;C&#46;co&#109;'>br&#101;&#121;&#103;er&#64;gmail&#46;com</a>
-                                </li>
+                                <?php if(! empty($profile->phone)):?>
+                                    <li>
+                                        <i class="fas fa-phone"></i> <a href="tel:<?= $profile->phone ?>"><?= $profile->phone ?></a>
+                                    </li>
+                                <?php endif; ?>
+                                <?php if(! empty($profile->viber)):?>
+                                    <li>
+                                        <i class="fab fa-viber"></i> <a href="viber://chat?number=<?= $profile->viber ?>"><?= $profile->viber ?></a>
+                                    </li>
+                                <?php endif; ?>
+                                <?php if(! empty($profile->telegram)):?>
+                                    <li>
+                                        <i class="fab fa-telegram-plane"></i> <a href="tg://<?= $profile->telegram ?>"><?= $profile->telegram ?></a>
+                                    </li>
+                                <?php endif; ?>
+                                <?php if(! empty($profile->whatsapp)):?>
+                                    <li>
+                                        <i class="fab fa-whatsapp"></i> <a href="https://wa.me/<?= $profile->whatsapp ?>"><?= $profile->whatsapp ?></a>
+                                    </li>
+                                <?php endif; ?>
+                                    <li>
+                                        <i class="far fa-envelope"></i> <a href='mailto:<?= $this->user->email ?>'><?=$this->user->email ?></a>
+                                    </li>
                             </ul>
                         </div>
                     </div>

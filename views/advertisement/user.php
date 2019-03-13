@@ -1,6 +1,7 @@
 <?php
 
 use app\components\TextExcerption;
+use app\widgets\AdvertisementFilter;
 use app\widgets\FooterInfo;
 use app\widgets\SearchAdverts;
 use app\widgets\SortingForm;
@@ -37,87 +38,14 @@ $this->params['breadcrumbs'] = $breadcrumbs;
                         'enableMenu' => false,
                 ]
             ])?>
-            <form class="holder-aside-left">
-                <fieldset>
-                    <div class="aside-accordion">
-                        <span class="title">Транспорт</span>
-                        <div class="expanded">
-                            <ul>
-                                <li><a href="#">Легковые автомобили <sup><small>(12)</small></sup></a></li>
-                                <li><a href="#">Мото <sup><small>(12)</small></sup></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="aside-accordion">
-                        <span class="title">Реклама</span>
-                        <div class="expanded">
-                            <ul>
-                                <li><a href="#">Полная обклейка <sup><small>(12)</small></sup></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="aside-accordion">
-                        <span class="title">Исполнители</span>
-                        <div class="expanded">
-                            <ul>
-                                <li><a href="#">Дизайнеры <sup><small>(12)</small></sup></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="aside-accordion">
-                        <span class="title">Цена (грн/мес)</span>
-                        <div class="expanded">
-                            <div class="range-slider">
-                                <div class="slider-range">
-                                    <input type="text" class="min_max_currentmin_currentmax" value="0/11000/1600/10000">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="aside-accordion">
-                        <span class="title">Область поклейки</span>
-                        <div class="expanded">
-                            <ul class="list-checkbox">
-                                <li>
-                                    <label class="checkbox">
-                                        <input type="checkbox" name="n">
-                                        <span><i class="fas fa-check"></i> Полная обклейка</span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label class="checkbox">
-                                        <input type="checkbox" name="n" checked>
-                                        <span><i class="fas fa-check"></i> Частичная обклейка</span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label class="checkbox">
-                                        <input type="checkbox" name="n">
-                                        <span><i class="fas fa-check"></i> Навесная реклама</span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label class="checkbox">
-                                        <input type="checkbox" name="n">
-                                        <span><i class="fas fa-check"></i> Реклама в салоне</span>
-                                    </label>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="aside-accordion">
-                        <span class="title">пробег (км/мес)</span>
-                        <div class="expanded">
-                            <div class="range-slider">
-                                <div class="slider-range">
-                                    <input type="text" class="min_max_currentmin_currentmax" value="0/2000/300/1000">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <input class="submit" type="submit" value="применить">
-                </fieldset>
-            </form>
+            <?= AdvertisementFilter::widget([
+                    'filter' => $sideFilter,
+                    'options' => [
+                        'user_id' => $user->id,
+                        'use_wrapper' => false,
+                        'show_filters' => true
+                    ],
+            ])?>
         </div>
         <div class="content">
             <h4><?= Yii::t('app', 'Все объявления пользователя') ?> </h4>
@@ -148,14 +76,14 @@ $this->params['breadcrumbs'] = $breadcrumbs;
                 <ul class="list-announcements">
                     <?php foreach ($models as $item): ?>
                         <?php
-                        $images = Url::home(true).'/'.$item->images[0]['image_name'];
+                        $images = (! empty($item->images[0])) ? Url::home(true).'/'.$item->images[0]['image_name']: '';
                         $categories = Yii::createObject(Categories::className());
                         $categories->category = $item->category_id;
                         $cat  = $categories->category;
                         ?>
 
                         <li <?php if($item->isPremium):?>class="premium" <?php endif ?>>
-                            <a class="like-star" href="#">&#160;</a>
+                            <a class="like-star" href="#" data-id="<?= $item->id ?>">&#160;</a>
                             <a href="<?= Url::to('/advertisement/page/'.$item->id)?>">
                                 <div class="holder-img">
                                     <?php if(! empty($item->images[0])):?>
@@ -171,12 +99,10 @@ $this->params['breadcrumbs'] = $breadcrumbs;
                                         <strong><?= $item->pricePerMonth ?> <sup><small><?= Yii::t('app', 'грн/мес')?></small></sup></strong>
                                     </div>
                                     <div class="overflow-text">
-                                        <?php
-                                        if(! empty($item->cityNames) && ! empty($item->districtNames)):
-                                            ?>
+                                        <?php if(! empty($item->cityNames) && ! empty($item->districtNames)): ?>
                                             <?php foreach ( $item->districtNames as $districtName): ?>
                                             <span class="region"><em><?= $item->cityNames[0] ?></em>, <em><?= $districtName ?></em></span>
-                                        <?php endforeach; ?>
+                                            <?php endforeach; ?>
                                         <?php endif; ?>
                                         <p><?= TextExcerption::excerptText($item->description, 110); ?></p>
                                     </div>
@@ -184,16 +110,35 @@ $this->params['breadcrumbs'] = $breadcrumbs;
                             </a>
                         </li>
                     <?php endforeach;?>
-                    <li>
-                        <a href="#">
-                            <div class="load-more">
-                                <div>
-                                    <i class="fas fa-sync-alt"></i>
-                                    <span><?= Yii::t('app', 'Загрузить еще 30 объявлений')?></span>
+                    <?php                 $counter = $data->getTotalCount();
+                    $curr = ((int) $pages->page)+2;
+                    $maxLimit = $curr * (int) $pages->pageSize;
+                    $itemsLeft = ($maxLimit < $data->getTotalCount()) ? $pages->pageSize : ($data->getTotalCount() - $maxLimit) + $pages->pageSize;
+                    $txt = Yii::t('app', ' объявлений');
+
+                    switch ($itemsLeft) {
+                        case 1:
+                            $txt = Yii::t('app', ' объявление');
+                            break;
+                        case 2:
+                        case 3:
+                        case 4:
+                            $txt = Yii::t('app', ' объявления');
+                            break;
+                    }
+                    ?>
+                    <?php if( $itemsLeft > 0): ?>
+                        <li class="ajax-load">
+                            <a href="#">
+                                <div class="load-more">
+                                    <div>
+                                        <i class="fas fa-sync-alt"></i>
+                                        <span><?= Yii::t('app', 'Загрузить еще '). ($itemsLeft). $txt ?></span>
+                                    </div>
                                 </div>
-                            </div>
-                        </a>
-                    </li>
+                            </a>
+                        </li>
+                    <?php endif; ?>
                 </ul>
             <?php endif; ?>
             <?php if (! empty($pages) && $pages->pageSize < $pages->totalCount):?>

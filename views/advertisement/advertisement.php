@@ -74,23 +74,23 @@ use ymaker\social\share\widgets\SocialShare;
                             </div>
                         </div>
                     </div>
+                    <?php
+                    if(! empty($model->cityNames) && ! empty($model->districtNames)):
+                    ?>
                     <div class="item">
                         <div class="holder-block">
                             <strong class="heading"><?= Yii::t('app', 'Районы города') ?></strong>
                             <div class="expanded">
                                 <span class="title"><?= Yii::t('app', 'Районы города') ?></span>
-                                <?php
-                                    if(! empty($model->cityNames) && ! empty($model->districtNames)):
-                                ?>
                                 <ul class="address-list">
                                     <?php foreach ( $model->districtNames as $districtName): ?>
                                         <li><i class="fas fa-map-marker-alt"></i> <?= $districtName ?></li>
                                     <?php endforeach; ?>
                                 </ul>
-                                <?php endif; ?>
                             </div>
                         </div>
                     </div>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
@@ -141,13 +141,15 @@ use ymaker\social\share\widgets\SocialShare;
                     </li>
                 </ul>
             </div>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In finibus, urna eu blandit lacinia, mi metus malesuada mauris, nec tempor eros purus quis ipsum. Pellentesque et leo mollis, imperdiet diam eget, ornare justo. Aenean finibus suscipit scelerisque. Phasellus sit amet iaculis tortor. Etiam convallis leo at sapien ultrices, sit amet feugiat lorem ornare. Aliquam elementum varius urna, sit amet porttitor ligula molestie a. Nam eu nisl sit amet eros pharetra interdum. Nunc vel odio ante. Mauris convallis accumsan sagittis.</p>
+            <?php if(! empty( $model->description)):?>
+            <p><?= $model->description ?></p>
             <div class="holder-box-hidden">
                 <div class="box-hidden">
                     <?= $model->description ?>
                 </div>
                 <a class="btn-show-more" href="#">Читать дальше...</a>
             </div>
+            <?php endif; ?>
             <div class="share">
                 <span class="share-title"><?=\Yii::t('app', 'Поделиться') ?></span>
                 <?= SocialShare::widget([
@@ -179,7 +181,7 @@ use ymaker\social\share\widgets\SocialShare;
                     $cat  = $categories->category;
                 ?>
                     <li <?php if($item->isPremium): ?>class="premium"<?php endif; ?>>
-                        <a class="like-star" href="#">&#160;</a>
+                        <a class="like-star" href="#" data-id="<?= $item->id ?>">&#160;</a>
                         <a href="<?= Url::to('/advertisement/page/'.$item->id)?>">
                             <div class="holder-img">
                                 <img src="<?= Url::home(true).$item->images[0]['image_name'] ?>" alt="<?= $item->images[0]['alt']?>">

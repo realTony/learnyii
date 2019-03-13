@@ -30,7 +30,8 @@
         "kartik-v/yii2-widget-fileinput": "@dev",
         "yurkinx/yii2-image": "^1.2",
         "brussens/yii2-bootstrap-select": "*",
-        "yiimaker/yii2-social-share": "^2.3"
+        "yiimaker/yii2-social-share": "^2.3",
+        "liqpay/liqpay": "^1.2"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

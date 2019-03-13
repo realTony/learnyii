@@ -34,6 +34,11 @@ class Module extends \yii\base\Module
                     'controller' => 'pages',
                     'items' => [
                         [
+                            'label' => 'Все страницы',
+                            'url' => ['/admin/pages/index'],
+                            'template' => '<a href="{url}"><span>{label}</span></a>'
+                        ],
+                        [
                             'label' => 'Главная',
                             'url' => ['/admin/pages/update?id=1'],
                             'template' => '<a href="{url}"><span>{label}</span></a>'

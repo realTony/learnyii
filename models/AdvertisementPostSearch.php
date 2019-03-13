@@ -91,12 +91,14 @@ class AdvertisementPostSearch extends AdvertisementPost
     {
         $query = AdvertisementPost::find();
 
-        // add conditions that should always apply here
+
+        $params['page'] = (! empty($params['page'])) ? $params['page']: 1;
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
-                'pageSize' => 8
+                'pageSize' => 8,
+                'pageSizeLimit' => 8,
             ],
             'sort' => [
                 'defaultOrder' => [
@@ -176,14 +178,15 @@ class AdvertisementPostSearch extends AdvertisementPost
 
         $query->andFilterWhere(['like', 'title', $this->title])
             ->andFilterWhere(['like', 'condition', $this->condition]);
+
         if(! empty($params['orderBy'])) {
 
             switch ($params['orderBy']) {
                 case 'price_desc':
-                    $query->orderBy('pricePerMonth DESC');
+                    $query->orderBy('isPremium DESC, pricePerMonth DESC');
                     break;
                 case 'price_asc':
-                    $query->orderBy('pricePerMonth ASC');
+                    $query->orderBy('isPremium DESC, pricePerMonth ASC');
                     break;
                 default:
                     break;
@@ -204,7 +207,7 @@ class AdvertisementPostSearch extends AdvertisementPost
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
-                'pageSize' => 9
+                'pageSize' => 8,
             ],
             'sort' => [
                 'defaultOrder' => [
@@ -250,11 +253,11 @@ class AdvertisementPostSearch extends AdvertisementPost
                 'subCat_id' => $this->subCat_id,
             ]);
         }
-        if( ! empty($params['user_id'])) {
-            $query->andFilterWhere([
-                'authorId' => $params['user_id']
-            ]);
-        }
+
+        $query->andFilterWhere([
+            'authorId' => $params['user_id']
+        ]);
+
         if(! empty($params['city'])) {
             $query->andFilterWhere(['`cr`.`city_id`' => $cityId['id']]);
         }
@@ -267,16 +270,37 @@ class AdvertisementPostSearch extends AdvertisementPost
             $query->andFilterWhere(['`cr`.`region_id`' =>  $region['id']]);
         }
 
+        if(! empty($params['minPrice'])) {
+            $query->andFilterWhere(['>', 'pricePerMonth', $params['minPrice']]);
+        }
+
+        if(! empty($params['maxPrice'])) {
+            $query->andFilterWhere(['<', 'pricePerMonth', $params['maxPrice']]);
+        }
+
+        if(! empty($params['minDistance'])) {
+            $query->andFilterWhere(['>', 'distancePerMonth', $params['minDistance']]);
+        }
+
+        if(! empty($params['maxDistance'])) {
+            $query->andFilterWhere(['<', 'distancePerMonth', $params['maxDistance']]);
+        }
+
+        if(! empty($params['stickingArea'])) {
+            $query->andFilterWhere(['in', 'sticking_area', $params['stickingArea']]);
+        }
+
         $query->andFilterWhere(['like', 'title', $this->title])
             ->andFilterWhere(['like', 'condition', $this->condition]);
+
         if(! empty($params['orderBy'])) {
 
             switch ($params['orderBy']) {
                 case 'price_desc':
-                    $query->orderBy('pricePerMonth DESC');
+                    $query->orderBy('isPremium DESC, pricePerMonth DESC');
                     break;
                 case 'price_asc':
-                    $query->orderBy('pricePerMonth ASC');
+                    $query->orderBy('isPremium DESC, pricePerMonth ASC');
                     break;
                 default:
                     break;

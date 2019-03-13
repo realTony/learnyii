@@ -77,8 +77,8 @@ class LanguageSwitcher extends Widget
     {
         if (self::$_labels === null) {
             self::$_labels = [
-                'ru-Ru' => Yii::t('app', 'РУС'),
-                'uk-Uk' => Yii::t('app', 'УКР'),
+                'ru-Ru' => Yii::t('app', 'Рус'),
+                'uk-Uk' => Yii::t('app', 'Укр'),
             ];
         }
 

@@ -3,6 +3,8 @@
 namespace app\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
 
 /**
  * This is the model class for table "{{%advertise_cities_regions}}".
@@ -53,5 +55,31 @@ class AdvertiseCitiesRegions extends \yii\db\ActiveRecord
     public static function find()
     {
         return new AdvertiseCitiesRegionsQuery(get_called_class());
+    }
+
+    public function getCitiesList()
+    {
+        $dataList = $this->find()->select(['city_id'])->groupBy(['city_id'])->asArray()->all();
+        $cities = [];
+
+        foreach ($dataList as  $val) {
+            $cities[] = $val['city_id'];
+        }
+
+        return $cities;
+    }
+
+    public function getLinks()
+    {
+        $cityModel = Cities::find()->where(['in', 'id', $this->citiesList])->asArray()->limit(30)->all();
+        $ruList = $uaList = [];
+        $list = '';
+
+        foreach ($cityModel as $city) {
+            $ruList[] = '<a href="'.Url::to(['/advertisement/?city='.$city['name']]).'">'.$city['name'].'</a>';
+            $uaList[] = '<a href="">'.$city['name_ua'].'</a>';
+        }
+
+        return implode(', ', $ruList);
     }
 }
