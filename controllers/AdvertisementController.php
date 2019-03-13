@@ -111,7 +111,6 @@ class AdvertisementController extends Controller
      */
     public function actionCategory($name) : string
     {
-
         $model = new AdvertisementPost();
         $advCategories = new Categories();
         $filter = new AdvSearch();
@@ -235,9 +234,11 @@ class AdvertisementController extends Controller
         $path = str_replace($sub.'/', $sub, Yii::$app->request->pathInfo);
         $catId = $advCategories->find()->where([ 'link' => $path]) ->andWhere(['is_blog' => 0]) ->one();
 
+        //404 if subcategory is not exists
         if(empty($catId)) {
             throw new NotFoundHttpException();
         }
+
         if (Yii::$app->request->isAjax && (Yii::$app->request->queryParams)['action'] == 'lazyLoad') {
 
             $asideFilter = new AdvertisementFilter();
@@ -286,49 +287,47 @@ class AdvertisementController extends Controller
 
         } else {
 
-            if (!empty(Yii::$app->request->queryParams)) {
-                $requested = Yii::$app->request->queryParams;
-                $requested['subCat_id'] = $catId->id;
-                $requested['per-page'] = 8;
+            $requested = Yii::$app->request->queryParams;
+            $requested['subCat_id'] = $catId->id;
+            $requested['per-page'] = 8;
 
-                $requested = Yii::$app->request->queryParams;
-                if(! empty($requested['minPrice'])) {
-                    $asideFilter->minPrice = $requested['minPrice'];
-                }
-
-                if(! empty($requested['maxPrice'])) {
-                    $asideFilter->maxPrice = $requested['maxPrice'];
-                }
-
-                if(!empty($requested['minDistance'])) {
-                    $asideFilter->minDistance = $requested['minDistance'];
-                }
-
-                if(!empty($requested['maxDistance'])) {
-                    $asideFilter->maxDistance = $requested['maxDistance'];
-                }
-
-                if(!empty($requested['stickingArea'])) {
-                    $asideFilter->stickingArea = $requested['stickingArea'];
-                }
-
-                if(!empty($requested['orderBy'])) {
-                    $filter->orderBy =  $requested['orderBy'];
-                }
-
-                $filter->city = (!empty($requested['city'])) ? $requested['city'] : '';
-                $filter->district = (!empty($requested['district'])) ? $requested['district'] : '';
-
-                $dataProvider = $searchModel->searchCat($requested);
+            if(! empty($requested['minPrice'])) {
+                $asideFilter->minPrice = $requested['minPrice'];
             }
+
+            if(! empty($requested['maxPrice'])) {
+                $asideFilter->maxPrice = $requested['maxPrice'];
+            }
+
+            if(!empty($requested['minDistance'])) {
+                $asideFilter->minDistance = $requested['minDistance'];
+            }
+
+            if(!empty($requested['maxDistance'])) {
+                $asideFilter->maxDistance = $requested['maxDistance'];
+            }
+
+            if(!empty($requested['stickingArea'])) {
+                $asideFilter->stickingArea = $requested['stickingArea'];
+            }
+
+            if(!empty($requested['orderBy'])) {
+                $filter->orderBy =  $requested['orderBy'];
+            }
+
+            $filter->city = (!empty($requested['city'])) ? $requested['city'] : '';
+            $filter->district = (!empty($requested['district'])) ? $requested['district'] : '';
+
+            $dataProvider = $searchModel->searchCat($requested);
 
             $advCategories->parent = $catId->id;
             $parentCat = $advCategories->parents;
-            foreach ($advCategories->children as $id => $title) {
 
+            foreach ($advCategories->children as $id => $title) {
                 $advCategories->parent = $id;
                 $parentCat = $advCategories->children;
             }
+
             $breadcrumbs = [
                 ['label' => Yii::t('app', 'Объявления'), 'url' => Url::to('/advertisement')],
                 ['label' => Yii::t('app', $parentCat->title), 'url' => Url::to('/' . $parentCat->link)],
