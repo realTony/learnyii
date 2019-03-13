@@ -1,5 +1,7 @@
 <?php
 
+use app\widgets\AdvertisementFilter;
+use app\widgets\SearchAdverts;
 use app\widgets\SortingForm;
 use yii\helpers\Url;
 use yii\widgets\Breadcrumbs;
@@ -10,7 +12,7 @@ use yii\widgets\Pjax;
 $this->params['breadcrumbs'] = $breadcrumbs;
 ?>
 
-<?= \app\widgets\SearchAdverts::widget(); ?>
+<?= SearchAdverts::widget(); ?>
 
 <div class="holder-crumbs">
     <div class="container">
@@ -29,7 +31,7 @@ $this->params['breadcrumbs'] = $breadcrumbs;
 
 <div class="container">
     <div class="group-content">
-        <?= \app\widgets\AdvertisementFilter::widget([
+        <?= AdvertisementFilter::widget([
             'filter' => $sideFilter,
             'options' => [
                     'user_id' => false,
@@ -57,9 +59,7 @@ $this->params['breadcrumbs'] = $breadcrumbs;
                 'formSelector' => '#sortingForm'
             ]) ?>
             <ul class="list-announcements">
-                <?php
-                foreach ($models as $model) {
-                    ?>
+                <?php foreach ($models as $model):?>
                     <li <?php if($model->isPremium):?>class="premium" <?php endif ?>>
                         <a class="like-star" href="#" data-id="<?= $model->id ?>">&#160;</a>
                         <a href="<?= Url::to('/advertisement/page/'.$model->id)?>">
@@ -94,11 +94,9 @@ $this->params['breadcrumbs'] = $breadcrumbs;
                             </div>
                         </a>
                     </li>
-                    <?php
-                }
-                ?>
-                <?php if( $data->getCount() > 1):?>
-                <?php
+                    <?php endforeach; ?>
+                <?php if( $data->getCount() > 1):
+
                     $counter = $data->getTotalCount();
                     $curr = ((int) $pages->page)+2;
                     $maxLimit = $curr * (int) $pages->pageSize;
@@ -116,8 +114,7 @@ $this->params['breadcrumbs'] = $breadcrumbs;
                             break;
                     }
 
-                ?>
-                    <?php if( $itemsLeft > 0): ?>
+                     if( $itemsLeft > 0): ?>
                         <li class="ajax-load">
                             <a class="ajax-load" href="#">
                                 <div class="load-more">
@@ -129,7 +126,7 @@ $this->params['breadcrumbs'] = $breadcrumbs;
                             </a>
                         </li>
                     <?php endif; ?>
-                <?endif; ?>
+                <?php endif; ?>
             </ul>
 
 
