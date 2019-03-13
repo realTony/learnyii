@@ -72,4 +72,4 @@ foreach ($models as $model) {
             </a>
         </li>
     <?php endif; ?>
-<?endif; ?>
+<?php endif; ?>
