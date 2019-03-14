@@ -130,6 +130,23 @@ $this->title = 'Редактирование: Главная страница';
                 <h3>Раздел новостей</h3>
             </div>
             <div class="card-block">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <h4>Отображать блок на главной странице?</h4>
+                    </div>
+                    <?= $form->field($model, "options[is_promo]", [
+                        'options' => [
+                            'tag' => 'div',
+                            'class' => 'col-xs-6'
+                        ],
+                        'template' => '<label class="switch">{input}<span><i class="handle"></i></span></label>'
+                    ])
+                    ->checkbox([    'label' => false,
+                                    'type' => 'checkbox'
+                    ]);
+
+                    ?>
+                </div>
                 <?= $form->field($model, "options[promo][{$i}]")
                         ->label(false)
                         ->widget(Select::className(), [

@@ -62,11 +62,11 @@ class UserBar extends Widget
                         <a href="<?= Url::toRoute('/myaccount/posts') ?>"><i class="fas fa-tags"></i><?= Yii::t('app','Мои объявления')?> <sup><small>(<?= (new AdvertisementPost)->advCount ?>)</small></sup></a>
                     </li>
                     <li>
-                        <a href="#"><i class="fas fa-star"></i> Избранное</a>
+                        <a href="#"><i class="fas fa-star"></i> <?= Yii::t('app', 'Избранное') ?></a>
                     </li>
-                    <li>
-                        <a href="#"><i class="fas fa-comments"></i> Сообщения </a>
-                    </li>
+<!--                    <li>-->
+<!--                        <a href="#"><i class="fas fa-comments"></i> Сообщения </a>-->
+<!--                    </li>-->
                 </ul>
                 <?php
                 else:

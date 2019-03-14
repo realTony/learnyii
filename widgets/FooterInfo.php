@@ -7,6 +7,7 @@ use yii\base\Widget;
 
 class FooterInfo extends Widget
 {
+    public $options;
 
     public function run()
     {

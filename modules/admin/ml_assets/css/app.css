@@ -1062,6 +1062,7 @@ figure:hover:before {
     .sidebar-panel .quick-launch-apps a:visited, .sidebar-panel .quick-launch-apps a:active, .sidebar-panel .quick-launch-apps a:focus, .sidebar-panel .quick-launch-apps a:hover {
       color: #000; }
   .sidebar-panel > nav li.menu-accordion > a::before {
+    background: #FF6B01;
     box-shadow: 0 0 0 0.0625rem rgb(255, 107, 1)}
   .sidebar-panel > nav li.open.menu-accordion > a::before {
     background: #ff6b01;

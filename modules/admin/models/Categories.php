@@ -142,6 +142,9 @@ class Categories extends \yii\db\ActiveRecord
 
     public function getCategory()
     {
+        echo "<pre>";
+        print_r($this->category);
+        echo "</pre>";
         return (! empty($this->category)) ? $this->category : [];
     }
 

@@ -24,7 +24,7 @@ use app\modules\admin\models\Categories;
     <ul class="list-progress">
         <?php
             $i = 0;
-            $last = count($adverts);
+            $last = count($adverts)-1;
 
             foreach ($adverts as $advert):
                 $advert->category = $advert->id;
@@ -34,7 +34,7 @@ use app\modules\admin\models\Categories;
                 <div class="holder-img">
                     <?php if($i == 0): ?>
                     <i class="fas fa-car"></i>
-                    <?php elseif ($i == $last): ?>
+                    <?php elseif ($i != $last): ?>
                     <i class="fas fa-bullhorn"></i>
                     <?php else: ?>
                     <i class="fas fa-pencil-ruler"></i>
@@ -95,7 +95,7 @@ use app\modules\admin\models\Categories;
 <?php endif; ?>
 <!-- End of new advertisement posts -->
 
-<?php if(! empty($promo)): ?>
+<?php if(! empty($promo) && $model->options->is_promo == 1): ?>
 <div class="holder-section relative">
     <div class="container">
         <div class="title-text">

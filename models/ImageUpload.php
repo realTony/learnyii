@@ -15,7 +15,10 @@ class ImageUpload extends Model
     public $imageFile;
     private static $uploadFolder;
 
-    public function rules()
+    /**
+     * @return array
+     */
+    public function rules() : array
     {
         return [
             [
@@ -25,7 +28,7 @@ class ImageUpload extends Model
                 'extensions' => 'png,jpg',
                 'minWidth' => 210,
                 'minHeight' => 210,
-                'maxSize' => 512000,
+//                'maxSize' => 512000,
                 'maxFiles' => 1
                 ]
         ];

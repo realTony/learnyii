@@ -1,5 +1,6 @@
 <?php
 
+use app\widgets\AdvertisementCat;
 use app\widgets\FooterInfo;
 use app\widgets\SearchAdverts;
 use yii\helpers\Url;
@@ -30,74 +31,5 @@ use yii\widgets\Breadcrumbs;
     </div>
 </div>
 
-<div class="inform-nav">
-    <div class="container">
-        <div class="group">
-            <div class="holder-block">
-                <a  href="#" class="subsection-title">
-                    <div class="holder-img">
-                        <i class="fas fa-car"></i>
-                    </div>
-                    <span>Транспорт</span>
-                </a>
-                <ul>
-                    <li>
-                        <a href="#">Легковые автомобили</a>
-                    </li>
-                    <li>
-                        <a href="#">Мото</a>
-                    </li>
-                    <li>
-                        <a href="#">Велосипеды</a>
-                    </li>
-                    <li>
-                        <a href="#">Грузовики</a>
-                    </li>
-                </ul>
-            </div>
-            <div class="holder-block">
-                <a href="#" class="subsection-title">
-                    <div class="holder-img">
-                        <i class="fas fa-bullhorn"></i>
-                    </div>
-                    <span>Реклама</span>
-                </a>
-                <ul>
-                    <li>
-                        <a href="#">Полная обклейка</a>
-                    </li>
-                    <li>
-                        <a href="#">Частичная обклейка</a>
-                    </li>
-                    <li>
-                        <a href="#">Навесная реклама</a>
-                    </li>
-                    <li>
-                        <a href="#">Реклама в салоне</a>
-                    </li>
-                </ul>
-            </div>
-            <div class="holder-block">
-                <a href="#" class="subsection-title">
-                    <div class="holder-img">
-                        <i class="fas fa-pencil-ruler"></i>
-                    </div>
-                    <span>Исполнители</span>
-                </a>
-                <ul>
-                    <li>
-                        <a href="#">Типографии</a>
-                    </li>
-                    <li>
-                        <a href="#">Дизайнеры</a>
-                    </li>
-                    <li>
-                        <a href="#">Поклейщики</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-    </div>
-</div>
+<?= AdvertisementCat::widget() ?>
 <?= FooterInfo::widget()?>

@@ -15,7 +15,7 @@ use app\modules\admin\models\Categories;
 class SearchController extends Controller
 {
 
-    public function actionIndex()
+    public function actionIndex() : string
     {
         $breadcrumbs = ['label' => Yii::t('app', 'Результаты поиска')];
 
@@ -24,30 +24,43 @@ class SearchController extends Controller
         $filter = new AdvSearch();
 
 
-            $queriedItem = Yii::$app->request->queryParams;
+        $queriedItem = Yii::$app->request->queryParams;
 
-            $countQuery = AdvertisementPost::find();
+        $countQuery = AdvertisementPost::find();
 
-            $pages = new Pagination([
-                'totalCount' => $countQuery->count(),
-                'pageSize' => 6,
+        $pages = new Pagination([
+            'totalCount' => $dataRes->getTotalCount(),
+            'pageSize' => 6,
 
-            ]);
+        ]);
 
-            $models = $dataRes->getModels();
+        $models = $dataRes->getModels();
 
-//            return $this->render('results', [
-//                'title' => $queriedItem,
-//                'pages' => $pages,
-//                'model' => $models,
-//                'filter' => $filter,
-//                'breadcrumbs' => $breadcrumbs
-//            ]);
-
+        if( empty($models)) {
             return $this->render('not-found', [
                 'title' => '',
                 'breadcrumbs' => $breadcrumbs
             ]);
+        }
+
+        if (Yii::$app->request->isAjax && (Yii::$app->request->queryParams)['action'] == 'lazyLoad') {
+            return $this->renderAjax('_loop', [
+                'pages' => $pages,
+                'model' => $models,
+                'data' => $dataRes,
+            ]);
+        } else {
+
+            return $this->render('results', [
+                'title' => $queriedItem,
+                'pages' => $pages,
+                'model' => $models,
+                'filter' => $filter,
+                'data' => $dataRes,
+                'breadcrumbs' => $breadcrumbs
+            ]);
+        }
+
     }
 
 }
