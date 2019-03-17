@@ -668,10 +668,13 @@ function initDropCity(){
          "Лисичанск",
          "Каменец-Подольский"
     ];
-    $( ".tags-city").autocomplete({
-        source: Object.values(avaibleCities)
-    });
+    if( $(document).find('input').is('.tags-city')) {
+        $(".tags-city").autocomplete({
+            source: Object.values(avaibleCities)
+        });
+    }
 }
+
 function initDropDistrict(){
     var availableTags = [
         "Киевский район",
