@@ -14,8 +14,8 @@ use yii\helpers\Html;
 class SocialAuth extends AuthChoice
 {
     public $socImages = [
-        'google' => 'images/bg-54.png',
-        'facebook' => 'images/bg-53.png'
+        'google' => '/images/bg-54.png',
+        'facebook' => '/images/bg-53.png'
     ];
 
     protected function renderMainContent()

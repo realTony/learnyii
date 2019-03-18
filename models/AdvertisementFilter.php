@@ -19,12 +19,13 @@ class AdvertisementFilter extends Model
     public $minDistance = 0;
     public $maxDistance = 2000;
     public $stickingArea;
+    public $extraFilter;
 
     public function rules()
     {
         return [
             [['minDistance', 'minPrice', 'maxDistance', 'maxPrice'], 'integer'],
-            ['stickingArea', 'safe'],
+            [['stickingArea', 'extraFilter'], 'safe'],
         ];
     }
 

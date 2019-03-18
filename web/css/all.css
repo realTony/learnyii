@@ -1902,32 +1902,24 @@ p .bold{
     box-sizing: border-box;
 }
 */
-.holder-checkbox input[type="checkbox"]+span:before{
-    content:"";
-    position: absolute;
-    left: -4px;
-    top: -1px;
-    width: 20px;
-    height: 20px;
-    border: 1px solid #303033;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
+.holder-checkbox span i{
+    margin: 0 10px 0 0;
+    position: relative;
+    left: 0;
+    top: 5px;
 }
-.holder-checkbox input[type="checkbox"]+span:before{
-    content:"";
-    position: absolute;
-    left: -4px;
-    top: -1px;
-    width: 20px;
-    height: 20px;
-    border: 1px solid #303033;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
+.holder-checkbox input[type="checkbox"]+span >.far.fa-check-square{
+    display: none;
 }
-.holder-checkbox input[type="checkbox"]:checked+span:before{
-    opacity: 0;
+.holder-checkbox input[type="checkbox"]+span > .far.fa-square{
+    display: inline;
+    color: #ff6a00;
+}
+.holder-checkbox input[type="checkbox"]:checked+span > .far.fa-square{
+    display: none;
+}
+.holder-checkbox input[type="checkbox"]:checked+span > .far.fa-check-square{
+    display: inline;
 }
 .holder-checkbox input[type="checkbox"]:checked+span i,
 .holder-checkbox input[type="checkbox"]:checked+span{
@@ -2410,6 +2402,7 @@ p .bold{
 /*range slider end*/
 .list-checkbox li{
     margin: 0 0 10px;
+    white-space: nowrap;
 }
 .checkbox{
     display: block;
@@ -2553,6 +2546,9 @@ input[type="number"] {
 .view-list:focus{
     text-decoration: none;
     color: #303033;
+}
+.fa-half {
+    font-size: 1.5em;
 }
 .view-list .fa-list,
 .view-list.active .fa-th-large{

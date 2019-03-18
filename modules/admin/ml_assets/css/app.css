@@ -176,7 +176,9 @@ ul.list-style-none {
 
 .nav {
   padding: 0; }
-
+.nav.nav-tabs >li.active {
+  /*background: rgba(255, 107, 1, .75);*/
+}
 [ui-view].ng-enter {
   -webkit-animation: fadeIn 0.4s;
   animation: fadeIn 0.4s; }
@@ -227,7 +229,8 @@ ul.list-style-none {
     vertical-align: middle; }
 
 .ripple {
-  overflow: hidden; }
+  overflow: hidden;
+}
 
 .ripple-effect {
   position: absolute;
@@ -1175,7 +1178,11 @@ figure:hover:before {
   .main-panel > .header .header-avatar {
     width: 1.5rem;
     height: 1.5rem;
-    margin-top: -0.1rem; }
+    margin-top: -0.1rem;
+    margin-right: 0.3rem;
+    background-size: cover;
+    -moz-background-size: cover;
+  }
   .main-panel > .header::before {
     content: '';
     width: 100%;
@@ -1317,6 +1324,8 @@ figure:hover:before {
   .main-panel > .header .navbar-text {
     color: #FFF; }
   .main-panel > .header .nav > li > a {
+    display: flex;
+    align-items: center;
     color: #FFF; }
   .main-panel > .header .nav > li > a:hover,
   .main-panel > .header .nav > li > a:focus {
@@ -3651,7 +3660,7 @@ button.list-group-item-danger {
       border: 0;
       background-color: transparent; }
     .nav-tabs > li.active::before {
-      height: 0.125rem;
+      height: 0.325rem;
       width: 100%;
       display: block;
       content: " ";
@@ -12155,6 +12164,7 @@ td.align-middle {
 .box-tab.vertical .nav-tabs {
   background: #fafafa;
 }
+
 @media (min-width: 992px){
   .seo-flex .card{
     height:100%;

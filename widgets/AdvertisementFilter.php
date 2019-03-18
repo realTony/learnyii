@@ -9,6 +9,7 @@
 namespace app\widgets;
 
 
+use app\models\AdvertisementCatFilters;
 use app\models\StickingAreas;
 use Yii;
 use yii\base\Widget;
@@ -25,7 +26,8 @@ class AdvertisementFilter extends Widget
             'sub_only' => false,
             'cat_id' => '',
             'user_id' => false,
-            'use_wrapper' => true
+            'use_wrapper' => true,
+            'custom_filters' => false
     ];
     public $filter;
 
@@ -167,10 +169,12 @@ class AdvertisementFilter extends Widget
 
         $cat = new Categories();
         $catList = $cat->advList;
+        $currentLang = (Yii::$app->language == 'ru-Ru') ? 'ru' : 'uk';
+
         ?>
         <?php if( $this->options['use_wrapper'] == true):?>
-        <div class="aside-left">
-    <?php endif; ?>
+            <div class="aside-left">
+        <?php endif; ?>
         <?php $form = ActiveForm::begin([
         'method' => 'GET',
         'options' => [
@@ -179,6 +183,7 @@ class AdvertisementFilter extends Widget
     ]);
         $stickingAreas = (new StickingAreas())->find()->all();
         $stickingAreas = ArrayHelper::map($stickingAreas, 'id', 'title');
+
         ?>
         <fieldset>
             <?php
@@ -188,23 +193,68 @@ class AdvertisementFilter extends Widget
                 <?php if(! empty($this->options['cat_id']) && $this->options['sub_only'] == true && $id != $this->options['cat_id'] ) {
                     continue;
                 }
+
+                $category = new Categories();
+                $data = $category->findOne($id);
                 $current = $item['title'];
+                $options = json_decode($data->options, true);
+                $translation = json_decode($data->translation, true);
+                $extraFilter = (new AdvertisementCatFilters())->find()->where(['category_id' => $id])->all();
+                if( !empty($this->options['sub_only']) && $this->options['sub_only'] == true) {
+
+                    if( $currentLang == 'ru' ) {
+
+                        $extraFilter = ArrayHelper::map($extraFilter, 'id', 'filter_name');
+                        $current = (!empty($options['custom_title'])) ? $options['custom_title'] : $current;
+                    } else {
+
+                        $extraFilter = ArrayHelper::map($extraFilter, 'id', 'filter_translation');
+                        $current = (!empty($translation['custom_title'])) ? $translation['custom_title'] : $current;
+                    }
+                 }
+
+                if( ! empty($this->options['cat_id']) && $this->options['sub_only'] == true && $options['use_filters'] == 1) {
+                    $this->options['custom_filters'] = true;
+                }
                 ?>
                 <div class="aside-accordion">
-                    <span class="title"><?= $item['title'] ?></span>
-                    <div class="expanded">
-                        <ul>
-                            <?php foreach ($item['subList'] as $li => $val ):?>
-                                <?php
-                                $cat = new Categories();
-                                $cat->category = $li;
-                                $quantity = $cat->advertisementCount;
+                    <span class="title"><?= $current ?></span>
+                    <?php if( $this->options['custom_filters'] == false ) :?>
+                        <div class="expanded">
+                            <ul>
+                                <?php foreach ($item['subList'] as $li => $val ):?>
+                                    <?php
+                                    $cat = new Categories();
+                                    $cat->category = $li;
+                                    $quantity = $cat->advertisementCount;
 
-                                ?>
-                                <li><a href="<?= Url::to(['/'.$cat->category['link']]) ?>"><?= $val ?> <sup><small>(<?= $quantity ?>)</small></sup></a></li>
-                            <?php endforeach; ?>
-                        </ul>
-                    </div>
+                                    ?>
+                                    <li><a href="<?= Url::to(['/'.$cat->category['link']]) ?>"><?= $val ?> <sup><small>(<?= $quantity ?>)</small></sup></a></li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+                    <?php else: ?>
+                        <div class="expanded">
+                            <?=
+                            $form->field($this->filter, 'extraFilter', [
+                                'options' => [
+                                    'tag' => 'ul',
+                                    'class' => 'list-checkbox'
+                                ]
+                            ])
+                                ->label(false)
+                                ->checkboxList($extraFilter, ['item' => function($index, $label, $name, $checked, $value){
+                                    $checkedLabel = $checked ? 'checked' : '';
+                                    $inputId = str_replace(['[', ']'], ['', ''], $name) . '_' . $index;
+
+                                    return "<li><label  class='checkbox' for=$inputId>
+                                    <input type='checkbox' name=$name value=$value id=$inputId $checkedLabel>
+                                    <span><i class=\"fas fa-check\"></i> $label </span>
+                                    </label></li>";
+                                }, 'name' => 'extraFilter' ]);
+                            ?>
+                        </div>
+                    <?php endif; ?>
                 </div>
             <?php endforeach; ?>
 

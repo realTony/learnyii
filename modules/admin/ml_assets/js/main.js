@@ -430,4 +430,15 @@
     });
   }
   init();
+
+  $(document).on('ready', function (e) {
+      $('.nav.nav-tabs li>a').on('click', function (e) {
+          var contentContainer = $('#translationTabs');
+          
+          contentContainer.find('.tab-pane').each(function (e) {
+            $(this).toggleClass('active');
+          });
+
+      });
+  });
 })(jQuery);

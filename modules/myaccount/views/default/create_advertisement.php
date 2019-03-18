@@ -125,4 +125,4 @@ $types  =  $types->types;
         </div>
     </div>
 </div>
-<?= FooterInfo::widget(); ?>
+<?//= FooterInfo::widget(); ?>

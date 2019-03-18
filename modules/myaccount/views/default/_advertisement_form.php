@@ -51,9 +51,6 @@ $types  =  $types->types;
                         ->textInput(['maxlength' => true, 'placeholder' => Yii::t('app', 'Заголовок'), 'class' => 'input']) ?>
                     <ul class="input-list">
 
-                        <?= $form->field($model, 'adv_type', ['options' => ['class' => false, 'tag' => 'li']])
-                            ->label(false)
-                            ->dropDownList($types, ['class' => 'dropdown', 'prompt' => Yii::t('app', 'Тип объявления')]) ?>
                         <?= $form->field($model, 'category_id', ['options' => ['class' => false, 'tag' => 'li']])
                             ->label(false)
                             ->dropDownList($catList, [
@@ -75,7 +72,9 @@ $types  =  $types->types;
                         <?= $form->field($model, 'distancePerMonth', ['options' => ['class' => false, 'tag' => 'li']])
                             ->label(false)
                             ->textInput(['type' => 'number', 'maxlength' => true, 'placeholder' => Yii::t('app', 'Пробег (км/мес)'), 'class' => 'input']) ?>
-                        <li class="empty"></li>
+                        <?= $form->field($model, 'adv_type', ['options' => ['class' => false, 'tag' => 'li']])
+                            ->label(false)
+                            ->dropDownList($types, ['class' => 'dropdown', 'prompt' => Yii::t('app', 'Тип транспорта')]) ?>
                     </ul>
                     <ul class="input-list">
                         <?= $form->field($model, 'contract_term', ['options' => ['class' => false, 'tag' => 'li']])
@@ -133,4 +132,4 @@ $types  =  $types->types;
             </div>
         </div>
     </div>
-<?= FooterInfo::widget(); ?>
+<?//= FooterInfo::widget(); ?>

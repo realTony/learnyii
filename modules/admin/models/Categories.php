@@ -2,6 +2,7 @@
 
 namespace app\modules\admin\models;
 
+use app\components\TextExcerption;
 use app\models\AdvertisementPost;
 use app\models\ImagesTrait;
 use app\models\User;
@@ -21,6 +22,7 @@ use yii\helpers\ArrayHelper;
  * @property int $parent_id
  * @property int $is_blog
  * @property string $options
+ * @property string $translation
  * @property string $updated_at
  * @property string $created_at
  */
@@ -46,7 +48,7 @@ class Categories extends \yii\db\ActiveRecord
     {
         return [
             [['title'], 'required'],
-            [['description', 'seo_text', 'options'], 'string'],
+            [['description', 'seo_text', 'options', 'translation'], 'string'],
             [['parent_id', 'is_blog'], 'integer'],
             [['updated_at', 'created_at'], 'safe'],
             [['title', 'link'], 'string', 'max' => 255],
@@ -57,18 +59,18 @@ class Categories extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
+    public function attributeLabels() : array
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'title' => Yii::t('app', 'Title'),
-            'description' => Yii::t('app', 'Description'),
-            'seo_text' => Yii::t('app', 'Seo Text'),
-            'link' => Yii::t('app', 'Link'),
+            'title' => Yii::t('app', Yii::t('app', 'Заголовок')),
+            'description' => Yii::t('app', Yii::t('app', 'Описание')),
+            'seo_text' => Yii::t('app', Yii::t('app', 'SEO-текст')),
+            'link' => Yii::t('app', Yii::t('app', 'Ссылка')),
             'parent_id' => Yii::t('app', 'Parent ID'),
             'is_blog' => Yii::t('app', 'Is Blog'),
-            'options' => Yii::t('app', 'Options'),
-            'updated_at' => Yii::t('app', 'Updated At'),
+            'options' => Yii::t('app', Yii::t('app', 'Опции')),
+            'updated_at' => Yii::t('app', Yii::t('app', 'Дата обновления')),
             'created_at' => Yii::t('app', 'Created At'),
         ];
     }
@@ -98,6 +100,9 @@ class Categories extends \yii\db\ActiveRecord
 
         $this->link = $this->generateLink($this->title);
 
+        $this->options = (! empty($this->options) ) ? json_encode($this->options): '';
+        $this->translation = (! empty($this->translation) ) ? json_encode($this->translation): '';
+
         if (! $this->is_blog ) {
             if(empty($this->parent_id)){
                 $this->link = 'advertisement/'.$this->link;
@@ -111,14 +116,19 @@ class Categories extends \yii\db\ActiveRecord
     }
 
 
-    public function makeMenuList()
+    public function makeMenuList() : array 
     {
+        $currentLang = (Yii::$app->language == 'ru-Ru') ? 'ru' : 'uk';
         $menuList = [];
-        $catList = $this->find()->asArray()->all();
-//        $catList = ArrayHelper::index($catList, 'id');
+        $catList = $this->find()->where(['is_blog' => 1])->asArray()->all();
+
         foreach ( $catList as $item) {
+            $title = $item['title'];
+            $translation = (!empty($item['translation'])) ? json_decode($item['translation'], true): [];
+            $title = ($currentLang == 'uk' && !empty($translation['title']))?$translation['title']:$title;
+            $title = TextExcerption::mbUcfirst($title, 'utf-8');
             $menuList[] = [
-                'label' => $item['title'],
+                'label' => $title,
                 'url' => Url::toRoute(['news/category/'. $item['link']])
             ];
         }
@@ -142,9 +152,6 @@ class Categories extends \yii\db\ActiveRecord
 
     public function getCategory()
     {
-        echo "<pre>";
-        print_r($this->category);
-        echo "</pre>";
         return (! empty($this->category)) ? $this->category : [];
     }
 

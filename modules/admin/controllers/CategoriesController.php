@@ -54,10 +54,27 @@ class CategoriesController extends Controller
      * Lists all Categories models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex() : string
     {
         $searchModel = new CategoriesSearch();
+        $searchModel->is_blog = 1;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        $this->getView()->title = Yii::t('app', 'Список категорий новостей');
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionAdvertisements() : string
+    {
+        $searchModel = new CategoriesSearch();
+        $searchModel->is_blog = 0;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        $this->getView()->title = Yii::t('app', 'Список категорий объявлений');
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -135,6 +152,9 @@ class CategoriesController extends Controller
         $model = $this->findModel($id);
         $model->updated_at = date('Y-m-d H:i:s');
         $parentCat = ArrayHelper::map($model->find()->all(), 'id', 'title');
+
+        $model->options = json_decode($model->options, true);
+        $model->translation = json_decode($model->translation, true);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);

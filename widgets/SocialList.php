@@ -23,19 +23,19 @@ class SocialList extends Widget
     ];
     public $socialNetworks = [
             'site_telegram' => [
-                'class' => 'fa-telegram-plane',
+                'class' => 'fa-half fa-telegram-plane',
                 'url' => 'https://t.me/'
             ],
             'site_facebook' => [
-                'class' => 'fa-facebook-f',
+                'class' => 'fa-half fa-facebook-f',
                 'url' => ''
             ],
             'site_instagram' => [
-                'class' => 'fa-instagram',
+                'class' => 'fa-half fa-instagram',
                 'url' => ''
             ],
             'site_viber' => [
-                'class' => 'fa-viber',
+                'class' => 'fa-half fa-viber',
                 'url' => 'viber://chat?number=%2B'
             ]
     ];

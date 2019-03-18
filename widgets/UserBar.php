@@ -38,9 +38,7 @@ class UserBar extends Widget
             echo Html::beginTag('div', ['class' => $this->options['profileClass']]);
                 echo Html::beginTag('div', ['class' => ($this->options['has_wrapper']) ? 'seller clone': 'seller']);
                 ?>
-                    <div class="holder-img">
-                        <img src="<?= Profile::getUserAvatar( $this->user->id) ?>" alt="profile_image">
-                    </div>
+                    <div class="holder-img" style="background: url('<?= Profile::getUserAvatar( $this->user->id) ?>') no-repeat center center; background-size:cover; "></div>
                     <div class="holder-text">
                         <a href="<?= Url::toRoute('/myaccount') ?>" class="name"><?= $this->user['username'] ?></a>
                         <span><?= Yii::t('app','Дата регистрации')?></span>
@@ -52,16 +50,16 @@ class UserBar extends Widget
             if( $this->options['enableMenu']):
                 ?>
                 <ul class="sub-nav">
-                    <li class="active">
+                    <li <?php if(Url::current() == Url::toRoute('/myaccount/edit') ): ?> class="active" <?php endif; ?> >
                         <a href="<?= Url::toRoute('/myaccount/edit') ?>"><i class="fas fa-pencil-alt"></i><?= Yii::t('app','Редактировать профиль')?></a>
                     </li>
-                    <li>
+                    <li <?php if(Url::current() == Url::toRoute('/myaccount/create') ): ?> class="active" <?php endif; ?> >
                         <a href="<?= Url::toRoute('/myaccount/create') ?>"><i class="fas fa-plus-circle"></i><?= Yii::t('app','Создать объявление')?></a>
                     </li>
-                    <li>
+                    <li <?php if(Url::current() == Url::toRoute('/myaccount/posts') ): ?> class="active" <?php endif; ?>>
                         <a href="<?= Url::toRoute('/myaccount/posts') ?>"><i class="fas fa-tags"></i><?= Yii::t('app','Мои объявления')?> <sup><small>(<?= (new AdvertisementPost)->advCount ?>)</small></sup></a>
                     </li>
-                    <li>
+                    <li <?php if(Url::current() == Url::toRoute('/myaccount/favorite') ): ?> class="active" <?php endif; ?>>
                         <a href="#"><i class="fas fa-star"></i> <?= Yii::t('app', 'Избранное') ?></a>
                     </li>
 <!--                    <li>-->

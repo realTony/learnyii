@@ -277,6 +277,9 @@ class AdvertisementController extends Controller
                 $filter->orderBy =  $requested['orderBy'];
             }
 
+            if(!empty($requested['extraFilter'])) {
+                $filter->extraFilter =  $requested['extraFilter'];
+            }
             $filter->city = (!empty($requested['city'])) ? $requested['city'] : '';
             $filter->district = (!empty($requested['district'])) ? $requested['district'] : '';
 
@@ -313,6 +316,9 @@ class AdvertisementController extends Controller
 
             if(!empty($requested['orderBy'])) {
                 $filter->orderBy =  $requested['orderBy'];
+            }
+            if(!empty($requested['extraFilter'])) {
+                $asideFilter->extraFilter =  $requested['extraFilter'];
             }
 
             $filter->city = (!empty($requested['city'])) ? $requested['city'] : '';
@@ -468,7 +474,6 @@ class AdvertisementController extends Controller
         $model = (new AdvertisementPost())->findOne($id);
         $category = (new Categories())->findOne($model->category_id);
         $subCategory = (new Categories())->findOne($model->subCat_id);
-
         $user = (new User())->findOne($model->authorId);
         $profile = (new Profile())->findOne(['user_id' => $model->authorId]);
         $similar = (new AdvertisementPost())
@@ -484,6 +489,10 @@ class AdvertisementController extends Controller
             ['label' => Yii::t('app', $subCategory->title), 'url' => Url::to([$subCategory->link])],
             ['label' => Yii::t('app', $model->title)]
         ];
+
+        if( Yii::$app->user->isGuest || Yii::$app->user->id != $model->authorId ) {
+            $model->updateViews($id);
+        }
 
         return $this->render('advertisement', [
             'model' => $model,

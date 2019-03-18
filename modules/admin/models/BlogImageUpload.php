@@ -11,7 +11,7 @@ class BlogImageUpload extends ImageUpload
 {
     public $post_image;
 
-    public function rules()
+    public function rules() : array
     {
         return [
             [

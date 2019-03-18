@@ -59,12 +59,15 @@ class LanguageSwitcher extends Widget
         } else {
             foreach ($this->items as $lang) {
                 $activeClass = '';
+                $currLang = ($lang['url']['language'] == 'ru-Ru') ? 'ru' : 'uk';
                 if($lang['url']['active']) {
                     $activeClass = 'active';
                 }
-                $langList .= "<li class=\"$activeClass\">";
 
-                $langList .= Html::a($lang['label'], Url::to([\Yii::$app->controller->action->id, 'language' => $lang['url']['language']]));
+                $link = str_replace('/uk', '', Url::current());
+
+                $langList .= "<li class=\"$activeClass\">";
+                $langList .= Html::a($lang['label'], Url::to([$link, 'language' => $lang['url']['language']]));
                 $langList .= '</li>/n';
             }
         }

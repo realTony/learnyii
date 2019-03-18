@@ -137,7 +137,7 @@ use ymaker\social\share\widgets\SocialShare;
                     </li>
                     <li>
                         <span><?= Yii::t('app', 'Просмотров') ?></span>
-                        <strong>5126 <i class="far fa-eye"></i></strong>
+                        <strong><?= $model->views ?> <i class="far fa-eye"></i></strong>
                     </li>
                 </ul>
             </div>

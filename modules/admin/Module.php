@@ -62,8 +62,13 @@ class Module extends \yii\base\Module
                     'controller' => 'categories',
                     'items' => [
                         [
-                            'label' => 'Список категорий',
-                            'url' => ['/admin/categories'],
+                            'label' => 'Список категорий новостей',
+                            'url' => ['/admin/categories/index'],
+                            'template' => '<a href="{url}"><span>{label}</span></a>'
+                        ],
+                        [
+                            'label' => 'Список категорий объявлений',
+                            'url' => ['/admin/categories/advertisements'],
                             'template' => '<a href="{url}"><span>{label}</span></a>'
                         ],
                         [

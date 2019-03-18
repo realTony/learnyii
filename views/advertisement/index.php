@@ -36,7 +36,8 @@ $this->params['breadcrumbs'] = $breadcrumbs;
             'options' => [
                     'user_id' => false,
                     'use_wrapper' => true,
-                    'show_filters' => false
+                    'show_filters' => false,
+                    'custom_filters' => false
             ]
         ]) ?>
 

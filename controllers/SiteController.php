@@ -85,9 +85,10 @@ class SiteController extends Controller
      * @return string
      * @throws \yii\base\InvalidConfigException
      */
-    public function actionIndex()
+    public function actionIndex() : string
     {
         $model = Yii::createObject(Pages::className())->find()->where(['link' => 'main'])->one();
+        $currentLang = (Yii::$app->language == 'ru-Ru') ? 'ru' : 'uk';
         $categories = Yii::createObject(Categories::className());
         $news = Yii::createObject(BlogPosts::className());
         $advertisement = (Yii::createObject(AdvertisementPost::className()))
@@ -108,6 +109,16 @@ class SiteController extends Controller
 
         $news->category = (! empty($categories->category))? array_values((array)$model->options->promo): [];
         $promo = (! empty($categories->category))? $news->postsByCat : [];
+
+
+        if( $currentLang == 'uk') {
+            $model->options = $model->translation;
+        }
+
+        $title = (!empty($model->title)) ? $model->title : '';
+        $title = ($currentLang == 'uk' && !empty($model->options->title)) ? $model->options->title : $title;
+
+        $this->getView()->title = (empty($model->options->seo_title)) ? $title : $model->options->seo_title;
 
         return $this->render('index', [
                 'model' => $model,

@@ -1,5 +1,7 @@
 <?php
 
+use app\widgets\AdvertisementFilter;
+use app\widgets\SearchAdverts;
 use app\widgets\SortingForm;
 use yii\helpers\Url;
 use yii\widgets\Breadcrumbs;
@@ -11,7 +13,7 @@ use yii\widgets\Pjax;
 $this->params['breadcrumbs'] = $breadcrumbs;
 ?>
 
-<?= \app\widgets\SearchAdverts::widget(); ?>
+<?= SearchAdverts::widget(); ?>
 
 <div class="holder-crumbs">
     <div class="container">
@@ -31,14 +33,15 @@ $this->params['breadcrumbs'] = $breadcrumbs;
 
 <div class="container">
     <div class="group-content">
-        <?= \app\widgets\AdvertisementFilter::widget([
+        <?= AdvertisementFilter::widget([
                 'filter' => $sideFilter,
                 'options' => [
                         'show_filters' => true,
                         'sub_only' => true,
                         'cat_id' => (!empty($catInfo->parent_id))? $catInfo->parent_id : $catInfo->id,
                         'user_id' => false,
-                        'use_wrapper' => true
+                        'use_wrapper' => true,
+                        'custom_filters' => false
                 ]
         ]); ?>
 

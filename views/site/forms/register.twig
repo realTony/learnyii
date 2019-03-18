@@ -10,13 +10,13 @@
     }
 }) %}
 <fieldset>
-    {{ form.field(model, 'username').label(false).textInput({'autofocus':true, 'placeholder': 'Имя', 'readonly':true}) | raw }}
-    {{ form.field(model, 'email').label(false).input('email',{'placeholder':'E-Mail', 'readonly': true}) | raw }}
-    {{ form.field(model, 'phone').label(false).input('phone',{'placeholder':'Телефон', 'readonly':true}) | raw }}
-    {{ form.field(model, 'city').label(false).textInput({'placeholder':'Город'}) | raw }}
-    {{ form.field(model, 'password').label(false).passwordInput({'placeholder':'Пароль', 'readonly': true}) | raw }}
-    {{ form.field(model, 'password_repeat').label(false).passwordInput({'placeholder':'Повторить пароль', 'readonly': true}) | raw }}
-    {{ form.field(model, 'rules_agreement', {'options' : {'class':'holder-checkbox left-text'}, 'template':"<label>{input}<span><i class='fas fa-check'></i> "~ t('app', 'Согласен с ')~"<a href='#'>" ~t('app', 'условиями использования')~"</a>{error}"}).label(false).checkbox([], false) | raw }}
+    {{ form.field(model, 'username').label(false).textInput({'autofocus':true, 'placeholder': t('app','Имя'), 'readonly':true}) | raw }}
+    {{ form.field(model, 'email').label(false).input('email',{'placeholder': t('app','E-Mail'), 'readonly': true}) | raw }}
+    {{ form.field(model, 'phone').label(false).input('phone',{'placeholder': t('app','Телефон'), 'readonly':true}) | raw }}
+    {{ form.field(model, 'city').label(false).textInput({'placeholder': t('app','Город')}) | raw }}
+    {{ form.field(model, 'password').label(false).passwordInput({'placeholder': t('app','Пароль'), 'readonly': true}) | raw }}
+    {{ form.field(model, 'password_repeat').label(false).passwordInput({'placeholder': t('app', 'Повторить пароль'), 'readonly': true}) | raw }}
+    {{ form.field(model, 'rules_agreement', {'options' : {'class':'holder-checkbox left-text'}, 'template':"<label>{input}<span><i class='far fa-square fa-2x'></i><i class='far fa-check-square fa-2x'></i> "~ t('app', 'Согласен с ')~"<a href='#'>" ~t('app', 'условиями использования')~"</a>{error}"}).label(false).checkbox([], false) | raw }}
     {{ submitButton(t('app','Зарегистрироваться'), {
         'class': 'btn-orange',
     }) | raw }}

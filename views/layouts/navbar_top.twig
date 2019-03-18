@@ -2,7 +2,7 @@
 <div class="top-head">
     <strong class="logo"><a href="{{ app.homeUrl }}" alt="logo">{{ app.name }}</a></strong>
     <div class="holder-ads">
-        <a class="btn-ads" href="#">{{ t('app', 'Подать объявление') }} </a>
+        <a class="btn-ads" href="{{ url.toRoute('/myaccount/create') }}">{{ t('app', 'Подать объявление') }} </a>
     </div>
     <div class="log-registration">
         {% set menuItems = [] %}
@@ -21,8 +21,7 @@
                     'url' : ['/myaccount/'],
                     'options' : {'tag':false},
                     'template':'<a href="{url}" class="btn-login btn-profile">
-                                    <div class="holder-img">
-                                        <img src="'~getAvatar(app.user.id)~'" alt="profile_image">
+                                    <div class="holder-img" style="background: url('~getAvatar(app.user.id)~') no-repeat center center; background-size:cover; ">
                                     </div>
                                 </a>'
                 }
@@ -61,22 +60,14 @@
     </div>
     <div class="mobile-nav-btn">
         <!-- Mobile create advertisement -->
-        {#<a href="">#}
-            {#<img src="{{ app.homeUrl }}images/bg-33.png" alt="create advertisement">#}
-        {#</a>#}
-        <a href="#">
+        <a href="{{ url.toRoute('/myaccount/create') }}">
             <i class="fas fa-plus"></i>
-            <!--<img src="images/bg-33.png" alt="img">-->
         </a>
         <!-- Mobile login -->
         {% if app.user.isGuest == true %}
         <a href="{{ url.to(['/account#login']) }}">
             <i class="fas fa-sign-in-alt"></i>
-            <!--<img src="images/bg-34.png" alt="img">-->
         </a>
-        {#<a href="{{ url.to(['/account#login']) }}">#}
-            {#<img src="{{ app.homeUrl }}images/bg-34.png" alt="login">#}
-        {#</a>#}
         {% else %}
             <a class="btn-profile" href="#">
                 <img src="{{ getAvatar(app.user.id) }}" alt="{{ getAvatar(app.user.id) }}">
@@ -114,7 +105,7 @@
                     <a href="{{ url.toRoute('/myaccount/posts') }}"><i class="fas fa-tags"></i> {{ t('app', 'Мои объявления') }}<sup><small>(12)</small></sup></a>
                 </li>
                 <li>
-                    <a href="#"><i class="fas fa-star"></i> Избранное</a>
+                    <a href="#"><i class="fas fa-star"></i> {{ t('app', 'Избранное') }}</a>
                 </li>
                 {#<li>#}
                     {#<a href="#"><i class="fas fa-comments"></i> Сообщения </a>#}

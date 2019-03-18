@@ -12,6 +12,7 @@ class AdvSearch extends Model
     public $queried;
     public $catId;
     public $cityId;
+    public $extraFilter;
 
     public function rules()
     {

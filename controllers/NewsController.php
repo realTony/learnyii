@@ -26,7 +26,7 @@ class NewsController extends Controller
         ];
     }
 
-    public function actionIndex()
+    public function actionIndex() : string
     {
         $model = new Categories();
         $menuItems = $model->makeMenuList();
@@ -56,6 +56,16 @@ class NewsController extends Controller
             ->where(['link' => $link ])
             ->one();
         $cat = (! empty($model->category_id) ) ?$model->category_id: false;
+        $options = (!empty($model->options))?json_decode($model->options, true):[];
+        $model->options = (!empty($model->options))?json_decode($model->options, true):[];
+        $translation = (!empty($model->translation))?json_decode($model->translation, true):[];
+        $currentLang = (Yii::$app->language == 'ru-Ru') ? 'ru' : 'uk';
+        $title = '';
+        $description = '';
+        $title = ($currentLang == 'uk' && !empty($translation['title'])) ? $translation['title'] : $model->title;
+        $model->title = $title;
+        $description = ($currentLang == 'uk' && !empty($translation['description'])) ? $translation['description'] : $model->description;
+        $model->description = $description;
 
         $breadcrumbs[] = [
                         'label' => Yii::t('app', 'Новости'),
@@ -68,12 +78,13 @@ class NewsController extends Controller
                 ->find()
                 ->where(['id' => $cat])
                 ->one();
+            $translation = (!empty($category->translation))? json_decode($category->translation, true): [];
             $breadcrumbs[] = [
-                'label' => $category->title,
+                'label' => ($currentLang == 'uk' && ! empty($translation['title'])) ? $translation['title'] : $category->title,
                 'url' => Url::to(['news/category/'.$category->link])
             ];
             $breadcrumbs[] = [
-                'label' => $model->title
+                'label' => $title
             ];
         }
 

@@ -5,6 +5,7 @@ namespace app\models;
 use Imagine\Image\Box;
 use Yii;
 use yii\helpers\FileHelper;
+use yii\helpers\Url;
 use yii\imagine\Image;
 use yii\web\UploadedFile;
 
@@ -25,6 +26,7 @@ use yii\web\UploadedFile;
  * @property int $authorId
  * @property int $showEmail
  * @property int $isPremium
+ * @property int $views
  * @property int $coverage_type
  * @property string $published_at
  */
@@ -52,7 +54,7 @@ class AdvertisementPost extends \yii\db\ActiveRecord
     {
         return [
             [['title', 'category_id', 'subCat_id', 'pricePerMonth', 'contract_term', 'distancePerMonth', 'authorId'], 'required'],
-            [['category_id', 'subCat_id', 'contract_term', 'adv_type', 'sticking_area', 'authorId', 'showEmail', 'isPremium', 'coverage_type'], 'integer'],
+            [['category_id', 'subCat_id', 'views', 'contract_term', 'adv_type', 'sticking_area', 'authorId', 'showEmail', 'isPremium', 'coverage_type'], 'integer'],
             [['description'], 'string'],
             [['pricePerMonth', 'distancePerMonth'], 'number'],
             [['published_at'], 'safe'],
@@ -114,8 +116,11 @@ class AdvertisementPost extends \yii\db\ActiveRecord
 
     public function beforeValidate()
     {
-        $user = \Yii::$app->user->id;
-        $this->authorId = $user;
+        if( empty($this->authorId) ) {
+            $user = \Yii::$app->user->id;
+            $this->authorId = $user;
+        }
+
         $this->image_items = UploadedFile::getInstances($this, 'image_items');
 
         return parent::beforeValidate();
@@ -219,5 +224,31 @@ class AdvertisementPost extends \yii\db\ActiveRecord
     public function getDistrict()
     {
         return $this->city_district;
+    }
+
+    public function updateViews($pageId) : void
+    {
+        $page = $this->findOne($pageId);
+        $views = $page->views;
+        $views++;
+        $page->authorId = $page->authorId;
+        $page->views = $views;
+
+       if(!$page->save()) {
+           $page->errors;
+       }
+    }
+
+    public function getInteresting()
+    {
+        $posts = $this->find()->orderBy('isPremium DESC, views DESC')->limit(30)->asArray()->all();
+        $ruList = [];
+        $list = '';
+
+        foreach ($posts as $item) {
+            $ruList[] = '<a href="'.Url::to(['/advertisement/page/'.$item['id']]).'">'.$item['title'].'</a>';
+        }
+
+        return implode(', ', $ruList);
     }
 }

@@ -159,7 +159,7 @@ class Menu extends ActiveRecord
 
         foreach ($menu as $item){
             $items = [
-                'label' => $item['name'],
+                'label' => Yii::t('app', $item['name']),
                 'url' => Url::toRoute($item['route']),
             ];
             $result[] = $items;

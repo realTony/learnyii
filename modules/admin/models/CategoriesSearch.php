@@ -64,11 +64,11 @@ class CategoriesSearch extends Categories
             'updated_at' => $this->updated_at,
             'created_at' => $this->created_at,
         ]);
-
+//
         $query->andFilterWhere(['like', 'title', $this->title])
             ->andFilterWhere(['like', 'description', $this->description])
             ->andFilterWhere(['like', 'seo_text', $this->seo_text])
-            ->andFilterWhere(['like', 'link', $this->link])
+//            ->andFilterWhere(['like', 'link', $this->link])
             ->andFilterWhere(['like', 'options', $this->options]);
 
         return $dataProvider;
