@@ -35,7 +35,6 @@ use yii\widgets\ActiveForm;
 
             <li>
                 <a href="javascript:;" class="ripple" data-toggle="dropdown">
-<!--                    <img src="--><?//= app\models\Profile::getUserAvatar(\Yii::$app->user->id) ?><!--" class="header-avatar img-circle" alt="user" title="user">-->
                     <div class="header-avatar img-circle" style="background: url('<?= app\models\Profile::getUserAvatar(\Yii::$app->user->id) ?>') no-repeat center center; background-size: cover;"></div>
                     <span><?= \Yii::$app->user->identity->username ?></span>
                     <span class="caret"></span>
