@@ -145,6 +145,9 @@ class PagesController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
+        $model->options = json_decode($model->options, true);
+        $model->translation = json_decode($model->translation, true);
+
         return $this->render('update', [
             'model' => $model,
         ]);

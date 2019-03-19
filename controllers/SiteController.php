@@ -205,37 +205,102 @@ class SiteController extends Controller
     public function actionHowItWorks()
     {
         $model = Yii::createObject(Pages::className())->find()->where(['link' => 'how-it-works'])->one();
-
-        $model->options = json_decode($model->options);
-        $model->translation = json_decode($model->translation);
-
-        return $this->render('how-it-works.twig', [
-            'model' => $model
-        ]);
-    }
-
-    public function actionPrivacyPolicy()
-    {
-        $model = Yii::createObject(Pages::className())->find()->where(['link' => 'privacy-policy'])->one();
-
-        $model->options = json_decode($model->options);
-        $model->translation = json_decode($model->translation);
-
-        return $this->render('policy.twig', [
-            'model' => $model
-        ]);
-    }
-
-    public function actionPage($link)
-    {
-        $model = Yii::createObject(Pages::className())->find()->where(['link' => $link])->one();
+        $currentLang = (Yii::$app->language == 'ru-Ru') ? 'ru' : 'uk';
 
         if(! empty($model)) {
-            $model->options = (!empty($model->options))? json_decode($model->options) : [];
-            $model->translation = (!empty($model->translation))? json_decode($model->translation) : [];
+            $options = (!empty($model->options)) ? json_decode($model->options, true) : [];
+            $model->translation = (!empty($model->translation)) ? json_decode($model->translation, true) : [];
 
-            return $this->render('policy.twig', [
-                'model' => $model
+            $title = $model->title;
+            $seo_title = (empty($model->seo_title)) ? $model->title : $model->seo_title;
+
+            $model->title = ($currentLang == 'uk' && !empty($model->translation['title'])) ? $model->translation['title'] : $title;
+            $title = $model->title;
+            $seo_title = (empty($model->seo_title)) ? $model->title : $model->seo_title;
+            $model->seo_title = ($currentLang == 'uk' && !empty($model->translation['seo_title'])) ? $model->translation['seo_title'] : $seo_title;
+            $options['content'] = (!empty($options['content']))? : '';
+            $options['after_content'] = (!empty($options['after_content']))? : '';
+            $options['content'] = ($currentLang == 'uk' && !empty($model->translation['content'])) ? $model->translation['content'] : $options['content'];
+            $options['after_content'] = ($currentLang == 'uk' && !empty($model->translation['after_content'])) ? $model->translation['after_content'] : $options['after_content'];
+            $model->options = $options;
+
+            $this->getView()->title = $model->title;
+            $breadcrumbs = ['label' => Yii::t('app', $model->seo_title)];
+
+            return $this->render('how-it-works.php', [
+                'model' => $model,
+                'breadcrumbs' => $breadcrumbs
+            ]);
+        } else {
+            return new NotFoundHttpException();
+        }
+    }
+
+    public function actionPrivacyPolicy() : string
+    {
+        $model = Yii::createObject(Pages::className())->find()->where(['link' => 'privacy-policy'])->one();
+        $currentLang = (Yii::$app->language == 'ru-Ru') ? 'ru' : 'uk';
+
+        if(! empty($model)) {
+            $options = (!empty($model->options))? json_decode($model->options, true) : [];
+            $model->translation = (!empty($model->translation))? json_decode($model->translation, true) : [];
+
+            $title = $model->title;
+            $seo_title = (empty($model->seo_title)) ? $model->title : $model->seo_title;
+
+            $model->title = ($currentLang == 'uk' && !empty($model->translation['title'])) ? $model->translation['title'] : $title;
+            $title = $model->title;
+            $seo_title = (empty($model->seo_title)) ? $model->title : $model->seo_title;
+            $model->seo_title = ($currentLang == 'uk' && !empty($model->translation['seo_title'])) ? $model->translation['seo_title'] : $seo_title;
+            $options['content'] = (!empty($options['content']))? : '';
+            $options['content'] = ($currentLang == 'uk' && !empty($model->translation['content'])) ? $model->translation['content'] : $options['content'];
+            $model->options = $options;
+
+            $this->getView()->title = $model->seo_title;
+            $breadcrumbs = ['label' => Yii::t('app', $model->title )];
+
+            return $this->render('page', [
+                'model' => $model,
+                'breadcrumbs' => $breadcrumbs
+            ]);
+        } else {
+            throw new NotFoundHttpException();
+        }
+
+    }
+
+    /**
+     * @param $link
+     * @return string
+     * @throws NotFoundHttpException
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function actionPage($link) : string
+    {
+        $model = Yii::createObject(Pages::className())->find()->where(['link' => $link])->one();
+        $currentLang = (Yii::$app->language == 'ru-Ru') ? 'ru' : 'uk';
+
+        if(! empty($model)) {
+            $options = (!empty($model->options))? json_decode($model->options, true) : [];
+            $model->translation = (!empty($model->translation))? json_decode($model->translation, true) : [];
+
+            $title = $model->title;
+            $seo_title = (empty($model->seo_title)) ? $model->title : $model->seo_title;
+
+            $model->title = ($currentLang == 'uk' && !empty($model->translation['title'])) ? $model->translation['title'] : $title;
+            $title = $model->title;
+            $seo_title = (empty($model->seo_title)) ? $model->title : $model->seo_title;
+            $model->seo_title = ($currentLang == 'uk' && !empty($model->translation['seo_title'])) ? $model->translation['seo_title'] : $seo_title;
+            $options['content'] = (!empty($options['content']))? : '';
+            $options['content'] = ($currentLang == 'uk' && !empty($model->translation['content'])) ? $model->translation['content'] : $options['content'];
+            $model->options = $options;
+
+            $this->getView()->title = $model->seo_title;
+            $breadcrumbs = ['label' => Yii::t('app', $model->title )];
+
+            return $this->render('page', [
+                'model' => $model,
+                'breadcrumbs' => $breadcrumbs
             ]);
         } else {
             throw new NotFoundHttpException();
