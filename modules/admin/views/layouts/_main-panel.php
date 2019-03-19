@@ -61,16 +61,10 @@ use yii\widgets\ActiveForm;
     <!-- main area -->
     <div class="main-content">
         <!-- page title -->
-        <div class="page-title">
-            <div class="title"><?= $this->title ?></div>
-        </div>
-        <!--end  page title -->
-
-<!--        <div class="row">-->
-<!--            <div class="col-md-12">-->
-<!--                <h2>Главная страница</h2>-->
-<!--            </div>-->
+<!--        <div class="page-title">-->
+<!--            <div class="title">--><?//= $this->title ?><!--</div>-->
 <!--        </div>-->
+        <!--end  page title -->
         <div class="row">
             <div class="col-md-12">
                 <?= $content ?>

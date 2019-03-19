@@ -10,7 +10,9 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 ?>
-
+<div class="page-title">
+    <div class="title"><?= Html::encode($this->title) ?></div>
+</div>
 <?php $form = ActiveForm::begin(); ?>
 
 <div class="row">
@@ -68,17 +70,83 @@ use yii\widgets\ActiveForm;
                             </div>
                         </div>
 
-                        <div class="seo-options row">
+                        <div class="seo-box card-header ">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h3 class="text-center m-b-md"><?= Yii::t('app', 'SEO Настройки')?></h3>
+                                </div>
+                            </div>
+                            <div class="row seo-flex">
+                                <div class="col-md-6">
+                                    <div class="card bg-white m-b">
+                                        <div class="card-block">
+                                            <?= $form->field($model, 'seo_title')->label(Yii::t('app','Заголовок'))->textInput(['maxlength' => true]) ?>
+                                            <?= $form->field($model, 'options[seo_description]')->label(Yii::t('app','Описание'))->textInput(['maxlength' => true]) ?>
 
-                            <div class="col-md-6">
-                                <div class="card bg-white m-b">
-                                    <div class="card-header ">
-                                        <h3 class="text-center m-b-md">Редактировать SEO</h3>
+                                            <?= $form->field($model, 'seo_text', [
+                                                'options' => [
+                                                    'class' => 'form-group',
+                                                    'tag' => 'div'
+                                                ]
+                                            ])->label(Yii::t('app', 'SEO Текст'))
+                                                ->widget(TinyMce::className(), [
+                                                    'options' => ['rows' => 6],
+                                                    'language' => 'ru',
+                                                    'clientOptions' => [
+                                                        'plugins' => [
+                                                            "advlist autolink lists link charmap print preview anchor",
+                                                            "searchreplace visualblocks code fullscreen",
+                                                            "insertdatetime media table contextmenu paste"
+                                                        ],
+                                                        'toolbar' => "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
+                                                    ]
+                                                ]);?>
+
+                                        </div>
                                     </div>
-                                    <div class="card-block">
-                                        <?= $form->field($model, 'seo_title')->textInput(['maxlength' => true]) ?>
-                                        <?= $form->field($model, 'seo_text')->textarea(['rows' => 6]) ?>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card bg-white m-b">
+                                        <div class="card-block">
+                                                <div class="form-group seo-toggles">
+                                                    <div class="row">
+                                                        <div class="col-xs-6">
+                                                            <h4><?= Yii::t('app', 'Добавить NO-INDEX')?></h4>
+                                                        </div>
+                                                        <?= $form->field($model, "options[no_index]", [
+                                                            'options' => [
+                                                                'tag' => 'div',
+                                                                'class' => 'col-xs-6'
+                                                            ],
+                                                            'template' => '<label class="switch">{input}<span><i class="handle"></i></span></label>'
+                                                        ])
+                                                            ->checkbox([    'label' => false,
+                                                                'type' => 'checkbox'
+                                                            ]);
 
+                                                        ?>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group seo-toggles">
+                                                    <div class="row">
+                                                        <div class="col-xs-6">
+                                                            <h4><?= Yii::t('app', 'Добавить NO-FOLLOW')?></h4>
+                                                        </div>
+                                                        <?= $form->field($model, "options[no_follow]", [
+                                                            'options' => [
+                                                                'tag' => 'div',
+                                                                'class' => 'col-xs-6'
+                                                            ],
+                                                            'template' => '<label class="switch">{input}<span><i class="handle"></i></span></label>'
+                                                        ])
+                                                            ->checkbox([    'label' => false,
+                                                                'type' => 'checkbox'
+                                                            ]);
+
+                                                        ?>
+                                                    </div>
+                                                </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -128,17 +196,83 @@ use yii\widgets\ActiveForm;
                             </div>
                         </div>
 
-                        <div class="seo-options row">
+                        <div class="seo-box card-header ">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h3 class="text-center m-b-md"><?= Yii::t('app', 'SEO Настройки')?></h3>
+                                </div>
+                            </div>
+                            <div class="row seo-flex">
+                                <div class="col-md-6">
+                                    <div class="card bg-white m-b">
+                                        <div class="card-block">
+                                            <?= $form->field($model, 'translation[seo_title]')->label(Yii::t('app','Заголовок'))->textInput(['maxlength' => true]) ?>
+                                            <?= $form->field($model, 'translation[seo_description]')->label(Yii::t('app','Описание'))->textInput(['maxlength' => true]) ?>
 
-                            <div class="col-md-6">
-                                <div class="card bg-white m-b">
-                                    <div class="card-header ">
-                                        <h3 class="text-center m-b-md">Редактировать SEO</h3>
+                                            <?= $form->field($model, 'translation[seo_text]', [
+                                                'options' => [
+                                                    'class' => 'form-group',
+                                                    'tag' => 'div'
+                                                ]
+                                            ])->label(Yii::t('app', 'SEO Текст'))
+                                                ->widget(TinyMce::className(), [
+                                                    'options' => ['rows' => 6],
+                                                    'language' => 'ru',
+                                                    'clientOptions' => [
+                                                        'plugins' => [
+                                                            "advlist autolink lists link charmap print preview anchor",
+                                                            "searchreplace visualblocks code fullscreen",
+                                                            "insertdatetime media table contextmenu paste"
+                                                        ],
+                                                        'toolbar' => "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
+                                                    ]
+                                                ]);?>
+
+                                        </div>
                                     </div>
-                                    <div class="card-block">
-                                        <?= $form->field($model, 'translation[seo_title]')->textInput(['maxlength' => true]) ?>
-                                        <?= $form->field($model, 'translation[seo_text]')->textarea(['rows' => 6]) ?>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card bg-white m-b">
+                                        <div class="card-block">
+                                            <div class="form-group seo-toggles">
+                                                <div class="row">
+                                                    <div class="col-xs-6">
+                                                        <h4><?= Yii::t('app', 'Добавить NO-INDEX')?></h4>
+                                                    </div>
+                                                    <?= $form->field($model, "translation[no_index]", [
+                                                        'options' => [
+                                                            'tag' => 'div',
+                                                            'class' => 'col-xs-6'
+                                                        ],
+                                                        'template' => '<label class="switch">{input}<span><i class="handle"></i></span></label>'
+                                                    ])
+                                                        ->checkbox([    'label' => false,
+                                                            'type' => 'checkbox'
+                                                        ]);
 
+                                                    ?>
+                                                </div>
+                                            </div>
+                                            <div class="form-group seo-toggles">
+                                                <div class="row">
+                                                    <div class="col-xs-6">
+                                                        <h4><?= Yii::t('app', 'Добавить NO-FOLLOW')?></h4>
+                                                    </div>
+                                                    <?= $form->field($model, "translation[no_follow]", [
+                                                        'options' => [
+                                                            'tag' => 'div',
+                                                            'class' => 'col-xs-6'
+                                                        ],
+                                                        'template' => '<label class="switch">{input}<span><i class="handle"></i></span></label>'
+                                                    ])
+                                                        ->checkbox([    'label' => false,
+                                                            'type' => 'checkbox'
+                                                        ]);
+
+                                                    ?>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -150,5 +284,5 @@ use yii\widgets\ActiveForm;
         </div>
     </div>
 </div>
-<?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
+<?= Html::submitButton(Yii::t('app', 'Сохранить'), ['class' => 'btn btn-success']) ?>
 <?php ActiveForm::end(); ?>

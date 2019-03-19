@@ -138,6 +138,10 @@ class PagesController extends Controller
     {
         $model = $this->findModel($id);
 
+        $this->getView()->title =  Yii::t('app', 'Редактировать страницу {name}', [
+            'name' => $model->title,
+        ]);
+
         if(in_array($model->link, $this->staticPages)) {
             return $this->actionUpdateStatic($model->id);
         }
@@ -151,7 +155,6 @@ class PagesController extends Controller
         return $this->render('update', [
             'model' => $model,
         ]);
-        return true;
     }
 
     /**
