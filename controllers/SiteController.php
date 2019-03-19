@@ -82,20 +82,40 @@ class SiteController extends Controller
     }
 
     /**
+     * Main page action
+     *
      * @return string
      * @throws \yii\base\InvalidConfigException
      */
     public function actionIndex() : string
     {
         $model = Yii::createObject(Pages::className())->find()->where(['link' => 'main'])->one();
+        $model->options = json_decode($model->options);
+        $model->translation = json_decode($model->translation);
+
+        $meta_data = [
+            'ru' => [
+                'title' => (! empty($model->title)) ? $model->title : '',
+                'meta_description' => '',
+                'seo_title' => (! empty($model->seo_title)) ? $model->seo_title : '',
+                'seo_text' => (! empty($model->seo_text)) ? $model->seo_text : '',
+            ],
+            'uk' => [
+                'title' => (! empty($model->translation->title)) ? $model->translation->title : '',
+                'meta_description' => '',
+                'seo_title' => (! empty($model->translation->seo_title)) ? $model->translation->seo_title : '',
+                'seo_text' => ''
+            ]
+        ];
+
         $currentLang = (Yii::$app->language == 'ru-Ru') ? 'ru' : 'uk';
+        $meta_data = $meta_data[$currentLang];
+
         $categories = Yii::createObject(Categories::className());
         $news = Yii::createObject(BlogPosts::className());
         $advertisement = (Yii::createObject(AdvertisementPost::className()))
             ->find()->orderBy('isPremium DESC, published_at DESC')->limit(4)->all();
 
-        $model->options = json_decode($model->options);
-        $model->translation = json_decode($model->translation);
 
         if (! empty($model->options->promo)) {
             $categories->catName = (! empty($model->options->promo)) ? array_values((array)$model->options->promo) : [];
@@ -115,10 +135,7 @@ class SiteController extends Controller
             $model->options = $model->translation;
         }
 
-        $title = (!empty($model->title)) ? $model->title : '';
-        $title = ($currentLang == 'uk' && !empty($model->options->title)) ? $model->options->title : $title;
-
-        $this->getView()->title = (empty($model->options->seo_title)) ? $title : $model->options->seo_title;
+        $this->getView()->title = (empty($meta_data['seo_title'])) ? $meta_data['title'] : $meta_data['seo_title'];
 
         return $this->render('index', [
                 'model' => $model,
@@ -205,27 +222,35 @@ class SiteController extends Controller
     public function actionHowItWorks()
     {
         $model = Yii::createObject(Pages::className())->find()->where(['link' => 'how-it-works'])->one();
+        $options = (!empty($model->options)) ? json_decode($model->options, true) : [];
+        $model->translation = (!empty($model->translation)) ? json_decode($model->translation, true) : [];
+        $meta_data = [
+            'ru' => [
+                'title' => (! empty($model->title)) ? $model->title : '',
+                'meta_description' => '',
+                'seo_title' => (! empty($model->seo_title)) ? $model->seo_title : '',
+                'seo_text' => (! empty($model->seo_text)) ? $model->seo_text : '',
+            ],
+            'uk' => [
+                'title' => (! empty($model->translation['title'])) ? $model->translation['title'] : '',
+                'meta_description' => '',
+                'seo_title' => (! empty($model->translation['seo_title'])) ? $model->translation['seo_title'] : '',
+                'seo_text' => ''
+            ]
+        ];
         $currentLang = (Yii::$app->language == 'ru-Ru') ? 'ru' : 'uk';
+        $meta_data = $meta_data[$currentLang];
 
         if(! empty($model)) {
-            $options = (!empty($model->options)) ? json_decode($model->options, true) : [];
-            $model->translation = (!empty($model->translation)) ? json_decode($model->translation, true) : [];
 
-            $title = $model->title;
-            $seo_title = (empty($model->seo_title)) ? $model->title : $model->seo_title;
-
-            $model->title = ($currentLang == 'uk' && !empty($model->translation['title'])) ? $model->translation['title'] : $title;
-            $title = $model->title;
-            $seo_title = (empty($model->seo_title)) ? $model->title : $model->seo_title;
-            $model->seo_title = ($currentLang == 'uk' && !empty($model->translation['seo_title'])) ? $model->translation['seo_title'] : $seo_title;
             $options['content'] = (!empty($options['content']))? : '';
             $options['after_content'] = (!empty($options['after_content']))? : '';
             $options['content'] = ($currentLang == 'uk' && !empty($model->translation['content'])) ? $model->translation['content'] : $options['content'];
             $options['after_content'] = ($currentLang == 'uk' && !empty($model->translation['after_content'])) ? $model->translation['after_content'] : $options['after_content'];
             $model->options = $options;
 
-            $this->getView()->title = $model->title;
-            $breadcrumbs = ['label' => Yii::t('app', $model->title)];
+            $this->getView()->title = (empty($meta_data['seo_title'])) ? $meta_data['title'] : $meta_data['seo_title'];
+            $breadcrumbs = ['label' => Yii::t('app', $meta_data['title'])];
 
             return $this->render('how-it-works.php', [
                 'model' => $model,
@@ -239,25 +264,31 @@ class SiteController extends Controller
     public function actionPrivacyPolicy() : string
     {
         $model = Yii::createObject(Pages::className())->find()->where(['link' => 'privacy-policy'])->one();
+        $model->translation = (!empty($model->translation)) ? json_decode($model->translation, true) : [];
+        $meta_data = [
+            'ru' => [
+                'title' => (! empty($model->title)) ? $model->title : '',
+                'meta_description' => '',
+                'seo_title' => (! empty($model->seo_title)) ? $model->seo_title : '',
+                'seo_text' => (! empty($model->seo_text)) ? $model->seo_text : '',
+            ],
+            'uk' => [
+                'title' => (! empty($model->translation['title'])) ? $model->translation['title'] : '',
+                'meta_description' => '',
+                'seo_title' => (! empty($model->translation['seo_title'])) ? $model->translation['seo_title'] : '',
+                'seo_text' => ''
+            ]
+        ];
         $currentLang = (Yii::$app->language == 'ru-Ru') ? 'ru' : 'uk';
+        $meta_data = $meta_data[$currentLang];
 
         if(! empty($model)) {
-            $options = (!empty($model->options))? json_decode($model->options, true) : [];
-            $model->translation = (!empty($model->translation))? json_decode($model->translation, true) : [];
-
-            $title = $model->title;
-            $seo_title = (empty($model->seo_title)) ? $model->title : $model->seo_title;
-
-            $model->title = ($currentLang == 'uk' && !empty($model->translation['title'])) ? $model->translation['title'] : $title;
-            $title = $model->title;
-            $seo_title = (empty($model->seo_title)) ? $model->title : $model->seo_title;
-            $model->seo_title = ($currentLang == 'uk' && !empty($model->translation['seo_title'])) ? $model->translation['seo_title'] : $seo_title;
             $options['content'] = (!empty($options['content']))? : '';
             $options['content'] = ($currentLang == 'uk' && !empty($model->translation['content'])) ? $model->translation['content'] : $options['content'];
             $model->options = $options;
 
-            $this->getView()->title = $model->seo_title;
-            $breadcrumbs = ['label' => Yii::t('app', $model->title )];
+            $this->getView()->title = (empty($meta_data['seo_title'])) ? $meta_data['title'] : $meta_data['seo_title'];
+            $breadcrumbs = ['label' => Yii::t('app', $meta_data['title'] )];
 
             return $this->render('page', [
                 'model' => $model,
@@ -278,25 +309,32 @@ class SiteController extends Controller
     public function actionPage($link) : string
     {
         $model = Yii::createObject(Pages::className())->find()->where(['link' => $link])->one();
+        $options = (!empty($model->options)) ? json_decode($model->options, true) : [];
+        $model->translation = (!empty($model->translation)) ? json_decode($model->translation, true) : [];
+        $meta_data = [
+            'ru' => [
+                'title' => (! empty($model->title)) ? $model->title : '',
+                'meta_description' => '',
+                'seo_title' => (! empty($model->seo_title)) ? $model->seo_title : '',
+                'seo_text' => (! empty($model->seo_text)) ? $model->seo_text : '',
+            ],
+            'uk' => [
+                'title' => (! empty($model->translation['title'])) ? $model->translation['title'] : '',
+                'meta_description' => '',
+                'seo_title' => (! empty($model->translation['seo_title'])) ? $model->translation['seo_title'] : '',
+                'seo_text' => ''
+            ]
+        ];
         $currentLang = (Yii::$app->language == 'ru-Ru') ? 'ru' : 'uk';
+        $meta_data = $meta_data[$currentLang];
 
         if(! empty($model)) {
-            $options = (!empty($model->options))? json_decode($model->options, true) : [];
-            $model->translation = (!empty($model->translation))? json_decode($model->translation, true) : [];
-
-            $title = $model->title;
-            $seo_title = (empty($model->seo_title)) ? $model->title : $model->seo_title;
-
-            $model->title = ($currentLang == 'uk' && !empty($model->translation['title'])) ? $model->translation['title'] : $title;
-            $title = $model->title;
-            $seo_title = (empty($model->seo_title)) ? $model->title : $model->seo_title;
-            $model->seo_title = ($currentLang == 'uk' && !empty($model->translation['seo_title'])) ? $model->translation['seo_title'] : $seo_title;
             $options['content'] = (!empty($options['content']))? : '';
             $options['content'] = ($currentLang == 'uk' && !empty($model->translation['content'])) ? $model->translation['content'] : $options['content'];
             $model->options = $options;
 
-            $this->getView()->title = $model->seo_title;
-            $breadcrumbs = ['label' => Yii::t('app', $model->title )];
+            $this->getView()->title = (empty($meta_data['seo_title'])) ? $meta_data['title'] : $meta_data['seo_title'];
+            $breadcrumbs = ['label' => Yii::t('app', $meta_data['title'] )];
 
             return $this->render('page', [
                 'model' => $model,
