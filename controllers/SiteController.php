@@ -225,7 +225,7 @@ class SiteController extends Controller
             $model->options = $options;
 
             $this->getView()->title = $model->title;
-            $breadcrumbs = ['label' => Yii::t('app', $model->seo_title)];
+            $breadcrumbs = ['label' => Yii::t('app', $model->title)];
 
             return $this->render('how-it-works.php', [
                 'model' => $model,
