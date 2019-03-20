@@ -219,7 +219,7 @@ class SiteController extends Controller
         return $this->goHome();
     }
 
-    public function actionHowItWorks()
+    public function actionHowItWorks() : string
     {
         $model = Yii::createObject(Pages::className())->find()->where(['link' => 'how-it-works'])->one();
         $options = (!empty($model->options)) ? json_decode($model->options, true) : [];
@@ -309,6 +309,11 @@ class SiteController extends Controller
     public function actionPage($link) : string
     {
         $model = Yii::createObject(Pages::className())->find()->where(['link' => $link])->one();
+
+        if(empty($model)) {
+            throw new NotFoundHttpException();
+        }
+
         $options = (!empty($model->options)) ? json_decode($model->options, true) : [];
         $model->translation = (!empty($model->translation)) ? json_decode($model->translation, true) : [];
         $meta_data = [
@@ -328,7 +333,6 @@ class SiteController extends Controller
         $currentLang = (Yii::$app->language == 'ru-Ru') ? 'ru' : 'uk';
         $meta_data = $meta_data[$currentLang];
 
-        if(! empty($model)) {
             $options['content'] = (!empty($options['content']))? : '';
             $options['content'] = ($currentLang == 'uk' && !empty($model->translation['content'])) ? $model->translation['content'] : $options['content'];
             $model->options = $options;
@@ -340,10 +344,6 @@ class SiteController extends Controller
                 'model' => $model,
                 'breadcrumbs' => $breadcrumbs
             ]);
-        } else {
-            throw new NotFoundHttpException();
-        }
-
     }
 
     public function successCallback($client)

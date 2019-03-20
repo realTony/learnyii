@@ -119,8 +119,8 @@ class Module extends \yii\base\Module
                             'template' => '<a href="{url}"><span>{label}</span></a>'
                         ],
                         [
-                            'label' => 'Настройки меню',
-                            'url' => ['/admin/settings/menu'],
+                            'label' => 'Настройки SEO',
+                            'url' => ['/admin/settings/seo'],
                             'template' => '<a href="{url}"><span>{label}</span></a>'
                         ],
                     ]

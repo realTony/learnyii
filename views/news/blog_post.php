@@ -7,9 +7,10 @@ use yii\helpers\Url;
 use yii\widgets\Breadcrumbs;
 
 $options = $model->options;
-$translation = json_decode($model->translation, true);
+
 $currentLang = (Yii::$app->language == 'ru-Ru') ? 'ru' : 'uk';
-$options['content'] =  ($currentLang == 'uk' && !empty($translation['content']))? $translation['content']: $options['content'];
+$options['content'] = (empty($options['content']))? '' : $options['content'];
+$options['content'] =  ($currentLang == 'uk' && !empty($model->translation['content']))? $model->translation['content']: $options['content'];
 $this->params['breadcrumbs'] = $breadcrumbs;
 ?>
 <?= SearchAdverts::widget() ?>

@@ -164,4 +164,9 @@ class SettingsController extends Controller
     {
         return $this->render('menu');
     }
+
+    public function actionSeo()
+    {
+        return $this->render('seo-settings');
+    }
 }
