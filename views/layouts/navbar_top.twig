@@ -70,7 +70,9 @@
             <i class="fas fa-sign-in-alt"></i>
         </a>
         {% else %}
-            <a class="btn-profile" href="#" style="background: url('{{  getAvatar(app.user.id) }}') no-repeat center center; background-size:cover; "></a>
+            <a class="btn-profile" href="#" style="background: url('{{  getAvatar(app.user.id) }}') no-repeat center center; background-size:cover; ">
+                <img src="/images/avatar-holder.png" alt="img">
+            </a>
         {% endif %}
     </div>
     <a class="open-menu" href="#">
