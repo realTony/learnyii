@@ -38,7 +38,9 @@ class UserBar extends Widget
             echo Html::beginTag('div', ['class' => $this->options['profileClass']]);
                 echo Html::beginTag('div', ['class' => ($this->options['has_wrapper']) ? 'seller clone': 'seller']);
                 ?>
-                    <div class="holder-img" style="background: url('<?= Profile::getUserAvatar( $this->user->id) ?>') no-repeat center center; background-size:cover; "></div>
+                    <div class="holder-img" style="background: url('<?= Profile::getUserAvatar( $this->user->id) ?>') no-repeat center center; background-size:cover; ">
+                        <img src="/images/avatar-holder.png" alt="image holder">
+                    </div>
                     <div class="holder-text">
                         <a href="<?= Url::toRoute('/myaccount') ?>" class="name"><?= $this->user['username'] ?></a>
                         <span><?= Yii::t('app','Дата регистрации')?></span>

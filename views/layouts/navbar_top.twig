@@ -22,6 +22,7 @@
                     'options' : {'tag':false},
                     'template':'<a href="{url}" class="btn-login btn-profile">
                                     <div class="holder-img" style="background: url('~getAvatar(app.user.id)~') no-repeat center center; background-size:cover; ">
+                                        <img src="/images/avatar-holder.png">
                                     </div>
                                 </a>'
                 }
@@ -69,9 +70,7 @@
             <i class="fas fa-sign-in-alt"></i>
         </a>
         {% else %}
-            <a class="btn-profile" href="#">
-                <img src="{{ getAvatar(app.user.id) }}" alt="{{ getAvatar(app.user.id) }}">
-            </a>
+            <a class="btn-profile" href="#" style="background: url('{{  getAvatar(app.user.id) }}') no-repeat center center; background-size:cover; "></a>
         {% endif %}
     </div>
     <a class="open-menu" href="#">
@@ -85,8 +84,8 @@
                 <span class="closed-popup-profile">closed-menu</span>
             </div>
             <div class="seller clone">
-                <div class="holder-img">
-                    <img src="{{ getAvatar(app.user.id) }}" alt="img">
+                <div class="holder-img" style="background: url('{{ getAvatar(app.user.id) }}') no-repeat center center; background-size: cover;">
+                    <img src="/images/avatar-holder.png" alt="img">
                 </div>
                 <div class="holder-text">
                     <a href="#" class="name">{{ getUsername(app.user.id)}}</a>

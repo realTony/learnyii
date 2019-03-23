@@ -360,6 +360,22 @@ html,body {
     background-position: 50% 50%;
     background-size: cover;
 }
+
+.slick-slider:hover > .slick-arrow{
+    zoom: 1;
+    filter: alpha(opacity=50);
+    opacity: 1;
+
+}
+
+.slick-slider > .slick-arrow{
+    opacity: 0;
+    -webkit-transition: opacity 0.5s ease-in-out;
+    -moz-transition: opacity 0.5s ease-in-out;
+    -ms-transition: opacity 0.5s ease-in-out;
+    -o-transition: opacity 0.5s ease-in-out;
+    transition: opacity 0.5s ease-in-out;
+}
 .promo-slider:after,
 .promo-slider:before{
     content: '';
@@ -4278,6 +4294,9 @@ hr{
     }
 }
 @media screen and (max-width: 930px){
+    .slick-slider > .slick-arrow{
+        opacity: 1;
+    }
     .resolutions900{
         display: block;
     }

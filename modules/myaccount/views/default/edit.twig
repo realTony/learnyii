@@ -51,8 +51,8 @@
                 <fieldset>
                     <div class="group">
                         <div class="holder-left">
-                            <div class="holder-img">
-                                <img src="{{ getAvatar(app.user.id) }}" alt="profile_image">
+                            <div class="holder-img" style="background: url('{{ getAvatar(app.user.id) }}') no-repeat center center; background-size:cover; ">
+                                <img src="/images/avatar-holder.png">
                                 <div class="edit-photo">
                                     <a href="#" id="save-photo">
                                         <i class="fas fa-pen-square"></i>

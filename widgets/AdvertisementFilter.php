@@ -72,31 +72,31 @@ class AdvertisementFilter extends Widget
             if(! empty($this->options['user_id'])) {
                 $catList = $cat->catByUser($this->options['user_id']);
             }
+            if(! empty($catList) ):
+                foreach ($catList as $id => $item):?>
+                    <?php if(! empty($this->options['cat_id']) && $this->options['sub_only'] == true && $id != $this->options['cat_id'] ) {
+                        continue;
+                    }
+                    $current = $item['title'];
+                    ?>
+                    <div class="aside-accordion">
+                        <span class="title"><?= $item['title'] ?></span>
+                        <div class="expanded">
+                            <ul>
+                                <?php foreach ($item['subList'] as $li => $val ):?>
+                                    <?php
+                                    $cat = new Categories();
+                                    $cat->category = $li;
+                                    $quantity = $cat->countUserCat($cat->category['id'], $this->options['user_id']);
 
-            foreach ($catList as $id => $item):?>
-                <?php if(! empty($this->options['cat_id']) && $this->options['sub_only'] == true && $id != $this->options['cat_id'] ) {
-                    continue;
-                }
-                $current = $item['title'];
-                ?>
-                <div class="aside-accordion">
-                    <span class="title"><?= $item['title'] ?></span>
-                    <div class="expanded">
-                        <ul>
-                            <?php foreach ($item['subList'] as $li => $val ):?>
-                                <?php
-                                $cat = new Categories();
-                                $cat->category = $li;
-                                $quantity = $cat->countUserCat($cat->category['id'], $this->options['user_id']);
-
-                                ?>
-                                <li><a href="<?= Url::to(['/'.$cat->category['link']]) ?>" class="pjax-buttons"><?= $val ?> <sup><small>(<?= $quantity ?>)</small></sup></a></li>
-                            <?php endforeach; ?>
-                        </ul>
+                                    ?>
+                                    <li><a href="<?= Url::to(['/'.$cat->category['link']]) ?>" class="pjax-buttons"><?= $val ?> <sup><small>(<?= $quantity ?>)</small></sup></a></li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
                     </div>
-                </div>
-            <?php endforeach; ?>
-
+                <?php endforeach; ?>
+            <?php endif; ?>
             <?php if($this->options['show_filters'] === true): ?>
 
                 <div class="aside-accordion">
