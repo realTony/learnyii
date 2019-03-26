@@ -26,7 +26,7 @@ $menu = Yii::$app->controller->getLabels();
                 </div>
                 <div class="tab-content">
                     <?php foreach ( $menu as $name => $item ): ?>
-                        <div class="tab-pane <?php if($i == 0): ?>active in<? endif;?>" id="<?= $name ?>"><!--header tab-->
+                        <div class="tab-pane <?php if($i == 0): ?>active in<?php endif;?>" id="<?= $name ?>"><!--header tab-->
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="single-project-tab">
