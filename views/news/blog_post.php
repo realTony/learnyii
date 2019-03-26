@@ -44,8 +44,8 @@ $this->params['breadcrumbs'] = $breadcrumbs;
             <div class="title-text">
                 <h1><?= $model->title; ?></h1>
             </div>
-            <div class="blog-photo">
-                <?= Html::img('@web'.$model->post_image, ['alt' => $model->title] )?>
+            <div class="blog-photo" style="background: url('<?= Url::home(true).$model->post_image ?>') no-repeat 50% 50%; background-size: cover;">
+                <img src="/images/post_placeholder.png" alt="<?= $model->title ?>">
             </div>
             <?= Html::decode($options['content']) ?>
 

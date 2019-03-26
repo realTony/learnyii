@@ -15,6 +15,7 @@ return [
     'admin/categories' => 'admin/categories/index',
     'admin/users' => 'admin/user/index',
     'admin/settings' => 'admin/settings/index',
+    'admin/moderation' => 'admin/moderation/index',
     'admin/pages/edit/<link:[A-Za-z0-9_-]+>' => 'admin/pages/update-static',
     'admin/<action>' => 'admin/admin/<action>',
     'admin' => 'admin/default/index',

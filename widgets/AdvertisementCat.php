@@ -45,7 +45,7 @@ class AdvertisementCat extends  Widget
                                         <i class="fas fa-bullhorn"></i>
                                     <?php endif; ?>
                                 </div>
-                                <span><?= $cat['title'] ?></span>
+                                <span><?= $categories->category->meta['title'] ?></span>
                             </a>
                             <ul>
                                 <?php foreach ($cat['subList'] as $li => $val ):?>
@@ -53,7 +53,7 @@ class AdvertisementCat extends  Widget
                                     $cat = new Categories();
                                     $cat->category = $li;
                                     ?>
-                                    <li><a href="<?= Url::to(['/'.$cat->category['link']]) ?>"><?= $val ?></a></li>
+                                    <li><a href="<?= Url::to(['/'.$cat->category['link']]) ?>"><?= $cat->category->meta['title'] ?></a></li>
                                 <?php endforeach; ?>
                             </ul>
                         </div>

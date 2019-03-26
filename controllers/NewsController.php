@@ -11,6 +11,7 @@ use yii\web\Controller;
 use app\modules\admin\models\Categories;
 use app\modules\admin\models\BlogPosts;
 use yii\web\NotFoundHttpException;
+use app\models\Settings;
 
 class NewsController extends Controller
 {
@@ -24,6 +25,30 @@ class NewsController extends Controller
     public function actionIndex() : string
     {
         $model = new Categories();
+        $model->title = Yii::t('app', 'Новости');
+        $settings = (Yii::createObject(Settings::className()))
+        ->find()
+        ->where(['name' => 'news_settings'])
+        ->one();
+        $settings = !empty($settings->option_value)? json_decode($settings->option_value, true): [];
+
+        $currentLang = (Yii::$app->language == 'ru-Ru') ? 'ru' : 'uk';
+        $metaData = [
+            'ru' => [
+                'title' => (! empty($model->title)) ? $model->title : '',
+                'meta_description' => (! empty($settings['options']['meta_description'])) ? $settings['options']['meta_description'] : '',
+                'seo_title' => (! empty($settings['options']['seo_title'])) ? $settings['options']['seo_title'] : $model->title,
+                'seo_text' => (! empty($settings['options']['seo_text'])) ? $settings['options']['seo_text'] : '',
+            ],
+            'uk' => [
+                'title' => (! empty($settings['translation']['seo_title'])) ? $settings['translation']['seo_title'] : $model->title,
+                'meta_description' => (! empty($settings['translation']['meta_description'])) ? $settings['translation']['meta_description'] : '',
+                'seo_title' => (! empty($settings['translation']['seo_title'])) ? $settings['translation']['seo_title'] : '',
+                'seo_text' => (! empty($settings['translation']['seo_text'])) ? $settings['translation']['seo_text'] : '',
+            ]
+        ];
+        $metaData = $metaData[$currentLang];
+
         $menuItems = $model->makeMenuList();
         $breadcrumbs = ['label' => Yii::t('app', 'Новости')];
         $posts = BlogPosts::find();
@@ -33,9 +58,13 @@ class NewsController extends Controller
             'pageSize' => 9,
 
         ]);
+
         $models = $posts->offset($pages->offset)
             ->limit($pages->limit)
             ->all();
+
+        $this->getView()->title = (empty($metaData['seo_title'])) ? $metaData['title'] : $metaData['seo_title'];
+        $model->title = $metaData['title'];
 
         return $this->render('blog.php', [
                 'categories' => $menuItems,
@@ -125,7 +154,7 @@ class NewsController extends Controller
         $options = (!empty($category->options)) ? json_decode($category->options, true) : [];
         $category->translation = (!empty($category->translation)) ? json_decode($category->translation, true) : [];
 
-        $meta_data = [
+        $metaData = [
             'ru' => [
                 'title' => (! empty($category->title)) ? $category->title : '',
                 'meta_description' => '',
@@ -140,14 +169,14 @@ class NewsController extends Controller
             ]
         ];
         $currentLang = (Yii::$app->language == 'ru-Ru') ? 'ru' : 'uk';
-        $meta_data = $meta_data[$currentLang];
+        $metaData = $metaData[$currentLang];
 
         $breadcrumbs = [
             [
                 'label' => Yii::t('app', 'Новости'),
                 'url' => '/news'
             ], [
-                'label' => $meta_data['title'],
+                'label' => $metaData['title'],
             ]
         ];
 
@@ -161,9 +190,8 @@ class NewsController extends Controller
         $models = $posts->offset($pages->offset)
             ->limit($pages->limit)
             ->all();
+        $this->getView()->title = (empty($metaData['seo_title'])) ? $metaData['title'] : $metaData['seo_title'];
 
-
-        $this->getView()->title = (empty($meta_data['seo_title'])) ? $meta_data['title'] : $meta_data['seo_title'];
         return $this->render('blog.php', [
             'categories' => $menuItems,
             'models' => $models,

@@ -6,7 +6,7 @@ return [
     'rbac/*',
     'user/*',
 //    'admin/*',
-//    'admin/pages*',
+    'admin/moderation*',
 //    'admin/pages*',
             'gii/*',
             'debug/*',

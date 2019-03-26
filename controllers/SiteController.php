@@ -114,7 +114,7 @@ class SiteController extends Controller
         $categories = Yii::createObject(Categories::className());
         $news = Yii::createObject(BlogPosts::className());
         $advertisement = (Yii::createObject(AdvertisementPost::className()))
-            ->find()->orderBy('isPremium DESC, published_at DESC')->limit(4)->all();
+            ->find()->orderBy('isPremium DESC, published_at DESC')->limit(12)->all();
 
 
         if (! empty($model->options->promo)) {

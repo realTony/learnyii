@@ -6,6 +6,7 @@ use app\models\AdvertisementPost;
 use app\models\Images;
 use app\models\ImageUpload;
 use app\models\Profile;
+use app\models\Settings;
 use app\models\User;
 use app\models\UserFav;
 use Yii;
@@ -40,17 +41,44 @@ class DefaultController extends Controller
 //        return parent::beforeAction($action);
 //    }
 
-    public function actionIndex()
+    public function actionIndex() : string
     {
         if( Yii::$app->user->isGuest ){
             Yii::$app->response->redirect(['account#login']);
         }
+        $title = Yii::t('app', 'Личный кабинет');
+
         self::$breadcrumbs = [
             ['label' => Yii::t('app', 'Личный кабинет')]
         ];
         $user = User::findOne(['id'=>Yii::$app->user->getId()]);
         $profile = Profile::findOne(['user_id'=>Yii::$app->user->getId()]);
         $profile['profile_image'] = (!empty($profile['profile_image']))?'/'.$profile['profile_image']:Yii::getAlias('@web').'/images/empty_user.jpg';
+        $settings = (Yii::createObject(Settings::className()))
+            ->find()
+            ->where(['name' => 'account_settings'])
+            ->one();
+        $settings = !empty($settings->option_value)? json_decode($settings->option_value, true): [];
+
+        $currentLang = (Yii::$app->language == 'ru-Ru') ? 'ru' : 'uk';
+        $metaData = [
+            'ru' => [
+                'title' => (! empty($title)) ? $title : '',
+                'meta_description' => (! empty($settings['options']['meta_description'])) ? $settings['options']['meta_description'] : '',
+                'seo_title' => (! empty($settings['options']['seo_title'])) ? $settings['options']['seo_title'] : $title,
+                'seo_text' => (! empty($settings['options']['seo_text'])) ? $settings['options']['seo_text'] : '',
+            ],
+            'uk' => [
+                'title' => (! empty($settings['translation']['seo_title'])) ? $settings['translation']['seo_title'] : $title,
+                'meta_description' => (! empty($settings['translation']['meta_description'])) ? $settings['translation']['meta_description'] : '',
+                'seo_title' => (! empty($settings['translation']['seo_title'])) ? $settings['translation']['seo_title'] : '',
+                'seo_text' => (! empty($settings['translation']['seo_text'])) ? $settings['translation']['seo_text'] : '',
+            ]
+        ];
+
+        $metaData = $metaData[$currentLang];
+
+        Yii::$app->getView()->title = $metaData['seo_title'];
 
         return $this->render('index.twig',[
             'user' => $user,
@@ -59,15 +87,42 @@ class DefaultController extends Controller
         ]);
     }
 
-    public function actionEdit()
+    public function actionEdit() : string
     {
         if( Yii::$app->user->isGuest ){
             Yii::$app->response->redirect(['account#login']);
         }
+        $title = Yii::t('app', 'Редактировать профиль');
         self::$breadcrumbs = [
-            ['label' => Yii::t('app', 'Личный кабинет'), 'url' => [ Url::toRoute(['/myaccount']) ]],
-            ['label' => Yii::t('app', 'Редактировать профиль')],
+            ['label' => Yii::t('app', 'Личный кабинет'), 'url' => [ '/myaccount' ]],
+            ['label' => $title],
         ];
+
+        $settings = (Yii::createObject(Settings::className()))
+            ->find()
+            ->where(['name' => 'account_settings'])
+            ->one();
+        $settings = !empty($settings->option_value)? json_decode($settings->option_value, true): [];
+
+        $currentLang = (Yii::$app->language == 'ru-Ru') ? 'ru' : 'uk';
+        $metaData = [
+            'ru' => [
+                'title' => (! empty($title)) ? $title : '',
+                'meta_description' => (! empty($settings['options']['meta_description'])) ? $settings['options']['meta_description'] : '',
+                'seo_title' => (! empty($settings['options']['seo_title'])) ? $settings['options']['seo_title'] : $title,
+                'seo_text' => (! empty($settings['options']['seo_text'])) ? $settings['options']['seo_text'] : '',
+            ],
+            'uk' => [
+                'title' => $title,
+                'meta_description' => (! empty($settings['translation']['meta_description'])) ? $settings['translation']['meta_description'] : '',
+                'seo_title' => (! empty($settings['translation']['seo_title'])) ? $settings['translation']['seo_title'] : '',
+                'seo_text' => (! empty($settings['translation']['seo_text'])) ? $settings['translation']['seo_text'] : '',
+            ]
+        ];
+
+        $metaData = $metaData[$currentLang];
+
+        Yii::$app->getView()->title = $metaData['seo_title'];
 
         $user = User::findOne(['id'=>Yii::$app->user->getId()]);
         $profile = Profile::findOne(['user_id'=>Yii::$app->user->getId()]);
@@ -95,7 +150,8 @@ class DefaultController extends Controller
             'uploadImage' => $uploadImage,
             'profile' => $profile,
             'user' => $user,
-            'breadcrumbs' => self::$breadcrumbs
+            'breadcrumbs' => self::$breadcrumbs,
+            'meta' => $metaData
         ]);
     }
 
@@ -233,7 +289,7 @@ class DefaultController extends Controller
      * User posts
      * @return mixed
      */
-    public function actionPosts()
+    public function actionPosts() : string
     {
         $user = User::findOne(['id'=>Yii::$app->user->getId()]);
         $model = new AdvertisementPost();
@@ -247,11 +303,41 @@ class DefaultController extends Controller
             'pageSize' => 5,
 
         ]);
+        $title = Yii::t('app', 'Мои объявления');
+
+        $settings = (Yii::createObject(Settings::className()))
+            ->find()
+            ->where(['name' => 'account_settings'])
+            ->one();
+        $settings = !empty($settings->option_value)? json_decode($settings->option_value, true): [];
+        self::$breadcrumbs = [
+            ['label' => Yii::t('app', 'Личный кабинет'), 'url' => [ Url::toRoute(['/myaccount']) ]],
+            ['label' => Yii::t('app', $title)],
+        ];
+
+        $currentLang = (Yii::$app->language == 'ru-Ru') ? 'ru' : 'uk';
+        $metaData = [
+            'ru' => [
+                'title' => (! empty($title)) ? $title : '',
+                'meta_description' => (! empty($settings['options']['meta_description'])) ? $settings['options']['meta_description'] : '',
+                'seo_title' => (! empty($settings['options']['seo_title'])) ? $settings['options']['seo_title'] : $title,
+                'seo_text' => (! empty($settings['options']['seo_text'])) ? $settings['options']['seo_text'] : '',
+            ],
+            'uk' => [
+                'title' => $title,
+                'meta_description' => (! empty($settings['translation']['meta_description'])) ? $settings['translation']['meta_description'] : '',
+                'seo_title' => (! empty($settings['translation']['seo_title'])) ? $settings['translation']['seo_title'] : '',
+                'seo_text' => (! empty($settings['translation']['seo_text'])) ? $settings['translation']['seo_text'] : '',
+            ]
+        ];
+        $metaData = $metaData[$currentLang];
         $models = $advPosts->offset($pages->offset)
             ->limit($pages->limit)
             ->all();
+        Yii::$app->getView()->title = $metaData['seo_title'];
 
         return $this->render('user_posts', [
+            'breadcrumbs' => self::$breadcrumbs,
             'models' => $models,
             'pages' => $pages,
             'user' => $user,

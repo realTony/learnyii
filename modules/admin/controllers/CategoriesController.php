@@ -175,6 +175,9 @@ class CategoriesController extends Controller
         $model->updated_at = date('Y-m-d H:i:s');
         $parentCat = ArrayHelper::map($model->find()->all(), 'id', 'title');
 
+        $model->options = json_decode($model->options, true);
+        $model->translation = json_decode($model->translation, true);
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }

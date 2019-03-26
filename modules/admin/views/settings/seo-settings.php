@@ -1,195 +1,155 @@
 <?php
 
+use dosamigos\tinymce\TinyMce;
+use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 $form = ActiveForm::begin();
-
+$menu = Yii::$app->controller->getLabels();
 ?>
-<!--<div class="row">-->
-<!--    <div class="col-md-12">-->
-<!--        <!--card editor -->-->
-<!--        <div class="card">-->
-<!--            <div class="card-block p-a-0">-->
-<!--                <div class="box-tab single-project-tab justified m-b-0">-->
-<!--                    <ul class="nav nav-tabs">-->
-<!--                        <li>-->
-<!--                            <a href="#account" data-toggle="tab">--><?//= Yii::t('app', 'Личный кабинет') ?><!--</a>-->
-<!--                        </li>-->
-<!--                        <li class="active">-->
-<!--                            <a href="#news" data-toggle="tab">--><?//= Yii::t('app', 'Новости') ?><!--</a>-->
-<!--                        </li>-->
-<!--                        <li>-->
-<!--                            <a href="#advertisement" data-toggle="tab">--><?//= Yii::t('app', 'Объявления') ?><!--</a>-->
-<!--                        </li>-->
-<!--                    </ul>-->
-<!--                    <div class="tab-content">-->
-<!--                        <div class="tab-pane active in" id="top"><!--header tab-->-->
-<!--                            <div class="row">-->
-<!--                                <div class="col-md-12">-->
-<!--                                    <!--card for header editor-->-->
-<!--                                    <div class="card bg-white m-b">-->
-<!--                                        <div class="card-header">-->
-<!--                                            Редактировать меню-->
-<!--                                        </div>-->
-<!--                                        <div class="card-block">-->
-<!--                                            <div class="summernote">-->
-<!--                                                <!--header-->-->
-<!--                                                <div class="page-heading">-->
-<!--                                                    <div class="grid heading-grid">-->
-<!--                                                        <div class="dot"></div>-->
-<!--                                                        <div class="dot"></div>-->
-<!--                                                        <span></span>-->
-<!--                                                        <span></span>-->
-<!--                                                        <span></span>-->
-<!--                                                        <span></span>-->
-<!--                                                        <span></span>-->
-<!--                                                    </div>-->
-<!--                                                    <div class="heading-box">-->
-<!--                                                        <!--Image background -->-->
-<!--                                                        <div class="cover-image">-->
-<!--                                                            <img src="media/jove_intro.jpg" alt="">-->
-<!--                                                        </div>-->
-<!--                                                        <!--end Image background >-->-->
-<!--                                                        <div class="video-background" id="video-bg" data-vide-bg="mp4: media/jove-intro, poster: media/jove_intro"></div>-->
-<!--                                                        <div class="overlaybg black80"></div>-->
-<!--                                                        <div class="top-content" >-->
-<!--                                                            <div class="large-logo">-->
-<!--                                                                <a href="index.html">-->
-<!--                                                                    <span></span>-->
-<!--                                                                    <h1>Jove</h1>-->
-<!--                                                                </a>-->
-<!---->
-<!--                                                            </div>-->
-<!--                                                            <div class="top-subtitle">-->
-<!--                                                                <span>Профессиональная</span>-->
-<!--                                                                <p>разработка сайтов</p>-->
-<!--                                                            </div>-->
-<!--                                                        </div>-->
-<!--                                                    </div>-->
-<!--                                                    <div class=" scroll-down">-->
-<!--                                                        <div class="scroll-down__lines scroll-down__lines_animated"></div>-->
-<!--                                                    </div>-->
-<!--                                                </div><!--header-->-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                    <!--end card for header editor-->-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div><!--end header tab-->-->
-<!--                        <div class="tab-pane" id="services"><!--service tab-->-->
-<!--                            <div class="row">-->
-<!--                                <div class="col-md-12">-->
-<!--                                    <!--card for header editor-->-->
-<!--                                    <div class="card bg-white m-b">-->
-<!--                                        <div class="card-header">-->
-<!--                                            Редактировать услуги-->
-<!--                                        </div>-->
-<!--                                        <div class="card-block">-->
-<!--                                            <div class="summernote">-->
-<!---->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                    <!--end card for header editor-->-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div><!--end service tab-->-->
-<!--                        <div class="tab-pane" id="portfolio"><!-- portfolio tab-->-->
-<!--                            <div class="row">-->
-<!--                                <div class="col-md-12">-->
-<!--                                    <!--card for portfolio editor-->-->
-<!--                                    <div class="card bg-white m-b">-->
-<!--                                        <div class="card-header">-->
-<!--                                            Редактировать портфолио-->
-<!--                                        </div>-->
-<!--                                        <div class="card-block">-->
-<!--                                            <div class="summernote">-->
-<!---->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                    <!--end card for portfolio editor-->-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div><!--end portfolio tab-->-->
-<!--                        <div class="tab-pane" id="wanted"><!-- wanted tab-->-->
-<!--                            <div class="row">-->
-<!--                                <div class="col-md-12">-->
-<!--                                    <!--card for wanted editor-->-->
-<!--                                    <div class="card bg-white m-b">-->
-<!--                                        <div class="card-header">-->
-<!--                                            Редактировать "Хочу сайт"-->
-<!--                                        </div>-->
-<!--                                        <div class="card-block">-->
-<!--                                            <div class="summernote">-->
-<!---->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                    <!--end card for wanted editor-->-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div><!--end wanted tab-->-->
-<!--                        <div class="tab-pane" id="reviews"><!--reviews tab-->-->
-<!--                            <div class="row">-->
-<!--                                <div class="col-md-12">-->
-<!--                                    <!--card for reviews editor-->-->
-<!--                                    <div class="card bg-white m-b">-->
-<!--                                        <div class="card-header">-->
-<!--                                            Редактировать отзывы-->
-<!--                                        </div>-->
-<!--                                        <div class="card-block">-->
-<!--                                            <div class="summernote">-->
-<!---->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                    <!--end card for reviews editor-->-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div><!--end reviews tab-->-->
-<!--                        <div class="tab-pane" id="seo-in-home">-->
-<!--                            <div class="row">-->
-<!--                                <div class="col-md-12">-->
-<!--                                    <!--card for seo-in-home editor-->-->
-<!--                                    <div class="card bg-white m-b">-->
-<!--                                        <div class="card-header">-->
-<!--                                            Редактировать "Создание сайтов"-->
-<!--                                        </div>-->
-<!--                                        <div class="card-block">-->
-<!--                                            <div class="summernote">-->
-<!---->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                    <!--end card for seo-in-home editor-->-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="tab-pane" id="footer">-->
-<!--                            <div class="row">-->
-<!--                                <div class="col-md-12">-->
-<!--                                    <!--card for footer editor-->-->
-<!--                                    <div class="card bg-white m-b">-->
-<!--                                        <div class="card-header">-->
-<!--                                            Редактировать футер-->
-<!--                                        </div>-->
-<!--                                        <div class="card-block">-->
-<!--                                            <div class="summernote">-->
-<!---->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                    <!--end card for footer editor-->-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
+<div class="row">
+    <div class="col-md-12">
+        <!--card editor -->
+        <div class="card">
+            <div class="card-block p-a-0">
+                <div class="box-tab single-project-tab justified m-b-0">
+                    <ul class="nav nav-tabs">
+                        <?php $i = 0; ?>
+                        <?php foreach ($menu as $item => $label): ?>
+                            <li <?php if( $i == 0 ):?>class="active"<?php endif; ?> >
+                                <a href="#<?= $item ?>" data-toggle="tab"><?= $label ?></a>
+                            </li>
+                        <?php $i++; ?>
+                        <?php endforeach; ?>
+                        <?php $i = 0; ?>
+                    </ul>
+                </div>
+                <div class="tab-content">
+                    <?php foreach ( $menu as $name => $item ): ?>
+                        <div class="tab-pane <?php if($i == 0): ?>active in<? endif;?>" id="<?= $name ?>"><!--header tab-->
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="single-project-tab">
+                                        <div class="box-tab justified m-b-0">
+                                            <div class="tab-content" id="translationTabs">
+                                                <div class="tab-pane active" id="ru"><!--rus tab-->
+                                                    <div class="seo-box card-header ">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <h3 class="text-center m-b-md"><?= Yii::t('app', 'SEO Настройки')?></h3>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                        <div class="row seo-flex">
+                                                            <div class="col-md-6">
+                                                                <div class="card bg-white m-b">
+                                                                    <div class="card-block">
+                                                                        <?= $form->field($model, $name.'[options][seo_title]')->label(Yii::t('app','Заголовок Рус'))->textInput(['maxlength' => true]) ?>
+                                                                        <?= $form->field($model, $name.'[translation][seo_title]')->label(Yii::t('app','Заголовок Укр'))->textInput(['maxlength' => true]) ?>
+                                                                        <?= $form->field($model, $name.'[options][seo_description]')->label(Yii::t('app','Описание Рус'))->textInput(['maxlength' => true]) ?>
+                                                                        <?= $form->field($model, $name.'[translation][seo_description]')->label(Yii::t('app','Описание Укр'))->textInput(['maxlength' => true]) ?>
+
+                                                                        <?= $form->field($model, $name.'[options][seo_text]', [
+                                                                            'options' => [
+                                                                                'class' => 'form-group',
+                                                                                'tag' => 'div'
+                                                                            ]
+                                                                        ])->label(Yii::t('app', 'SEO Текст Рус'))
+                                                                            ->widget(TinyMce::className(), [
+                                                                                'options' => ['rows' => 6],
+                                                                                'language' => 'ru',
+                                                                                'clientOptions' => [
+                                                                                    'plugins' => [
+                                                                                        "advlist autolink lists link charmap print preview anchor",
+                                                                                        "searchreplace visualblocks code fullscreen",
+                                                                                        "insertdatetime media table contextmenu paste"
+                                                                                    ],
+                                                                                    'toolbar' => "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
+                                                                                ]
+                                                                            ]);?>
+                                                                        <?= $form->field($model, $name.'[translation][seo_text]', [
+                                                                            'options' => [
+                                                                                'class' => 'form-group',
+                                                                                'tag' => 'div'
+                                                                            ]
+                                                                        ])->label(Yii::t('app', 'SEO Текст Укр'))
+                                                                            ->widget(TinyMce::className(), [
+                                                                                'options' => ['rows' => 6],
+                                                                                'language' => 'ru',
+                                                                                'clientOptions' => [
+                                                                                    'plugins' => [
+                                                                                        "advlist autolink lists link charmap print preview anchor",
+                                                                                        "searchreplace visualblocks code fullscreen",
+                                                                                        "insertdatetime media table contextmenu paste"
+                                                                                    ],
+                                                                                    'toolbar' => "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
+                                                                                ]
+                                                                            ]);?>
+
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="card bg-white m-b">
+                                                                    <div class="card-block">
+                                                                        <div class="form-group seo-toggles">
+                                                                            <div class="row">
+                                                                                <div class="col-xs-6">
+                                                                                    <h4><?= Yii::t('app', 'Добавить NO-INDEX')?></h4>
+                                                                                </div>
+                                                                                <?= $form->field($model, $name."[options][no_index]", [
+                                                                                    'options' => [
+                                                                                        'tag' => 'div',
+                                                                                        'class' => 'col-xs-6'
+                                                                                    ],
+                                                                                    'template' => '<label class="switch">{input}<span><i class="handle"></i></span></label>'
+                                                                                ])
+                                                                                    ->checkbox([    'label' => false,
+                                                                                        'type' => 'checkbox'
+                                                                                    ]);
+
+                                                                                ?>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group seo-toggles">
+                                                                            <div class="row">
+                                                                                <div class="col-xs-6">
+                                                                                    <h4><?= Yii::t('app', 'Добавить NO-FOLLOW')?></h4>
+                                                                                </div>
+                                                                                <?= $form->field($model, $name."[options][no_follow]", [
+                                                                                    'options' => [
+                                                                                        'tag' => 'div',
+                                                                                        'class' => 'col-xs-6'
+                                                                                    ],
+                                                                                    'template' => '<label class="switch">{input}<span><i class="handle"></i></span></label>'
+                                                                                ])
+                                                                                    ->checkbox([    'label' => false,
+                                                                                        'type' => 'checkbox'
+                                                                                    ]);
+
+                                                                                ?>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <?php $i++; ?>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?= Html::submitButton(Yii::t('app', 'Сохранить'), ['class' => 'btn btn-success']) ?>
 <?php
-//ActiveForm::end();
+ActiveForm::end();

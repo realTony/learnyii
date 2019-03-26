@@ -8,7 +8,7 @@ use yii\widgets\Breadcrumbs;
 
 AdminAssets::register($this);
 
-$this->registerLinkTag(['rel' => 'icon', 'type' => 'image/png', 'href' => Url::to(['/favicon.png'])]);
+$this->registerLinkTag(['rel' => 'icon', 'type' => 'image/png', 'href' => Url::home(true).'favicon.png']);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>

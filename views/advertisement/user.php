@@ -51,7 +51,7 @@ $this->params['breadcrumbs'] = $breadcrumbs;
             <h4><?= Yii::t('app', 'Все объявления пользователя') ?> </h4>
             <h1><?= $user->username; ?></h1>
             <div class="holder-information">
-                <span class="filters">информация</span>
+                <span class="filters"><?= Yii::t('app', 'информация')?></span>
                 <div class="block-filter">
 
                 </div>

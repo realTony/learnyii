@@ -5,7 +5,6 @@
 {{ use('app/widgets/UserBar') }}
 {{ use('yii/helpers/Url') }}
 
-{{ set(this, 'title', t('app', 'Редактировать профиль')) }}
 {{ search_adverts_widget() }}
 <div class="holder-crumbs">
     <div class="container">
@@ -23,7 +22,7 @@
 </div>
 <div class="container">
     <div class="title-text clone">
-        <h1>{{ this.title }}</h1>
+        <h1>{{ meta.title }}</h1>
     </div>
     <div class="group-content">
         {{ user_bar_widget({

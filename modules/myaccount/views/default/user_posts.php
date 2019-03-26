@@ -8,6 +8,7 @@ use yii\widgets\ActiveForm;
 use \app\modules\admin\models\Categories;
 use app\models\Cities;
 use app\widgets\UserBar;
+use yii\widgets\Breadcrumbs;
 use yii\widgets\LinkPager;
 
 $categories = Yii::createObject(Categories::className());
@@ -17,21 +18,22 @@ $catList = $categories->advertisement;
 $subList = $categories->subAdvertisement;
 $areas  = $stickAreas->stickingAreas;
 $types  =  $types->types;
+$this->params['breadcrumbs'] = $breadcrumbs;
 
 ?>
 <?= SearchAdverts::widget()?>
     <div class="holder-crumbs">
         <div class="container">
             <div class="holder-bread-crumbs">
-                <ul class="bread-crumbs">
-                    <li>
-                        <a href="#">Главная</a>
-                    </li>
-                    <li>
-                        <a href="#">Личный кабинет</a>
-                    </li>
-                    <li>Мои объявления</li>
-                </ul>
+                <?php
+                echo Breadcrumbs::widget([
+                    'options' => [
+                        'class' => 'bread-crumbs'
+                    ],
+                    'itemTemplate' => "<li>{link}</li>\n", // template for all links
+                    'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                ]);
+                ?>
             </div>
         </div>
     </div>

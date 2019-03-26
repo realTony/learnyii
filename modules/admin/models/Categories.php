@@ -17,6 +17,7 @@ use yii\helpers\ArrayHelper;
  * @property int $id
  * @property string $title
  * @property string $description
+ * @property string $seo_title
  * @property string $seo_text
  * @property string $link
  * @property int $parent_id
@@ -44,11 +45,11 @@ class Categories extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules() : array
     {
         return [
             [['title'], 'required'],
-            [['description', 'seo_text', 'options', 'translation'], 'string'],
+            [['description', 'seo_text', 'seo_title', 'options', 'translation'], 'string'],
             [['parent_id', 'is_blog'], 'integer'],
             [['updated_at', 'created_at'], 'safe'],
             [['title', 'link'], 'string', 'max' => 255],
@@ -298,5 +299,33 @@ class Categories extends \yii\db\ActiveRecord
             ->where(['subCat_id' => $id])
             ->andWhere(['authorId' => $user_id])
             ->count();
+    }
+
+    /**
+     * Category meta-data getter method
+     *
+     * @return array
+     */
+    public function getMeta(): array
+    {
+        $options = !empty($this->options)? json_decode($this->options, true) : [];
+        $translate = !empty($this->translation)? json_decode($this->translation, true) : [];
+        $currentLang = (Yii::$app->language == 'ru-Ru') ? 'ru' : 'uk';
+        $mets = [];
+
+        if($currentLang == 'ru') {
+            $meta = [
+                'seo_title' => $this->seo_title,
+                'title' => $this->title,
+                'seo_text' => $this->seo_text,
+            ];
+            $meta = array_merge($meta, $options);
+
+        } else {
+            $meta = $translate;
+            $meta['title'] = (empty($meta['title']))?$this->title:$meta['title'];
+        }
+
+        return $meta;
     }
 }

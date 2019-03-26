@@ -14,10 +14,11 @@ class CategoriesSearch extends Categories
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules() : array
     {
         return [
             [['id', 'parent_id', 'is_blog', 'is_advertisement'], 'integer'],
+            [['seo_text', 'seo_title'], 'string'],
             [['title', 'description', 'seo_text', 'seo_title', 'link', 'options', 'updated_at'], 'safe'],
         ];
     }

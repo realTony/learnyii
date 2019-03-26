@@ -92,6 +92,12 @@ class Module extends \yii\base\Module
                     ]
                 ],
                 [
+                    'label' => 'Модерация',
+                    'url' => ['moderation'],
+                    'template' => '<a href="#"><i class="icon-pencil"></i><span>{label}</span></a>',
+                    'controller' => 'moderation',
+                ],
+                [
                     'label' => 'Пользователи',
                     'url' => ['/admin/users'],
                     'controller' => 'user',

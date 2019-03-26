@@ -65,4 +65,9 @@ class User extends \dektrium\user\models\User implements IdentityInterface
     {
         return static::findOne(['id' => $id, 'status' => User::STATUS_ACTIVE]);
     }
+
+    public function getUser()
+    {
+        return $this->hasOne(User::className(), ['authorId' => 'id']);
+    }
 }

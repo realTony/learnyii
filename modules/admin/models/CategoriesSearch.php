@@ -14,7 +14,7 @@ class CategoriesSearch extends Categories
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules() : array
     {
         return [
             [['id', 'parent_id', 'is_blog'], 'integer'],

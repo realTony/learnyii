@@ -10,6 +10,7 @@ use app\models\AdvertisementPostSearch;
 use app\models\AdvSearch;
 use app\models\CategoriesSearch;
 use app\models\Profile;
+use app\models\Settings;
 use app\modules\admin\models\Categories;
 use yii\helpers\Url;
 use Yii;
@@ -27,6 +28,8 @@ class AdvertisementController extends Controller
     }
 
     /**
+     * Main advertisement page controller
+     *
      * @return string
      */
     public function actionIndex() : string
@@ -63,8 +66,29 @@ class AdvertisementController extends Controller
             $searchModel = new AdvertisementPostSearch();
             $filter = new AdvSearch();
             $dataProvider = $searchModel->searchCat(Yii::$app->request->queryParams);
+            $settings = (Yii::createObject(Settings::className()))
+                ->find()
+                ->where(['name' => 'advertisement_settings'])
+                ->one();
+            $settings = !empty($settings->option_value)? json_decode($settings->option_value, true): [];
+            $currentLang = (Yii::$app->language == 'ru-Ru') ? 'ru' : 'uk';
+            $metaData = [
+                'ru' => [
+                    'title' => (! empty($model->title)) ? $model->title : '',
+                    'meta_description' => (! empty($settings['options']['meta_description'])) ? $settings['options']['meta_description'] : '',
+                    'seo_title' => (! empty($settings['options']['seo_title'])) ? $settings['options']['seo_title'] : $model->title,
+                    'seo_text' => (! empty($settings['options']['seo_text'])) ? $settings['options']['seo_text'] : '',
+                ],
+                'uk' => [
+                    'title' => (! empty($settings['translation']['seo_title'])) ? $settings['translation']['seo_title'] : $model->title,
+                    'meta_description' => (! empty($settings['translation']['meta_description'])) ? $settings['translation']['meta_description'] : '',
+                    'seo_title' => (! empty($settings['translation']['seo_title'])) ? $settings['translation']['seo_title'] : '',
+                    'seo_text' => (! empty($settings['translation']['seo_text'])) ? $settings['translation']['seo_text'] : '',
+                ]
+            ];
+            $metaData = $metaData[$currentLang];
 
-//        if(! empty(Yii::$app->request->queryParams)) {
+
             $requested = Yii::$app->request->queryParams;
 
             if(Yii::$app->request->isPost) {
@@ -92,6 +116,8 @@ class AdvertisementController extends Controller
 
             ]);
 
+            $this->getView()->title = (empty($metaData['seo_title'])) ? $metaData['title'] : $metaData['seo_title'];
+
             return $this->render('index', [
                 'models' => $dataProvider->getModels(),
                 'filter' => $filter,
@@ -108,6 +134,7 @@ class AdvertisementController extends Controller
     /**
      * @param $name
      * @return string
+     * @throws NotFoundHttpException
      */
     public function actionCategory($name) : string
     {
@@ -118,10 +145,30 @@ class AdvertisementController extends Controller
         $searchModel = new AdvertisementPostSearch();
         $path = str_replace($name.'/', $name, Yii::$app->request->pathInfo);
         $catId = $advCategories->find()->where([ 'link' => $path]) ->andWhere(['is_blog' => 0]) ->one();
+        $options = (!empty($catId->options)) ? json_decode($catId->options, true) : [];
+        $catId->translation = (!empty($catId->translation)) ? json_decode($catId->translation, true) : [];
+        $catId->options = $options;
 
         if(empty($catId)) {
             throw new NotFoundHttpException();
         }
+
+        $metaData = [
+            'ru' => [
+                'title' => (! empty($catId->title)) ? $catId->title : '',
+                'meta_description' => '',
+                'seo_title' => (! empty($catId->seo_title)) ? $catId->seo_title : '',
+                'seo_text' => (! empty($catId->seo_text)) ? $catId->seo_text : '',
+            ],
+            'uk' => [
+                'title' => (! empty($catId->translation['title'])) ? $catId->translation['title'] : '',
+                'meta_description' => '',
+                'seo_title' => (! empty($catId->translation['seo_title'])) ? $catId->translation['seo_title'] : '',
+                'seo_text' => ''
+            ]
+        ];
+        $currentLang = (Yii::$app->language == 'ru-Ru') ? 'ru' : 'uk';
+        $metaData = $metaData[$currentLang];
 
         if (Yii::$app->request->isAjax && (Yii::$app->request->queryParams)['action'] == 'lazyLoad') {
 
@@ -162,7 +209,6 @@ class AdvertisementController extends Controller
 
             $dataProvider = $searchModel->searchCat($requested);
 
-
             return $this->ajaxLoop($dataProvider);
 
         } else {
@@ -201,7 +247,7 @@ class AdvertisementController extends Controller
             $advPosts = $model;
             $breadcrumbs = [
                 ['label' => Yii::t('app', 'Объявления'), 'url' => Url::to('/advertisement')],
-                ['label' => Yii::t('app', $catId->title)]
+                ['label' => Yii::t('app', ($metaData['title'])?:$catId->title)]
             ];
 
             $pages = new Pagination([
@@ -210,6 +256,8 @@ class AdvertisementController extends Controller
 
             ]);
 
+            $this->getView()->title = (empty($metaData['seo_title'])) ? ($metaData['title'])?:$catId->title : $metaData['seo_title'];
+            $catId->title = Yii::t('app', ($metaData['title'])?:$catId->title);
 
             return $this->render('category', [
                 'models' => $dataProvider->getModels(),
@@ -223,7 +271,11 @@ class AdvertisementController extends Controller
         }
     }
 
-
+    /**
+     * @param $sub
+     * @return string
+     * @throws NotFoundHttpException
+     */
     public function actionSubCategory($sub) : string
     {
         $model = new AdvertisementPost();
@@ -238,6 +290,8 @@ class AdvertisementController extends Controller
         if(empty($catId)) {
             throw new NotFoundHttpException();
         }
+
+        $metaData = $catId->meta;
 
         if (Yii::$app->request->isAjax && (Yii::$app->request->queryParams)['action'] == 'lazyLoad') {
 
@@ -336,9 +390,12 @@ class AdvertisementController extends Controller
 
             $breadcrumbs = [
                 ['label' => Yii::t('app', 'Объявления'), 'url' => Url::to('/advertisement')],
-                ['label' => Yii::t('app', $parentCat->title), 'url' => Url::to('/' . $parentCat->link)],
-                ['label' => Yii::t('app', $catId->title)]
+                ['label' => Yii::t('app', $parentCat->meta['title']), 'url' => Url::to('/' . $parentCat->link)],
+                ['label' => Yii::t('app', $catId->meta['title'])]
             ];
+
+            $catId->title = $catId->meta['title'];
+            $this->getView()->title = (empty($metaData['seo_title'])) ? ($metaData['title'])?:$catId->title : $metaData['seo_title'];
 
             $pages = new Pagination([
                 'totalCount' => $dataProvider->getTotalCount(),
@@ -367,8 +424,27 @@ class AdvertisementController extends Controller
         $searchModel = new AdvertisementPostSearch();
         $filter = new AdvSearch();
         $asideFilter = new AdvertisementFilter();
-
-
+        $settings = Yii::createObject(Settings::className())
+            ->findOne(['name' => 'user_advertisement']);
+        $settings = !empty($settings->option_value)? json_decode($settings->option_value, true): [];
+        $currentLang = (Yii::$app->language == 'ru-Ru') ? 'ru' : 'uk';
+        $metaData = [
+            'ru' => [
+                'title' => (! empty($model->title)) ? $model->title : '',
+                'meta_description' => (! empty($settings['options']['meta_description'])) ? $settings['options']['meta_description'] : '',
+                'seo_title' => (! empty($settings['options']['seo_title'])) ? $settings['options']['seo_title'] : $model->title,
+                'seo_text' => (! empty($settings['options']['seo_text'])) ? $settings['options']['seo_text'] : '',
+            ],
+            'uk' => [
+                'title' => (! empty($settings['translation']['seo_title'])) ? $settings['translation']['seo_title'] : $model->title,
+                'meta_description' => (! empty($settings['translation']['meta_description'])) ? $settings['translation']['meta_description'] : '',
+                'seo_title' => (! empty($settings['translation']['seo_title'])) ? $settings['translation']['seo_title'] : '',
+                'seo_text' => (! empty($settings['translation']['seo_text'])) ? $settings['translation']['seo_text'] : '',
+            ]
+        ];
+        $metaData = $metaData[$currentLang];
+        $metaData['seo_title'] = str_replace('{user}', $user->username, $metaData['seo_title']);
+        Yii::$app->getView()->title = $metaData['seo_title'];
         if (Yii::$app->request->isAjax && (Yii::$app->request->queryParams)['action'] == 'lazyLoad') {
 
             $asideFilter = new AdvertisementFilter();
@@ -483,16 +559,37 @@ class AdvertisementController extends Controller
             ->orderBy('isPremium DESC, published_at DESC')
             ->limit(4)
             ->all();
-
+        $settings = Yii::createObject(Settings::className())
+            ->findOne(['name' => 'inner_advertisement']);
+        $settings = !empty($settings->option_value)? json_decode($settings->option_value, true): [];
+        $currentLang = (Yii::$app->language == 'ru-Ru') ? 'ru' : 'uk';
+        $metaData = [
+            'ru' => [
+                'title' => (! empty($model->title)) ? $model->title : '',
+                'meta_description' => (! empty($settings['options']['meta_description'])) ? $settings['options']['meta_description'] : '',
+                'seo_title' => (! empty($settings['options']['seo_title'])) ? $settings['options']['seo_title'] : $model->title,
+                'seo_text' => (! empty($settings['options']['seo_text'])) ? $settings['options']['seo_text'] : '',
+            ],
+            'uk' => [
+                'title' => (! empty($settings['translation']['seo_title'])) ? $settings['translation']['seo_title'] : $model->title,
+                'meta_description' => (! empty($settings['translation']['meta_description'])) ? $settings['translation']['meta_description'] : '',
+                'seo_title' => (! empty($settings['translation']['seo_title'])) ? $settings['translation']['seo_title'] : '',
+                'seo_text' => (! empty($settings['translation']['seo_text'])) ? $settings['translation']['seo_text'] : '',
+            ]
+        ];
+        $metaData = $metaData[$currentLang];
         $breadcrumbs = [
-            ['label' => Yii::t('app', $category->title), 'url' => Url::to([$category->link])],
-            ['label' => Yii::t('app', $subCategory->title), 'url' => Url::to([$subCategory->link])],
+            ['label' => Yii::t('app', $category->meta['title']), 'url' => Url::to([$category->link])],
+            ['label' => Yii::t('app', $subCategory->meta['title']), 'url' => Url::to([$subCategory->link])],
             ['label' => Yii::t('app', $model->title)]
         ];
 
         if( Yii::$app->user->isGuest || Yii::$app->user->id != $model->authorId ) {
             $model->updateViews($id);
         }
+        $metaData['seo_title'] = str_replace('{title}', $model->title, $metaData['seo_title']);
+        $metaData['title'] = str_replace('{title}', $model->title, $metaData['title']);
+        $this->getView()->title = (empty($metaData['seo_title'])) ? $metaData['title'] : $metaData['seo_title'];
 
         return $this->render('advertisement', [
             'model' => $model,

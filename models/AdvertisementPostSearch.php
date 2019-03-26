@@ -87,6 +87,48 @@ class AdvertisementPostSearch extends AdvertisementPost
         return $dataProvider;
     }
 
+    public function searchAll($params)
+    {
+        $query = AdvertisementPost::find();
+        $query->leftJoin('{{%user}}', '{{%user}}.`id` = {{%advertisement_post}}.authorId');
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+
+        // grid filtering conditions
+        $query->andFilterWhere([
+            'id' => $this->id,
+            'category_id' => $this->category_id,
+            'subCat_id' => $this->subCat_id,
+            'pricePerMonth' => $this->pricePerMonth,
+            'contract_term' => $this->contract_term,
+            'distancePerMonth' => $this->distancePerMonth,
+            'adv_type' => $this->adv_type,
+            'sticking_area' => $this->sticking_area,
+            'showEmail' => $this->showEmail,
+            'isPremium' => $this->isPremium,
+            'coverage_type' => $this->coverage_type,
+            'published_at' => $this->published_at,
+        ]);
+
+        $query->andFilterWhere(['like', 'title', $this->title])
+            ->andFilterWhere(['like', 'description', $this->description])
+            ->andFilterWhere(['like', 'condition', $this->condition]);
+
+        return $dataProvider;
+    }
+
     public function searchCat($params)
     {
         $query = AdvertisementPost::find();
@@ -197,6 +239,7 @@ class AdvertisementPostSearch extends AdvertisementPost
 
         return $dataProvider;
     }
+
 
     public function searchUser($params)
     {

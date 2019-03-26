@@ -8,7 +8,7 @@ use yii\helpers\FileHelper;
 use yii\helpers\Url;
 use yii\imagine\Image;
 use yii\web\UploadedFile;
-
+use app\modules\admin\models\Categories;
 /**
  * This is the model class for table "{{%advertisement_post}}".
  *
@@ -250,5 +250,20 @@ class AdvertisementPost extends \yii\db\ActiveRecord
         }
 
         return implode(', ', $ruList);
+    }
+
+    public function getUser()
+    {
+        return $this->hasOne(User::className(), ['id' => 'authorId']);
+    }
+
+    public function getCategory()
+    {
+        return $this->hasOne(Categories::className(), ['id' => 'category_id']);
+    }
+
+    public function getSubCategory()
+    {
+        return $this->hasOne(Categories::className(), ['id' => 'subCat_id']);
     }
 }

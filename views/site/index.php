@@ -73,12 +73,12 @@ use app\modules\admin\models\Categories;
                     $categories->category = $item->category_id;
                     $cat  = $categories->category;
                     ?>
-                    <li>
+                    <li <?php if( $item->isPremium == 1): ?>class="premium" <?php endif; ?>>
                         <a class="like-star" href="#">&#160;</a>
                         <a href="<?= Url::to(['/advertisement/page/'.$item->id]) ?>">
-                            <div class="holder-img">
+                            <div class="holder-img" style="background: url('<?= $item->images[0]['image_name'] ?>') no-repeat 50% 50%; background-size: cover;">
                                 <?php if(! empty($item->images[0]['image_name']) && $item->images[0]['image_name'] != '' ): ?>
-                                <img src="<?= $item->images[0]['image_name'] ?>" alt="<?= $item->images[0]['alt']?>">
+                                <img src="<?= '/images/announcement_holder.png' ?>" alt="<?= $item->images[0]['alt']?>">
                                 <?php endif; ?>
                             </div>
                             <div class="holder-text">
@@ -102,7 +102,7 @@ use app\modules\admin\models\Categories;
         <div class="title-text">
             <?php if(! empty($news)): ?>
                 <h1><?= $news->title?></h1>
-                <a class="old-ads" href="<?= Url::to(['news/category/']).$news->link ?>"><?= Yii::t('app','Все акции') ?></a>
+                <a class="old-ads" href="<?= Url::to(['/news/category']).'/'.$news->link ?>"><?= Yii::t('app','Все акции') ?></a>
             <?php endif; ?>
         </div>
         <div class="promotion">

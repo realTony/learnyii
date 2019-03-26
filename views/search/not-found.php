@@ -26,8 +26,11 @@ use yii\widgets\Breadcrumbs;
         <div class="holder-img">
             <img src="<?= Url::home(true) ?>images/svg/search-negative.svg" alt="img">
         </div>
-        <strong><?= Yii::t('app', 'по запросу')?> <span><?= $title ?></span> <br><?= Yii::t('app', 'ничего не найдено')?></strong>
-        <p><?= Yii::t('app', 'К сожалению такой страницы не существует.') ?> <a href="<?= Url::home() ?>" ><?= Yii::t('app', 'Вернитесь на главную') ?>,</a> <?= Yii::t('app', 'либо попробуйте найти нужное вам объявление с помощью категорий.')?></p>
+        <strong><?= Yii::t('app', 'По запросу <span>{query}</span> <br> ничего не найдено', [
+                'query' => $title,
+            ]); ?>
+        </strong>
+        <p><?= Yii::t('app', 'К сожалению такой страницы не существует.') ?> <a href="<?= Url::home() ?>" ><?= Yii::t('app', 'Вернитесь на главную') ?>,</a> <?= Yii::t('app', 'либо попробуйте найти нужное Вам объявление с помощью категорий.')?></p>
     </div>
 </div>
 

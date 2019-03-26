@@ -28,8 +28,8 @@ use ymaker\social\share\widgets\SocialShare;
             <div class="aside-profile">
                 <span class="price-month"><?= $model->pricePerMonth ?> <sup><small>грн/мес</small></sup></span>
                 <div class="seller">
-                    <div class="holder-img">
-                        <img src="<?= Profile::getUserAvatar( $user->id) ?>" alt="img">
+                    <div class="holder-img" style="background: url('<?= Profile::getUserAvatar( $user->id) ?>') no-repeat center center; background-size: cover;">
+                        <img src="<?= Url::home(true).'images/avatar-holder.png'?>" alt="<?= $user->username ?>">
                     </div>
                     <div class="holder-text">
                         <a href="<?= Url::to('/advertisement/user/'.$model->authorId)?>" class="name"><?= $user->username ?></a>

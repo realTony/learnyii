@@ -90,7 +90,7 @@ class AdvertisementFilter extends Widget
                                     $quantity = $cat->countUserCat($cat->category['id'], $this->options['user_id']);
 
                                     ?>
-                                    <li><a href="<?= Url::to(['/'.$cat->category['link']]) ?>" class="pjax-buttons"><?= $val ?> <sup><small>(<?= $quantity ?>)</small></sup></a></li>
+                                    <li><a href="<?= Url::to(['/'.$cat->category['link']]) ?>" class="pjax-buttons"><?= Yii::t('app', $cat->category->meta['title']) ?> <sup><small>(<?= $quantity ?>)</small></sup></a></li>
                                 <?php endforeach; ?>
                             </ul>
                         </div>
@@ -196,7 +196,7 @@ class AdvertisementFilter extends Widget
 
                 $category = new Categories();
                 $data = $category->findOne($id);
-                $current = $item['title'];
+                $current = $data->meta['title'];
                 $options = json_decode($data->options, true);
                 $translation = json_decode($data->translation, true);
                 $extraFilter = (new AdvertisementCatFilters())->find()->where(['category_id' => $id])->all();
@@ -218,7 +218,7 @@ class AdvertisementFilter extends Widget
                 }
                 ?>
                 <div class="aside-accordion">
-                    <span class="title"><?= $current ?></span>
+                    <span class="title"><?= Yii::t('app', $current ) ?></span>
                     <?php if( $this->options['custom_filters'] == false ) :?>
                         <div class="expanded">
                             <ul>
@@ -229,7 +229,7 @@ class AdvertisementFilter extends Widget
                                     $quantity = $cat->advertisementCount;
 
                                     ?>
-                                    <li><a href="<?= Url::to(['/'.$cat->category['link']]) ?>"><?= $val ?> <sup><small>(<?= $quantity ?>)</small></sup></a></li>
+                                    <li><a href="<?= Url::to(['/'.$cat->category['link']]) ?>"><?= Yii::t('app', $cat->category->meta['title']) ?> <sup><small>(<?= $quantity ?>)</small></sup></a></li>
                                 <?php endforeach; ?>
                             </ul>
                         </div>
