@@ -45,7 +45,7 @@ class BlogPostsSearch extends BlogPosts
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
-            'query' => $query,
+            'query' => $query->orderBy('updated_at DESC'),
         ]);
 
         $this->load($params);
@@ -60,7 +60,7 @@ class BlogPostsSearch extends BlogPosts
         $query->andFilterWhere([
             'id' => $this->id,
             'category_id' => $this->category_id,
-            'author_id' => $this->author_id,
+//            'author_id' => $this->author_id,
             'updated_at' => $this->updated_at,
             'created_at' => $this->created_at,
         ]);

@@ -105,7 +105,7 @@ class Module extends \yii\base\Module
                 ],
                 [
                     'label' => 'Настройки',
-                    'url' => ['settings'],
+                    'url' => ['/admin/settings'],
                     'template' => '<a href="#"><i class="icon-wrench"></i><span>{label}</span></a>',
                     'controller' => 'settings',
                     'items' => [

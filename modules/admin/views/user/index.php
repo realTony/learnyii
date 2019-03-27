@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => Helper::filterActionColumn(['view', 'activate', 'delete']),
+                'template' => '{view} {update} {delete}',
                 'buttons' => [
                     'activate' => function($url, $model) {
                         if ($model->status == 10) {
