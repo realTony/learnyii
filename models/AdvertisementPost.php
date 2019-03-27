@@ -29,6 +29,8 @@ use app\modules\admin\models\Categories;
  * @property int $views
  * @property int $coverage_type
  * @property string $published_at
+ * @property int $is_banned
+ * @property int $is_approved
  */
 class AdvertisementPost extends \yii\db\ActiveRecord
 {
@@ -195,6 +197,9 @@ class AdvertisementPost extends \yii\db\ActiveRecord
                 }
 
             } else {
+                echo "<pre>";
+                print_r($this->errors);
+                echo "</pre>";
                return false;
             }
         }

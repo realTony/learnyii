@@ -120,6 +120,7 @@ class AdvertisementPostSearch extends AdvertisementPost
             'isPremium' => $this->isPremium,
             'coverage_type' => $this->coverage_type,
             'published_at' => $this->published_at,
+            'is_approved' => $this->is_approved,
         ]);
 
         $query->andFilterWhere(['like', 'title', $this->title])

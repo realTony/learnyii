@@ -12,6 +12,7 @@ namespace app\widgets;
 use app\components\TextExcerption;
 use yii\base\Widget;
 use app\modules\admin\models\BlogPosts;
+use yii\helpers\Html;
 use yii\helpers\Url;
 
 class SimilarNews extends Widget
@@ -35,7 +36,7 @@ class SimilarNews extends Widget
                     <?php foreach ( $model as $item) : ?>
                         <li>
                             <a href="<?= Url::toRoute($item->link)?>"><?= $item->title; ?></a>
-                            <span><?= TextExcerption::excerptText($item->description, 110); ?></span>
+                            <span><?= TextExcerption::excerptText(Html::encode($item->description), 110); ?></span>
                         </li>
                     <?php endforeach;?>
                 </ul>

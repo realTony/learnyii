@@ -54,4 +54,26 @@ class ModerationController extends Controller
             'model' => $model
         ]);
     }
+
+    public function actionApprove($id) : object
+    {
+        $model = Yii::createObject(AdvertisementPost::className())
+            ->findOne(['id' => $id]);
+
+        $model->is_approved = 1;
+        $model->save();
+
+        return $this->redirect(['index']);
+    }
+
+    public function actionBan($id) : object
+    {
+        $model = Yii::createObject(AdvertisementPost::className())
+            ->findOne(['id' => $id]);
+
+        $model->is_banned = 1;
+        $model->save();
+
+        return $this->redirect(['index']);
+    }
 }

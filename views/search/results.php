@@ -4,6 +4,7 @@ use app\components\TextExcerption;
 use app\widgets\FooterInfo;
 use app\widgets\SearchAdverts;
 use app\widgets\SortingForm;
+use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 use yii\widgets\Breadcrumbs;
@@ -81,7 +82,7 @@ use yii\widgets\Pjax;
                                         <span class="region"><em><?= $item->cityNames[0] ?></em>, <em><?= $districtName ?></em></span>
                                     <?php endforeach; ?>
                                     <?php endif; ?>
-                                    <p><?= TextExcerption::excerptText($item->description, 110); ?></p>
+                                    <p><?= TextExcerption::excerptText(Html::encode($item->description), 110); ?></p>
                                 </div>
                             </div>
                         </a>

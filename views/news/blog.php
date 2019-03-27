@@ -2,6 +2,7 @@
 
 use app\widgets\FooterInfo;
 use app\widgets\SearchAdverts;
+use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\Breadcrumbs;
 use yii\widgets\Menu;
@@ -69,7 +70,7 @@ $this->params['breadcrumbs'] = $breadcrumbs;
                                 <?php endif;?>
                                 <div class="holder-text">
                                     <a class="title-link" href="<?= Url::toRoute($model->link)?>"><?= $title ?></a>
-                                    <p><?= TextExcerption::excerptText($description, 110); ?></p>
+                                    <p><?= TextExcerption::excerptText(Html::encode($description), 110); ?></p>
                                     <a href="<?= Url::toRoute($model->link) ?>"><?= Yii::t('app', 'Читать полностью') ?></a>
                                 </div>
                             </li>

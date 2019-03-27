@@ -76,7 +76,7 @@ use app\modules\admin\models\Categories;
                     <li <?php if( $item->isPremium == 1): ?>class="premium" <?php endif; ?>>
                         <a class="like-star" href="#">&#160;</a>
                         <a href="<?= Url::to(['/advertisement/page/'.$item->id]) ?>">
-                            <div class="holder-img" style="background: url('<?= $item->images[0]['image_name'] ?>') no-repeat 50% 50%; background-size: cover;">
+                            <div class="holder-img" style="background: url('<?= (!empty($item->images[0])) ? $item->images[0]['image_name'] : ''; ?>') no-repeat 50% 50%; background-size: cover;">
                                 <?php if(! empty($item->images[0]['image_name']) && $item->images[0]['image_name'] != '' ): ?>
                                 <img src="<?= '/images/announcement_holder.png' ?>" alt="<?= $item->images[0]['alt']?>">
                                 <?php endif; ?>

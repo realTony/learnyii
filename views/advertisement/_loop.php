@@ -1,6 +1,7 @@
 <?php
 
 use app\components\TextExcerption;
+use yii\helpers\Html;
 use yii\helpers\Url;
 
 foreach ($models as $model) {
@@ -29,10 +30,10 @@ foreach ($models as $model) {
                 <div class="overflow-text">
                     <?php if(! empty($model->cityNames) && ! empty($model->districtNames)): ?>
                         <?php foreach ( $model->districtNames as $districtName): ?>
-                            <span class="region"><em><?= $model->cityNames[0] ?></em>, <em><?= $districtName ?></em></span>
+                            <span class="region"><em><?= $model->cityNames[0] ?></em>, <em><?=Html::encode( $districtName) ?></em></span>
                         <?php endforeach; ?>
                     <?php endif; ?>
-                    <p><?= TextExcerption::excerptText($model->description, 110); ?></p>
+                    <p><?= TextExcerption::excerptText(Html::encode($model->description), 110); ?></p>
                 </div>
             </div>
         </a>

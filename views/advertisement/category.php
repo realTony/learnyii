@@ -3,6 +3,7 @@
 use app\widgets\AdvertisementFilter;
 use app\widgets\SearchAdverts;
 use app\widgets\SortingForm;
+use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\Breadcrumbs;
 use yii\widgets\LinkPager;
@@ -83,7 +84,7 @@ $this->params['breadcrumbs'] = $breadcrumbs;
                                     <div class="holder-text">
                                         <div class="group">
                                             <div class="topic">
-                                                <span><?= $model->title ?></span>
+                                                <span><?= Html::encode($model->title) ?></span>
                                                 <p><?= $cat->title; ?></p>
                                             </div>
                                             <strong><?= $model->pricePerMonth; ?> <sup><small><?= Yii::t('app', 'грн/мес')?></small></sup></strong>
@@ -96,7 +97,7 @@ $this->params['breadcrumbs'] = $breadcrumbs;
                                                         <span class="region"><em><?= $model->cityNames[0] ?></em>, <em><?= $districtName ?></em></span>
                                                     <?php endforeach; ?>
                                             <?php endif; ?>
-                                            <p><?= TextExcerption::excerptText($model->description, 110); ?></p>
+                                            <p><?= TextExcerption::excerptText( Html::encode($model->description), 110); ?></p>
                                         </div>
                                     </div>
                                 </a>

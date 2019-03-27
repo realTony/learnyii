@@ -26,7 +26,7 @@ use ymaker\social\share\widgets\SocialShare;
 
         <div class="aside-right padding">
             <div class="aside-profile">
-                <span class="price-month"><?= $model->pricePerMonth ?> <sup><small>грн/мес</small></sup></span>
+                <span class="price-month"><?= $model->pricePerMonth ?> <sup><small><?= Yii::t('app', 'грн/мес')?></small></sup></span>
                 <div class="seller">
                     <div class="holder-img" style="background: url('<?= Profile::getUserAvatar( $user->id) ?>') no-repeat center center; background-size: cover;">
                         <img src="<?= Url::home(true).'images/avatar-holder.png'?>" alt="<?= $user->username ?>">

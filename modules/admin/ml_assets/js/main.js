@@ -406,7 +406,6 @@
   $(window).smartresize(function () {
     updateScrollbars();
   });
-
   function init() {
     smallMenu();
     sidebarPanel();

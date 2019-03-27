@@ -1,6 +1,7 @@
 <?php
 
 use app\components\TextExcerption;
+use yii\helpers\Html;
 use yii\helpers\Url;
 use \app\modules\admin\models\Categories;
 
@@ -34,7 +35,7 @@ foreach ($model as $item ):
                         <span class="region"><em><?= $item->cityNames[0] ?></em>, <em><?= $districtName ?></em></span>
                     <?php endforeach; ?>
                     <?php endif; ?>
-                    <p><?= TextExcerption::excerptText($item->description, 110); ?></p>
+                    <p><?= TextExcerption::excerptText(Html::encode($item->description), 110); ?></p>
                 </div>
             </div>
         </a>

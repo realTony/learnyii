@@ -12186,3 +12186,16 @@ td.align-middle {
   padding: 40px 0px;
 }
 
+.grid-images {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 1fr 1.5fr;
+  grid-gap: 0.5vw;
+  height: auto;
+}
+.grid-images>.item {
+  padding: 0.2em;
+  max-width: 290px;
+  overflow: hidden;
+  max-height: 260px;
+}
