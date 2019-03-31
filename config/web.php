@@ -125,6 +125,7 @@ $config = [
                         'getUsername' => 'app\models\Profile::getUsername',
                         'getUserDate' => 'app\models\Profile::getUserDate',
                         'getMenu' => 'app\models\Menu::getSiteMenu',
+                        'countAdverts' => 'app\models\AdvertisementPost::advCount',
                     ),
                     'filters' => [
                         'print_r' => 'print_r',

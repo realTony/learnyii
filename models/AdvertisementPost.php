@@ -211,6 +211,11 @@ class AdvertisementPost extends \yii\db\ActiveRecord
         return $this->find()->where(['authorId' => Yii::$app->user->id])->count();
     }
 
+    public static function advCount()
+    {
+        return self::find()->where(['authorId' => Yii::$app->user->id])->count();
+    }
+
     public function setCities($cities)
     {
         $this->city = $cities;

@@ -32,8 +32,8 @@ $this->params['breadcrumbs'] = $breadcrumbs;
             <div class="title-text">
                 <h1><?= $model->title ?></h1>
             </div>
-            <?php if(! empty($model->options['content'])): ?>
-            <?= $model->options['content'] ?>
+            <?php if(! empty($model->options->content)): ?>
+            <?= $model->options->content ?>
             <?php endif; ?>
         </div>
     </div>

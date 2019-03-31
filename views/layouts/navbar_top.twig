@@ -103,7 +103,7 @@
                     <a href="{{ url.toRoute('/myaccount/create') }}"><i class="fas fa-plus-circle"></i> {{ t('app', 'Создать объявление') }}</a>
                 </li>
                 <li>
-                    <a href="{{ url.toRoute('/myaccount/posts') }}"><i class="fas fa-tags"></i> {{ t('app', 'Мои объявления') }}<sup><small>(12)</small></sup></a>
+                    <a href="{{ url.toRoute('/myaccount/posts') }}"><i class="fas fa-tags"></i> {{ t('app', 'Мои объявления') }}<sup><small>({{ countAdverts() }})</small></sup></a>
                 </li>
                 <li>
                     <a href="#"><i class="fas fa-star"></i> {{ t('app', 'Избранное') }}</a>
