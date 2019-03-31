@@ -5,6 +5,7 @@
  */
 namespace app\models;
 
+use Yii;
 use yii\web\IdentityInterface;
 
 class User extends \dektrium\user\models\User implements IdentityInterface

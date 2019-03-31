@@ -248,6 +248,7 @@ class SiteController extends Controller
             $options['content'] = ($currentLang == 'uk' && !empty($model->translation['content'])) ? $model->translation['content'] : $options['content'];
             $options['after_content'] = ($currentLang == 'uk' && !empty($model->translation['after_content'])) ? $model->translation['after_content'] : $options['after_content'];
             $model->options = $options;
+            $model->title = $meta_data['title'];
 
             $this->getView()->title = (empty($meta_data['seo_title'])) ? $meta_data['title'] : $meta_data['seo_title'];
             $breadcrumbs = ['label' => Yii::t('app', $meta_data['title'])];
@@ -281,6 +282,7 @@ class SiteController extends Controller
         ];
         $currentLang = (Yii::$app->language == 'ru-Ru') ? 'ru' : 'uk';
         $meta_data = $meta_data[$currentLang];
+        $model->title = $meta_data['title'];
 
         if(! empty($model)) {
             $options['content'] = (!empty($options['content']))? : '';
@@ -336,7 +338,7 @@ class SiteController extends Controller
             $options['content'] = (!empty($options['content']))? : '';
             $options['content'] = ($currentLang == 'uk' && !empty($model->translation['content'])) ? $model->translation['content'] : $options['content'];
             $model->options = $options;
-
+            $model->title = $meta_data['title'];
             $this->getView()->title = (empty($meta_data['seo_title'])) ? $meta_data['title'] : $meta_data['seo_title'];
             $breadcrumbs = ['label' => Yii::t('app', $meta_data['title'] )];
 

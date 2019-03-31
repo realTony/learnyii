@@ -112,7 +112,7 @@ class AdvertisementController extends Controller
 
             $pages = new Pagination([
                 'totalCount' => $dataProvider->getTotalCount(),
-                'pageSize' => 8,
+                'pageSize' => 29,
 
             ]);
 
@@ -304,7 +304,7 @@ class AdvertisementController extends Controller
             $requested = Yii::$app->request->queryParams;
 
             $requested['subCat_id'] = $catId->id;
-            $requested['per-page'] = 8;
+            $requested['per-page'] = 29;
 
             $requested = Yii::$app->request->queryParams;
             if(! empty($requested['minPrice'])) {
@@ -346,7 +346,7 @@ class AdvertisementController extends Controller
 
             $requested = Yii::$app->request->queryParams;
             $requested['subCat_id'] = $catId->id;
-            $requested['per-page'] = 8;
+            $requested['per-page'] = 29;
 
             if(! empty($requested['minPrice'])) {
                 $asideFilter->minPrice = $requested['minPrice'];

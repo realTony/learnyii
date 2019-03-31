@@ -51,7 +51,7 @@ class SearchController extends Controller
 
         $pages = new Pagination([
             'totalCount' => $dataRes->getTotalCount(),
-            'pageSize' => 6,
+            'pageSize' => 18,
 
         ]);
 

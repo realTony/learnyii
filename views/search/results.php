@@ -53,7 +53,7 @@ use yii\widgets\Pjax;
             <?php if(!empty($model)):?>
                 <ul class="list-announcements active">
                 <?php foreach ($model as $item ):
-                    $img = Url::home(true).'/'.$item->images[0]['image_name'];
+                    $img = (! empty($item->images) )? Url::home(true).'/'.$item->images[0]['image_name']: '';
                     $categories = Yii::createObject(Categories::className());
                     $categories->category = $item->category_id;
                     $cat  = $categories->category;
@@ -62,7 +62,7 @@ use yii\widgets\Pjax;
                         <a class="like-star" href="#">&#160;</a>
                         <a href="<?= Url::to('/advertisement/page/'.$item->id)?>">
                             <div class="holder-img">
-                                <?php if(! empty($item->images)): ?>
+                                <?php if(! empty($item->images) && ! empty($item->images[0])): ?>
                                     <img src="<?= $img ?>" alt="<?= $item->images[0]['alt']?>">
                                 <?php endif?>
                             </div>

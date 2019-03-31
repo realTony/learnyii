@@ -92,6 +92,24 @@ class Module extends \yii\base\Module
                     ]
                 ],
                 [
+                    'label' => 'Премиум модели',
+                    'url' => ['/admin/premium'],
+                    'template' => '<a href="{url}"><i class="icon-diamond"></i><span>{label}</span></a>',
+                    'controller' => 'premium',
+                    'items' => [
+                        [
+                            'label' => 'Список услуг',
+                            'url' => ['/admin/premium/index'],
+                            'template' => '<a href="{url}"><span>{label}</span></a>'
+                        ],
+                        [
+                            'label' => 'Создать услугу',
+                            'url' => ['/admin/premium/create'],
+                            'template' => '<a href="{url}"><span>{label}</span></a>'
+                        ],
+                    ]
+                ],
+                [
                     'label' => 'Модерация',
                     'url' => ['/admin/moderation'],
                     'template' => '<a href="{url}"><i class="icon-pencil"></i><span>{label}</span></a>',

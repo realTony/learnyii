@@ -15,16 +15,15 @@ class EditUser extends Model
     public $email;
     public $password;
     public $profileType;
+    public $status;
     public static $usernameRegExp = '/^[a-zA-Zа-яёА-ЯЁ(\ a-zA-Zа-яёА-ЯЁ)?]+$/';
 
     public function rules() : array
     {
         return [
             'usernameTrim'     => ['username', 'trim'],
-//            'usernameRequired' => ['username', 'required', 'on' => ['register', 'create', 'connect', 'update']],
-////            'usernameMatch'    => ['username', 'match', 'pattern' => self::$usernameRegExp],
-//            'usernameLength'   => ['username', 'string', 'min' => 3, 'max' => 255],
             ['email','email'],
+            ['status', 'integer']
         ];
     }
 
@@ -34,6 +33,7 @@ class EditUser extends Model
             'username' => Yii::t('app',Yii::t('app', 'Имя')),
             'email' => Yii::t('app', Yii::t('app', 'E-mail')),
             'password' => Yii::t('app', Yii::t('app','Пароль')),
+            'status' => Yii::t('app', Yii::t('app','Статус')),
         ];
     }
 
@@ -60,6 +60,7 @@ class EditUser extends Model
 
         $user->email = $this->email;
         $user->username = $this->username;
+        $user->status = $this->status;
         if(! $user->save()) {
             return false;
         }

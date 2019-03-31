@@ -38,7 +38,8 @@ class UserSearch extends Search
         return [
             'id'              => Yii::t('user', '#'),
             'username'        => Yii::t('user', 'Username'),
-            'email'           => Yii::t('user', 'Email'),
+            'email'           => Yii::t('user', 'E-mail'),
+            'status'           => Yii::t('user', 'Статус'),
             'created_at'      => Yii::t('user', 'Registration time'),
             'last_login_at'   => Yii::t('user', 'Last login'),
             'registration_ip' => Yii::t('user', 'Registration ip'),
@@ -48,7 +49,7 @@ class UserSearch extends Search
     public function search($params)
     {
         $query = $this->finder->getUserQuery();
-
+        $query->leftJoin('{{%auth_assignment}}', '{{%user}}.`id` = {{%auth_assignment}}.user_id');
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'sort' => ['defaultOrder' => ['created_at' => SORT_DESC]],
@@ -70,7 +71,6 @@ class UserSearch extends Search
             ->andFilterWhere(['like', $table_name . '.email', $this->email])
             ->andFilterWhere([$table_name . '.id' => $this->id])
             ->andFilterWhere([$table_name . 'registration_ip' => $this->registration_ip]);
-
         return $dataProvider;
     }
 }

@@ -88,7 +88,7 @@ class SiteSearch extends Model
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
-                'pageSize' => 6
+                'pageSize' => 18
             ],
             'sort' => [
                 'defaultOrder' => [

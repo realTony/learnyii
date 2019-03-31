@@ -8,7 +8,10 @@ $form = ActiveForm::begin([
         'class' => false
     ]
 ]);
-
+$status = [
+        0 => 'Неактивен',
+        10 => 'Активен'
+];
 ?>
 <div class="row">
     <div class="col-md-12">
@@ -45,14 +48,22 @@ $form = ActiveForm::begin([
                         ->passwordInput(['maxlength' => true]) ?>
                 </div>
 
-
                 <?= $form->field($model, 'profileType', [
-                                                'options' => [
-                                                    'class' => 'form-group col-md-6',
-                                                    'tag' => 'div'
-                                                ]
-                    ])->label(false)
-                    ->dropDownList($roles, ['class' => 'dropdown', 'options' => [0 => ['Selected'=>'selected']]]) ?>
+                    'options' => [
+                        'class' => 'form-group col-md-2',
+                        'tag' => 'div'
+                    ]
+                ] )
+                    ->label(Yii::t('app', 'Роль пользователя'))
+                    ->dropDownList($roles, ['prompt' => 'Выбрать статус...']) ?>
+                <?= $form->field($model, 'status', [
+                    'options' => [
+                        'class' => 'form-group col-md-2',
+                        'tag' => 'div'
+                    ]
+                ] )
+                    ->label('Статус пользователя')
+                    ->dropDownList($status, ['prompt' => 'Выбрать статус...']) ?>
             </div>
         </div>
     </div>

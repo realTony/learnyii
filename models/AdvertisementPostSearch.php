@@ -140,8 +140,8 @@ class AdvertisementPostSearch extends AdvertisementPost
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
-                'pageSize' => 8,
-                'pageSizeLimit' => 8,
+                'pageSize' => 29,
+                'pageSizeLimit' => 29,
             ],
             'sort' => [
                 'defaultOrder' => [
@@ -251,7 +251,7 @@ class AdvertisementPostSearch extends AdvertisementPost
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
-                'pageSize' => 8,
+                'pageSize' => 29,
             ],
             'sort' => [
                 'defaultOrder' => [
