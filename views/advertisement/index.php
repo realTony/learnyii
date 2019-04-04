@@ -66,8 +66,10 @@ $this->params['breadcrumbs'] = $breadcrumbs;
                             <?php if(! empty($model->images)):
                                 $img = Url::home(true).'/'.$model->images[0]['image_name'];
                                 ?>
-                                <div class="holder-img">
-                                    <img src="<?= $img ?>" alt="img">
+                                <div class="holder-img" <?php if(! empty($model->images)):?> style="background: url('<?= $img ?>') no-repeat center center; background-size: cover;" <?php endif; ?>>
+                                    <?php if(! empty($model->images)):?>
+                                        <img src="/images/avatar-holder.png" alt="<?= $model->images[0]['alt'] ?>">
+                                    <?php endif; ?>
                                 </div>
                             <?php else:?>
                                 <div class="holder-img">
