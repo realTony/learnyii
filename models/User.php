@@ -71,4 +71,28 @@ class User extends \dektrium\user\models\User implements IdentityInterface
     {
         return $this->hasOne(User::className(), ['authorId' => 'id']);
     }
+
+    public function getCountActive()
+    {
+        return ( new AdvertisementPost)
+            ->find()
+            ->where( ['authorId' => $this->id, 'is_approved' => 1, 'is_archived' => 0])
+            ->count();
+    }
+
+    public function getCountModerated()
+    {
+        return ( new AdvertisementPost)
+            ->find()
+            ->where( ['authorId' => $this->id, 'is_approved' => 0, 'is_archived' => 0])
+            ->count();
+    }
+
+    public function getCountArchive()
+    {
+        return ( new AdvertisementPost)
+            ->find()
+            ->where( ['authorId' => $this->id, 'is_archived' => 1])
+            ->count();
+    }
 }

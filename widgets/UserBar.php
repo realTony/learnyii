@@ -52,18 +52,19 @@ class UserBar extends Widget
             if( $this->options['enableMenu']):
                 ?>
                 <ul class="sub-nav">
-                    <li <?php if(Url::current() == Url::toRoute('/myaccount/edit') ): ?> class="active" <?php endif; ?> >
+                    <li <?php if(Url::toRoute('/'.Yii::$app->requestedRoute) == Url::toRoute('/myaccount/edit') ): ?> class="active" <?php endif; ?> >
                         <a href="<?= Url::toRoute('/myaccount/edit') ?>"><i class="fas fa-pencil-alt"></i><?= Yii::t('app','Редактировать профиль')?></a>
                     </li>
-                    <li <?php if(Url::current() == Url::toRoute('/myaccount/create') ): ?> class="active" <?php endif; ?> >
+                    <li <?php if(Url::toRoute('/'.Yii::$app->requestedRoute) == Url::toRoute('/myaccount/create') ): ?> class="active" <?php endif; ?> >
                         <a href="<?= Url::toRoute('/myaccount/create') ?>"><i class="fas fa-plus-circle"></i><?= Yii::t('app','Создать объявление')?></a>
                     </li>
-                    <li <?php if(Url::current() == Url::toRoute('/myaccount/posts') ): ?> class="active" <?php endif; ?>>
+                    <li <?php if(Url::toRoute('/'.Yii::$app->requestedRoute) == Url::toRoute('/myaccount/posts') ): ?> class="active" <?php endif; ?>>
                         <a href="<?= Url::toRoute('/myaccount/posts') ?>"><i class="fas fa-tags"></i><?= Yii::t('app','Мои объявления')?> <sup><small>(<?= (new AdvertisementPost)->advCount ?>)</small></sup></a>
                     </li>
-                    <li <?php if(Url::current() == Url::toRoute('/myaccount/favorite') ): ?> class="active" <?php endif; ?>>
-                        <a href="#"><i class="fas fa-star"></i> <?= Yii::t('app', 'Избранное') ?></a>
+                    <li <?php if(Url::toRoute('/'.Yii::$app->requestedRoute) == Url::toRoute('/myaccount/favorites') ): ?> class="active" <?php endif; ?>>
+                        <a href="<?= Url::toRoute('/myaccount/favorites') ?>"><i class="fas fa-star"></i> <?= Yii::t('app', 'Избранное') ?></a>
                     </li>
+
 <!--                    <li>-->
 <!--                        <a href="#"><i class="fas fa-comments"></i> Сообщения </a>-->
 <!--                    </li>-->

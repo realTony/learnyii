@@ -184,7 +184,9 @@ use ymaker\social\share\widgets\SocialShare;
                         <a class="like-star" href="#" data-id="<?= $item->id ?>">&#160;</a>
                         <a href="<?= Url::to('/advertisement/page/'.$item->id)?>">
                             <div class="holder-img">
+                                <?php if(! empty($item->images)): ?>
                                 <img src="<?= Url::home(true).$item->images[0]['image_name'] ?>" alt="<?= $item->images[0]['alt']?>">
+                                <?php endif; ?>
                             </div>
                             <div class="holder-text">
                                 <span><?= $item->title ?></span>

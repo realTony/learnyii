@@ -124,7 +124,6 @@ class AdvertisementPost extends \yii\db\ActiveRecord
         }
 
         $this->image_items = UploadedFile::getInstances($this, 'image_items');
-
         return parent::beforeValidate();
     }
 
@@ -132,51 +131,53 @@ class AdvertisementPost extends \yii\db\ActiveRecord
     {
         if(! $this->validate()) {
             return false;
-        } else {
+        }
 
-            if($this->save()) {
+        if($this->save()) {
 
-                $dir = Yii::getAlias('@webroot').'/uploads/'.strtolower($this->formName()).'/';
+            $dir = Yii::getAlias('@webroot').'/uploads/'.strtolower($this->formName()).'/';
 
-                if (!file_exists($dir)) {
-                    FileHelper::createDirectory($dir);
-                }
+            if (!file_exists($dir)) {
+                FileHelper::createDirectory($dir);
+            }
 
-                foreach ($this->image_items as $file) {
-                    $imageModel = Yii::createObject(Images::className());
-                    $imageModel->image_name = strtotime('now').'_'.Yii::$app->getSecurity()->generateRandomString(6).'.'.$file->extension;
+            foreach ($this->image_items as $file) {
+                $imageModel = Yii::createObject(Images::className());
+                $imageModel->image_name = strtotime('now').'_'.Yii::$app->getSecurity()->generateRandomString(6).'.'.$file->extension;
 
-                    if ($file->saveAs($dir.$imageModel->image_name)) {
+                if ($file->saveAs($dir.$imageModel->image_name)) {
 
-                        if (! is_dir($dir.'thumbnails')) {
-                            FileHelper::createDirectory($dir.'thumbnails');
-                        }
-
-
-                        Image::getImagine()
-                            ->open($dir.$imageModel->image_name)
-                            ->thumbnail(new Box(290, 290))->save($dir.'/thumbnails/'.$imageModel->image_name);
-                        $thumbModel = Yii::createObject(Images::className());
-                        $thumbModel->item_id = $this->id;
-                        $thumbModel->module = $this->formName();
-                        $thumbModel->alt = $file->name;
-                        $thumbModel->image_name = '/uploads/'.strtolower($this->formName()).'/thumbnails/'.$imageModel->image_name;
-                        $count = $thumbModel::find()->andWhere(['module'=>$thumbModel->module])->count();
-                        $thumbModel->sort =  ($count > 0)? $count++ : 0;
-                        $thumbModel->save();
+                    if (! is_dir($dir.'thumbnails')) {
+                        FileHelper::createDirectory($dir.'thumbnails');
                     }
 
-                    $imageModel->item_id = $this->id;
-                    $imageModel->module = $this->formName();
-                    $imageModel->alt = $file->name;
-                    $imageModel->image_name = '/uploads/'.strtolower($this->formName()).'/'.$imageModel->image_name;
-                    $count = $imageModel::find()->andWhere(['module'=>$imageModel->module])->count();
-                    $imageModel->sort =  ($count > 0)? $count++ : 0;
 
-                    $imageModel->save();
-
+                    Image::getImagine()
+                        ->open($dir.$imageModel->image_name)
+                        ->thumbnail(new Box(290, 290))->save($dir.'/thumbnails/'.$imageModel->image_name);
+                    $thumbModel = Yii::createObject(Images::className());
+                    $thumbModel->item_id = $this->id;
+                    $thumbModel->module = $this->formName();
+                    $thumbModel->alt = $file->name;
+                    $thumbModel->image_name = '/uploads/'.strtolower($this->formName()).'/thumbnails/'.$imageModel->image_name;
+                    $count = $thumbModel::find()->andWhere(['module'=>$thumbModel->module])->count();
+                    $thumbModel->sort =  ($count > 0)? $count++ : 0;
+                    $thumbModel->save();
                 }
-                $i = 0;
+
+                $imageModel->item_id = $this->id;
+                $imageModel->module = $this->formName();
+                $imageModel->alt = $file->name;
+                $imageModel->image_name = '/uploads/'.strtolower($this->formName()).'/'.$imageModel->image_name;
+                $count = $imageModel::find()->andWhere(['module'=>$imageModel->module])->count();
+                $imageModel->sort =  ($count > 0)? $count++ : 0;
+
+                $imageModel->save();
+
+            }
+
+            $i = 0;
+            if(! empty($this->city)) {
                 foreach ($this->city as $city) {
                     $cities = new Cities();
                     $districts = new CityRegions();
@@ -195,17 +196,33 @@ class AdvertisementPost extends \yii\db\ActiveRecord
 
                     $i++;
                 }
+            }
 
-            } else {
-                echo "<pre>";
-                print_r($this->errors);
-                echo "</pre>";
-               return false;
+        } else {
+            echo "<pre>";
+            print_r($this->errors);
+            echo "</pre>";
+           return false;
+        }
+
+        return true;
+    }
+
+    public function updateAdvertisement()
+    {
+        if(! $this->validate()) {
+            return false;
+        }
+        $images = $this->images;
+
+        foreach ($images as $image ) {
+            if( strpos($image->image_name,'thumbnails')) {
+                continue;
             }
         }
 
+        return true;
     }
-
     public function getAdvCount()
     {
         return $this->find()->where(['authorId' => Yii::$app->user->id])->count();

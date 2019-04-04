@@ -65,7 +65,7 @@ use app\modules\admin\models\Categories;
             <h1><?= Yii::t('app', 'Новые объявления') ?></h1>
             <a class="old-ads" href="<?= Url::to(['/advertisement']) ?>"><?= Yii::t('app', 'Все объявления') ?></a>
         </div>
-        <div class="slider-announcements">
+        <div class="main-slider-announcements">
             <ul class="list-announcements">
                 <?php foreach ($posts as $item): ?>
                 <?php

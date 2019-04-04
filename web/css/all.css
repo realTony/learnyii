@@ -5764,5 +5764,9 @@ hr{
     }
 }
 
-
-
+.hidden {
+    display: none !important;
+}
+.loader {
+    width: 100%;
+}

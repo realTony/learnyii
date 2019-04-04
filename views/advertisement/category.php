@@ -76,10 +76,10 @@ $this->params['breadcrumbs'] = $breadcrumbs;
                     <li <?php if($model->isPremium):?>class="premium" <?php endif ?>>
                                 <a class="like-star" href="#" data-id="<?= $model->id ?>">&#160;</a>
                                 <a href="<?= Url::to('/advertisement/page/'.$model->id)?>">
-                                    <div class="holder-img">
-                                        <?php if(! empty($model->images)): ?>
-                                            <img src="<?= $img ?>" alt="<?= $model->images[0]['alt']?>">
-                                        <?php endif?>
+                                    <div class="holder-img" <?php if(! empty($model->images)):?> style="background: url('<?= $img ?>') no-repeat center center; background-size: cover;" <?php endif; ?>>
+                                        <?php if(! empty($model->images)):?>
+                                            <img src="/images/avatar-holder.png" alt="<?= $model->images[0]['alt'] ?>">
+                                        <?php endif; ?>
                                     </div>
                                     <div class="holder-text">
                                         <div class="group">

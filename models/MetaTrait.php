@@ -9,6 +9,25 @@ trait MetaTrait
 {
     /** @var object $model */
     private static $model;
+    /** @var array $metaData - empty template of metaData to set it if model has uncommon structure */
+    private static $metaData = [
+        'ru' => [
+            'title' => '',
+            'meta_description' => '',
+            'seo_title' => '',
+            'seo_text' => '',
+            'no_index' => 0,
+            'no_follow' => 0,
+        ],
+        'uk' => [
+            'title' =>  '',
+            'meta_description' =>  '',
+            'seo_title' =>  '',
+            'seo_text' => '',
+            'no_index' =>  0,
+            'no_follow' => 0,
+        ]
+    ];
 
     public static function setModel(object $model) : void
     {

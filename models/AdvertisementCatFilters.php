@@ -5,7 +5,7 @@ namespace app\models;
 use Yii;
 
 /**
- * This is the model class for table "stick_advertisement_cat_filters".
+ * This is the model class for table "{{%advertisement_cat_filters}}".
  *
  * @property int $id
  * @property int $category_id
@@ -24,7 +24,7 @@ class AdvertisementCatFilters extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'stick_advertisement_cat_filters';
+        return '{{%advertisement_cat_filters}}';
     }
 
     /**
@@ -77,5 +77,14 @@ class AdvertisementCatFilters extends \yii\db\ActiveRecord
     public function getAdvertisementPosts()
     {
         return $this->hasMany(AdvertisementPost::className(), ['filter_id' => 'id']);
+    }
+
+    /**
+     * {@inheritdoc}
+     * @return AdvertisementCatFiltersQuery the active query used by this AR class.
+     */
+    public static function find()
+    {
+        return new AdvertisementCatFiltersQuery(get_called_class());
     }
 }

@@ -10,6 +10,7 @@ use app\models\Cities;
 use app\widgets\UserBar;
 use yii\widgets\Breadcrumbs;
 use yii\widgets\LinkPager;
+use yii\widgets\Pjax;
 
 $categories = Yii::createObject(Categories::className());
 $stickAreas = Yii::createObject(\app\models\StickingAreas::className());
@@ -47,21 +48,29 @@ $this->params['breadcrumbs'] = $breadcrumbs;
             ])?>
             <div class="content">
                 <ul class="ad-status">
-                    <li class="active">
-                        <a href="#"><i class="fas fa-tags"></i> Активные объявления<sup><small>(3)</small></sup></a>
+                    <li <?php if($type == 'active'): ?>class="active" <?php endif; ?>>
+                        <a href="<?= Url::to(['/myaccount/posts?type=active']); ?>"><i class="fas fa-tags"></i><?= Yii::t('app', 'Активные объявления')?><sup><small>(<?= $user->countActive ?>)</small></sup></a>
                     </li>
-                    <li>
-                        <a href="#"><i class="fas fa-calendar-check"></i> На подтверждении<sup><small>(2)</small></sup></a>
+                    <li <?php if($type == 'moderation'): ?>class="active" <?php endif; ?>>
+                        <a href="<?= Url::to(['/myaccount/posts?type=moderation']); ?>"><i class="fas fa-calendar-check"></i><?= Yii::t('app', 'На подтверждении')?><sup><small>(<?= $user->countModerated ?>)</small></sup></a>
                     </li>
-                    <li>
-                        <a href="#"><i class="fas fa-eye-slash"></i> Архив<sup><small>(15)</small></sup></a>
+                    <li <?php if($type == 'archived'): ?>class="active" <?php endif; ?>>
+                        <a href="<?= Url::to(['/myaccount/posts?type=archived']); ?>">
+                            <i class="fas fa-eye-slash"></i><?= Yii::t('app', 'Архив') ?><sup><small>(<?= $user->countArchive ?>)</small></sup>
+                        </a>
                     </li>
                 </ul>
+                <img class="hidden loader" src="<?= Url::base(true) ?>/images/loader.svg" />
+                <?php Pjax::begin([
+                    'id' => 'account-posts',
+                    'enablePushState' => false,
+                    'timeout' => 5000,
+                ]) ?>
                 <?php if(! empty($models)): ?>
-                <ul class="list-announcements active">
+                <ul class="list-announcements active clone">
                     <?php foreach ($models as $item): ?>
                     <?php
-                        $images = Url::home(true).'/'.$item->images[0]['image_name'];
+                        $images = (! empty($item->images)) ? Url::home(true).'/'.$item->images[0]['image_name'] : '';
                         $categories = Yii::createObject(Categories::className());
                         $categories->category = $item->category_id;
                         $cat  = $categories->category;
@@ -82,9 +91,9 @@ $this->params['breadcrumbs'] = $breadcrumbs;
                             <!-- end fav -->
                             <a class="like-star" href="#">&#160;</a>
                             <a href="<?= Url::to('/advertisement/page/'.$item->id)?>">
-                                <div class="holder-img">
+                                <div class="holder-img" <?php if(! empty($item->images[0])):?> style="background: url('<?= $images ?>') no-repeat center center; background-size: cover;" <?php endif; ?>>
                                     <?php if(! empty($item->images[0])):?>
-                                        <img src="<?= $images ?>" alt="<?= $item->images[0]['alt'] ?>">
+                                        <img src="/images/avatar-holder.png" alt="<?= $item->images[0]['alt'] ?>">
                                     <?php endif; ?>
                                 </div>
                                 <div class="holder-text">
@@ -98,8 +107,13 @@ $this->params['breadcrumbs'] = $breadcrumbs;
                                         <strong><?= $item->pricePerMonth ?> <sup><small><?= Yii::t('app', 'грн/мес')?></small></sup></strong>
                                     </div>
                                     <div class="overflow-text">
-                                        <span class="region"><em>Харьков</em>, <em>Немышлянский район</em></span>
-                                        <p><?= TextExcerption::excerptText($item->description, 110); ?></p>
+                                        <?php if(! empty($item->cityNames) && ! empty($item->districtNames)):
+                                            ?>
+                                            <?php foreach ( $item->districtNames as $districtName): ?>
+                                            <span class="region"><em><?= $item->cityNames[0] ?></em>, <em><?= $districtName ?></em></span>
+                                        <?php endforeach;
+                                        endif; ?>
+                                        <p><?= Html::encode(TextExcerption::excerptText($item->description, 110)) ?></p>
                                     </div>
                                 </div>
                             </a>
@@ -125,6 +139,7 @@ $this->params['breadcrumbs'] = $breadcrumbs;
                         </a>
                     </div>
                 <?php endif; ?>
+                <?php Pjax::end(); ?>
             </div>
         </div>
     </div>

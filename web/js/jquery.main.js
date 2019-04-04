@@ -65,8 +65,40 @@ $(document).ready(function(){
             });
         }
     }
-
     $('.slider-announcements .list-announcements').slick({
+        dots: false,
+        arrows: true,
+        speed: 300,
+        slidesToShow: 4,
+        slidesToScroll: 1,
+        responsive: [
+            {
+                breakpoint: 1000,
+                settings: {
+                    slidesToShow: 3,
+                    slidesToScroll: 1
+                }
+            },
+            {
+                breakpoint: 820,
+                settings: {
+
+                    slidesToShow: 2,
+                    slidesToScroll: 1
+                }
+            },
+            {
+                breakpoint: 540,
+                settings: {
+                    fade: true,
+                    slidesToShow: 1,
+                    slidesToScroll: 1
+                }
+            }
+        ]
+    });
+
+    $('.main-slider-announcements .list-announcements').slick({
         dots: false,
         arrows: true,
         speed: 300,
@@ -125,9 +157,11 @@ $(document).ready(function(){
             $('#edit-image-form').trigger('submit');
         });
     });
-    $('.list-img').find('input[type=file]').on('change', function (e) {
+    $('.list-img').on('change', 'input[type=file]', function (e) {
         var fileSrc  = e.target.files;
-
+        var input = $(this).clone().val('');
+        $(this).removeAttr('id');
+        $(this).after(input);
 
         if (fileSrc) {
             var images = Object.values(fileSrc);
@@ -137,28 +171,72 @@ $(document).ready(function(){
                     var image = new Image();
                     image.src = reader.result;
 
-                    var img = '<li><a href="#" class="holder-img"><i class="fas fa-times-circle"></i></a></li>';
+                    var img = '<li><a href="#" class="holder-img" style="background: url('+image.src+') no-repeat center center; background-size:cover;"><i class="delete-adv-image fas fa-times-circle"></i><img src="/images/edit_image.png"></a></li>';
                     $('#add-adv-image').before(img);
-                    $('.list-img').find('.holder-img:last').append(image);
-                    $('.list-img').find('.holder-img:last > img').css({'width':'130px', 'height':'130px'});
-                }
+                };
                 reader.readAsDataURL(element);
             });
         }
     });
     $('body').on('click','a.holder-img', function (e) {
         e.preventDefault();
-
        $(this).parents('li').remove();
     });
 
+    $('body').on('click', 'i.delete-adv-image', function () {
+        var imageID = '';
+        var _csrf = $('[name = "_csrf"]').val();
+        if(typeof $(this).attr('data-id') != 'undefined' && $(this).attr('data-id') != '') {
+            imageID = $(this).attr('data-id');
+            $.ajax({
+                    url: '/myaccount/default/remove-adv-img',
+                    type: 'POST',
+                    data: {
+                        id: imageID,
+                        _csrf:_csrf
+                    },
+                    success: function (data) {
+                        if( typeof data != 'undefined'){
+                            console.log('ok');
+                        } else {
+                            return false;
+                        }
+                    }
+            });
+        }
+    });
 
     $('#createPost').find('select#category_id').on('change', function(e) {
         var form = $('#createPost');
         var _csrf = form.find('input[name="_csrf"]').val();
+        var catId = $(this).val();
         $.post( "/myaccount/default/update-cat", { id: $(this).val(),_csrf: _csrf })
             .done(function( data ) {
-                $('#subcat_id').html(data).dropdown('update');
+                var data = JSON.parse(data);
+                $('#subcat_id').html(data.data).dropdown('update');
+
+                var pjax_id = "filters";
+                var url =  $('#createPost').attr('action');
+                var _csrf = form.find('input[name="_csrf"]').val();
+
+                $.pjax.reload({
+                    type: 'POST',
+                    container:'#'+pjax_id,
+                    data: {
+                        catId: catId,
+                        _csrf:_csrf
+                    },
+                    url: url
+                });
+                $(document).on('pjax:start', function (e) {
+                    $('.loader').toggleClass('hidden');
+                });
+                $(document).on('pjax:beforeReplace', function (e) {
+                    $('.loader').addClass('hidden');
+                });
+                $(document).on('pjax:success', function (e) {
+                    $('.dropdown').dropdown();
+                });
             });
     });
     $('#delete-photo').on('click', function (e) {
@@ -166,8 +244,7 @@ $(document).ready(function(){
         e.stopPropagation();
         var form = $('#edit-profile-form');
         var _csrf = form.find('input[name="_csrf"]').val();
-        console.log(_csrf);
-        //
+
         $.ajax({
             url: '/myaccount/default/remove-photo',
             type: 'POST',
@@ -226,9 +303,29 @@ $(document).ready(function(){
         var pjax_id = "search-sort";
         var url = $('#sortingForm').attr('action');
         var page = $('.pagination').find('.active').next().find('a').attr('data-page');
-        alert(page);
         $.pjax.reload({container:'#'+pjax_id, url: url, page: ++page });
         return false;
+    });
+
+    //MyAccount posts
+    $('body').on('click', '.ad-status > li a', function (e) {
+        e.preventDefault();
+
+       $('.ad-status li').removeClass('active');
+       $(this).parent().toggleClass('active');
+
+        var pjax_id = "account-posts";
+        var url = $(this).attr('href');
+
+        $.pjax.reload({container:'#'+pjax_id, url: url});
+
+        $(document).on('pjax:start', function (e) {
+            $('.loader').toggleClass('hidden');
+        });
+        $(document).on('pjax:beforeReplace', function (e) {
+            $('.loader').addClass('hidden');
+        });
+
     });
 
     $('body').on('click', '.ajax-load a', function (e) {
