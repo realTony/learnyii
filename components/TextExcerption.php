@@ -40,4 +40,24 @@ class TextExcerption
 
         return mb_strtoupper($firstChar, $encoding) . $then;
     }
+
+    public static function getDayString($num) : string
+    {
+        $days = '';
+
+        switch ($num) {
+            case 1:
+                $days = \Yii::t('app', 'день');
+                break;
+            case 2:
+            case 3:
+            case 4:
+                $days = \Yii::t('app', 'деня');
+                break;
+            default:
+                $days = \Yii::t('app', 'деней');
+        }
+
+        return $days;
+    }
 }

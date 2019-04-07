@@ -189,7 +189,7 @@ $(document).ready(function(){
         if(typeof $(this).attr('data-id') != 'undefined' && $(this).attr('data-id') != '') {
             imageID = $(this).attr('data-id');
             $.ajax({
-                    url: '/myaccount/default/remove-adv-img',
+                    url: window.deletePath,
                     type: 'POST',
                     data: {
                         id: imageID,
@@ -210,7 +210,9 @@ $(document).ready(function(){
         var form = $('#createPost');
         var _csrf = form.find('input[name="_csrf"]').val();
         var catId = $(this).val();
-        $.post( "/myaccount/default/update-cat", { id: $(this).val(),_csrf: _csrf })
+        var catUrl = form.attr('data-catUrl');
+
+        $.post(catUrl, { id: $(this).val(),_csrf: _csrf })
             .done(function( data ) {
                 var data = JSON.parse(data);
                 $('#subcat_id').html(data.data).dropdown('update');
@@ -246,7 +248,7 @@ $(document).ready(function(){
         var _csrf = form.find('input[name="_csrf"]').val();
 
         $.ajax({
-            url: '/myaccount/default/remove-photo',
+            url: window.deleteImage,
             type: 'POST',
             data: {
                 id:'edit-image-form',
@@ -260,6 +262,14 @@ $(document).ready(function(){
                 }
             }
         });
+    });
+
+    $('body').on('click', '.btn-rates', function(e){
+        var menu = $(this).closest('li').find('.holder-rates');
+        e.preventDefault();
+        menu.slideToggle();
+        $(this).toggleClass("active");
+        $(this).parents(".edit-list").addClass("z-i"); //добавляем класс текущей (нажатой)
     });
     // like-heart active
     $(".like-star").on('click', function(e){
@@ -387,9 +397,8 @@ $(document).ready(function(){
         // $('.list-announcements li').matchHeight();
     }
     //open menu
-    var opener = $('.open-menu');
-    var menu = $('.holder-nav');
-    opener.on('click', function(e){
+    $('body').on('click', '.open-menu', function(e){
+        var menu = $('.holder-nav');
         menu.slideDown();
         menu.addClass('open');
         $('body').addClass("fix-page");
@@ -563,8 +572,14 @@ $(document).ready(function(){
     });
 
 
-
-
+    $(document).click(function(event) {
+        if ($(event.target).closest('.holder-rates').length) return;
+        if ($(event.target).closest('.edit-list').length) return;
+        $('.holder-rates, .btn-rates').removeClass("active");
+        $('.edit-list').removeClass("z-i");
+        $('.holder-rates').fadeOut();
+        event.stopPropagation();
+    });
     //range-slider
     initUi();
 

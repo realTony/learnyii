@@ -33,13 +33,22 @@ class SettingsFormModel extends Model
     public $site_telegram;
     public $site_instagram;
     public $site_viber;
+    public $main_slider_max ;
+    public $advertisement_pageSize;
+    public $vip_message_ru;
+    public $vip_message_uk;
     public $site_maintenance = 'Off';
+    public $liqpay_public_key;
+    public $liqpay_private_key;
 
     public function rules()
     {
         return [
-            [['site_name', 'site_email', 'site_facebook', 'site_instagram', 'site_viber', 'site_telegram'], 'safe'],
-            [['site_name', 'site_facebook', 'site_instagram', 'site_viber', 'site_telegram'], 'string'],
+            [['site_name', 'site_email', 'site_facebook', 'site_instagram', 'site_viber', 'site_telegram', 'main_slider_max',
+                'advertisement_pageSize', 'vip_message_ru', 'vip_message_uk', 'liqpay_public_key', 'liqpay_private_key'], 'safe'],
+            [['site_name', 'site_facebook', 'site_instagram', 'site_viber', 'site_telegram', 'vip_message_ru', 'vip_message_uk',
+                'liqpay_public_key', 'liqpay_private_key'], 'string'],
+            [['main_slider_max', 'advertisement_pageSize'] ,'integer'],
             [['site_email'], 'email'],
         ];
     }

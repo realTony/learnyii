@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "{{%premium_rates}}".
@@ -74,5 +75,18 @@ class PremiumRates extends \yii\db\ActiveRecord
         }
 
         return true;
+    }
+
+    public function getRates() : array
+    {
+        $rates = $this->find()->all();
+        $currentLang = (Yii::$app->language == 'ru-Ru') ? 'ru' : 'uk';
+        $ratesArr = ArrayHelper::map($rates, 'id', 'rate');
+
+        if( $currentLang == 'uk') {
+            $ratesArr = ArrayHelper::map($rates, 'id', 'rate_ua');
+        }
+
+        return $ratesArr;
     }
 }

@@ -6,16 +6,19 @@ use app\models\AdvertisementPost;
 use app\models\Images;
 use app\models\ImageUpload;
 use app\models\MetaTrait;
+use app\models\PremiumRates;
 use app\models\Profile;
 use app\models\Settings;
 use app\models\User;
 use app\models\UserFav;
+use LiqPay;
 use Yii;
 use yii\data\Pagination;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\MethodNotAllowedHttpException;
+use yii\web\NotFoundHttpException;
 use yii\web\UploadedFile;
 use app\modules\myaccount\models\EditProfileForm;
 use app\modules\myaccount\models\ChangePassword;
@@ -182,6 +185,19 @@ class DefaultController extends Controller
         }
 
         if( $model->load(Yii::$app->request->post()) && $id = $model->createAdvertisement() ){
+            $options = [];
+            $currentLang = (Yii::$app->language == 'ru-Ru') ? 'ru' : 'uk';
+            $settings = (new Settings())
+                ->find()
+                ->where(['in', 'name', ['vip_message_'.$currentLang]])
+                ->all();
+
+            foreach ($settings as $option) {
+                $val = $option['option_value'];
+                $options[$option['name']] = $val;
+            }
+            \Yii::$app->session->setFlash('successPost', \Yii::t('app', $options['vip_message_'.$currentLang]));
+
             return $this->redirect(['/myaccount/posts']);
         }
 
@@ -492,6 +508,62 @@ class DefaultController extends Controller
             'user' => $user,
             'type' => !empty($query['type'])? $query['type'] : 'active'
         ]);
+
+    }
+
+
+    public function actionPremium($id) : string
+    {
+        return '';
+    }
+
+    /**
+     * @param $id
+     * @param $link
+     * @throws NotFoundHttpException
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function actionSetPremium($id, $link)
+    {
+        if(! Yii::$app->user->isGuest) {
+
+            $settings = (Yii::createObject(Settings::className()));
+            $public_key = ($settings->findOne(['name' => 'liqpay_public_key']))->option_value;
+            $private_key = ($settings->findOne(['name' => 'liqpay_private_key']))->option_value;;
+            $user = Yii::$app->user->id;
+            $advertisement = (Yii::createObject(AdvertisementPost::className()))
+                ->findOne(['id' => $id]);
+            $premiumPack = (Yii::createObject(PremiumRates::className()))
+                ->findOne(['id' => $link]);
+            $currentLang = (Yii::$app->language == 'ru-Ru') ? 'ru' : 'uk';
+
+            $description = $premiumPack->rate;
+
+            if( $currentLang == 'uk') {
+                $description = $premiumPack->rate_ua;
+            }
+
+            $liqpay = new LiqPay($public_key, $private_key);
+
+            $settings = [
+                'action'         => 'pay',
+                'amount'         => floatval($premiumPack->price),
+                'currency'       => 'UAH',
+                'description'    => $description,
+                'order_id'       => 'order_id_1',
+                'version'        => '3',
+                'sandbox'        => YII_ENV_DEV
+            ];
+
+            $html = $liqpay->cnb_form($settings);
+
+            return  $this->renderAjax('premium_list', [
+                'form' => $html,
+                'model' => $premiumPack
+            ]);
+        } else {
+            throw new NotFoundHttpException();
+        }
 
     }
 

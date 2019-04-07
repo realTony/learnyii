@@ -29,6 +29,7 @@ use app\modules\admin\models\Categories;
  * @property int $views
  * @property int $coverage_type
  * @property string $published_at
+ * @property int $filter_id
  * @property int $is_banned
  * @property int $is_approved
  */
@@ -56,7 +57,7 @@ class AdvertisementPost extends \yii\db\ActiveRecord
     {
         return [
             [['title', 'category_id', 'subCat_id', 'pricePerMonth', 'contract_term', 'distancePerMonth', 'authorId'], 'required'],
-            [['category_id', 'subCat_id', 'views', 'contract_term', 'adv_type', 'sticking_area', 'authorId', 'showEmail', 'isPremium', 'coverage_type'], 'integer'],
+            [['category_id', 'subCat_id', 'views', 'contract_term', 'adv_type', 'sticking_area', 'authorId', 'showEmail', 'isPremium', 'coverage_type', 'filter_id'], 'integer'],
             [['description'], 'string'],
             [['pricePerMonth', 'distancePerMonth'], 'number'],
             [['published_at'], 'safe'],
@@ -133,6 +134,15 @@ class AdvertisementPost extends \yii\db\ActiveRecord
             return false;
         }
 
+        $filterID = null;
+
+        if(! empty($this->sticking_area) ) {
+            $filterID = $this->sticking_area;
+        } elseif (! empty($this->adv_type)) {
+            $filterID = $this->adv_type;
+        }
+        $this->filter_id = $filterID;
+
         if($this->save()) {
 
             $dir = Yii::getAlias('@webroot').'/uploads/'.strtolower($this->formName()).'/';
@@ -154,7 +164,7 @@ class AdvertisementPost extends \yii\db\ActiveRecord
 
                     Image::getImagine()
                         ->open($dir.$imageModel->image_name)
-                        ->thumbnail(new Box(290, 290))->save($dir.'/thumbnails/'.$imageModel->image_name);
+                        ->thumbnail(new Box(580, 580))->save($dir.'/thumbnails/'.$imageModel->image_name);
                     $thumbModel = Yii::createObject(Images::className());
                     $thumbModel->item_id = $this->id;
                     $thumbModel->module = $this->formName();
@@ -199,9 +209,6 @@ class AdvertisementPost extends \yii\db\ActiveRecord
             }
 
         } else {
-            echo "<pre>";
-            print_r($this->errors);
-            echo "</pre>";
            return false;
         }
 
@@ -213,6 +220,15 @@ class AdvertisementPost extends \yii\db\ActiveRecord
         if(! $this->validate()) {
             return false;
         }
+
+        $filterID = null;
+
+        if(! empty($this->sticking_area) ) {
+            $filterID = $this->sticking_area;
+        } elseif (! empty($this->adv_type)) {
+            $filterID = $this->adv_type;
+        }
+        $this->filter_id = $filterID;
         $images = $this->images;
 
         foreach ($images as $image ) {

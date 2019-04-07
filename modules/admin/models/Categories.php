@@ -163,13 +163,40 @@ class Categories extends \yii\db\ActiveRecord
 
     public function getAdvertisement()
     {
-        $advert = ArrayHelper::map($this->find()->where(['is_blog' => 0])->andWhere(['parent_id'=>null])->all(),'id', 'title');
+        $currentLang = (Yii::$app->language == 'ru-Ru') ? 'ru' : 'uk';
+        if( $currentLang == 'ru') {
+            $advert = ArrayHelper::map($this->find()->where(['is_blog' => 0])->andWhere(['parent_id'=>null])->all(),'id', 'title');
+        } else {
+            $cat = $this->find()->where(['is_blog' => 0])->andWhere(['parent_id'=>null])->all();
+            $i = 0;
+            foreach ($cat as $item ) {
+                $data = json_decode($item->translation);
+                $cat[$i]->title = $data->title;
+                $i++;
+            }
+            $advert = ArrayHelper::map($cat,'id', 'title');
+
+        }
         return $advert;
     }
 
     public function getSubAdvertisement()
     {
+        $currentLang = (Yii::$app->language == 'ru-Ru') ? 'ru' : 'uk';
         $sub = $this->find()->where(['is_blog' => 0])->andWhere(['not', ['parent_id' => null]])->all();
+
+        if( $currentLang == 'uk') {
+            $i = 0;
+            foreach ($sub as $item ) {
+                $data = json_decode($item->translation);
+                if( ! empty($data->title)) {
+                    $sub[$i]['title'] = $data->title;
+                }
+
+                $i++;
+            }
+        }
+
         $sub = ArrayHelper::map($sub,'id', 'title');
 
         return $sub;
@@ -180,7 +207,23 @@ class Categories extends \yii\db\ActiveRecord
     }
 
     public function getParents() {
+
+        $currentLang = (Yii::$app->language == 'ru-Ru') ? 'ru' : 'uk';
+
         $sub = $this->find()->where(['is_blog' => 0])->andWhere(['parent_id' => $this->parent])->all();
+
+        if( $currentLang == 'uk') {
+            $i = 0;
+            foreach ($sub as $item ) {
+                $data = json_decode($item->translation);
+                if( ! empty($data->title)) {
+                    $sub[$i]['title'] = $data->title;
+                }
+
+                $i++;
+            }
+        }
+
         $sub = ArrayHelper::map($sub,'id', 'title');
 
         return $sub;

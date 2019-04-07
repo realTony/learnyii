@@ -1,6 +1,8 @@
 <?php
 
 use app\components\TextExcerption;
+use app\models\PremiumRates;
+use app\widgets\PremiumFlash;
 use app\widgets\SearchAdverts;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -39,6 +41,14 @@ $this->params['breadcrumbs'] = $breadcrumbs;
         </div>
     </div>
     <div class="container">
+        <?php foreach (Yii::$app->session->getAllFlashes() as $type => $message): ?>
+            <?php if (in_array($type, ['successPost', 'danger', 'warning', 'info'])): ?>
+                <?= PremiumFlash::widget([
+                    'options' => ['class' => 'advertise'],
+                    'body' => $message
+                ]) ?>
+            <?php endif ?>
+        <?php endforeach ?>
         <div class="title-text clone">
             <h1><?= Yii::t('app', 'Мои объявления')?></h1>
         </div>
@@ -74,6 +84,9 @@ $this->params['breadcrumbs'] = $breadcrumbs;
                         $categories = Yii::createObject(Categories::className());
                         $categories->category = $item->category_id;
                         $cat  = $categories->category;
+                        $rates = (Yii::createObject(PremiumRates::className()))
+                        ->rates;
+
                     ?>
                         <li>
                             <!-- Fav items -->
@@ -81,11 +94,74 @@ $this->params['breadcrumbs'] = $breadcrumbs;
                                 <li>
                                     <a href="<?= Url::toRoute('/myaccount/update/'.$item->id) ?>"><i class="fas fa-pen-square"></i></a>
                                 </li>
-                                <li>
-                                    <a href="#"><i class="fas fa-shield-alt"></i></a>
-                                </li>
+<!--                                <li>-->
+<!--                                    <a href="#"><i class="fas fa-shield-alt"></i></a>-->
+<!--                                </li>-->
                                 <li>
                                     <a href="<?= Url::toRoute('/myaccount/delete/'.$item->id) ?>"><i class="fas fa-trash-alt"></i></a>
+                                </li>
+                                <li>
+                                    <a class="btn-rates" href="#"><i class="fas fa-crown"></i></a>
+                                    <ul class="holder-rates">
+                                        <?php
+                                            foreach ($rates as $id => $rate):
+                                                $premItem = Yii::createObject(PremiumRates::className())
+                                            ->findOne(['id' => $id]);
+                                                $premItem->duration = $premItem->duration/24;
+                                        ?>
+                                            <li>
+                                                <a href="<?= Url::toRoute(['/myaccount/premium/'.$item->id.'/'.$id])?>">
+                                                    <dl>
+                                                        <dt><i class="fas fa-check"></i> <?= Yii::t('app', $rate)?> <span>(<?=  $premItem->duration ?> <?= TextExcerption::getDayString($premItem->duration) ?>)</span></dt>
+                                                        <dd><?= $premItem->price ?><sup> <?= Yii::t('app', 'грн')?></sup></dd>
+                                                    </dl>
+                                                </a>
+                                            </li>
+                                        <?php
+                                            endforeach;
+                                        ?>
+
+<!--                                        <li>-->
+<!--                                            <a href="#">-->
+<!--                                                <dl>-->
+<!--                                                    <dt><i class="fas fa-check"></i>Топ объявление <span>(7 день)</span></dt>-->
+<!--                                                    <dd>10<sup>грн</sup></dd>-->
+<!--                                                </dl>-->
+<!--                                            </a>-->
+<!--                                        </li>-->
+<!--                                        <li>-->
+<!--                                            <a href="#">-->
+<!--                                                <dl>-->
+<!--                                                    <dt><i class="fas fa-check"></i>Поднятие вверх списка  <span>(1 день)</span></dt>-->
+<!--                                                    <dd>10<sup>грн</sup></dd>-->
+<!--                                                </dl>-->
+<!--                                            </a>-->
+<!--                                        </li>-->
+<!--                                        <li>-->
+<!--                                            <a href="#">-->
+<!--                                                <dl>-->
+<!--                                                    <dt><i class="fas fa-check"></i>Поднятие вверх списка  <span>(7 день)</span></dt>-->
+<!--                                                    <dd>10<sup>грн</sup></dd>-->
+<!--                                                </dl>-->
+<!--                                            </a>-->
+<!--                                        </li>-->
+<!--                                        <li>-->
+<!--                                            <a href="#">-->
+<!--                                                <dl>-->
+<!--                                                    <dt><i class="fas fa-check"></i>Пакет поднятие + топ <span>(1 день)</span></dt>-->
+<!--                                                    <dd>10<sup>грн</sup></dd>-->
+<!--                                                </dl>-->
+<!--                                            </a>-->
+<!--                                        </li>-->
+<!--                                        <li>-->
+<!--                                            <a href="#">-->
+<!--                                                <dl>-->
+<!--                                                    <dt><i class="fas fa-check"></i>Пакет поднятие + топ <span>(7 день)</span></dt>-->
+<!--                                                    <dd>10<sup>грн</sup></dd>-->
+<!--                                                </dl>-->
+<!--                                            </a>-->
+<!--                                        </li>-->
+                                    </ul>
                                 </li>
                             </ul>
                             <!-- end fav -->
@@ -99,7 +175,9 @@ $this->params['breadcrumbs'] = $breadcrumbs;
                                 <div class="holder-text">
                                     <div class="group">
                                         <div class="topic">
-                                            <span><i class="fas fa-shield-alt"></i> <?= $item->title ?></span>
+                                            <span>
+<!--                                                <i class="fas fa-shield-alt"></i> -->
+                                                <?= $item->title ?></span>
                                             <p><?=$cat->title; ?></p>
                                         </div>
 

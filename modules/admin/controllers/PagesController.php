@@ -3,6 +3,7 @@
 namespace app\modules\admin\controllers;
 
 use app\models\Images;
+use app\models\Settings;
 use Yii;
 use app\models\Pages;
 use app\models\PagesSearch;
@@ -92,6 +93,17 @@ class PagesController extends Controller
     {
         $model = $this->findModel($id);
         $link = $model->link;
+        $options = [];
+        $settings = (new Settings())
+            ->find()
+            ->where(['in', 'name', ['main_slider_max', 'advertisement_pageSize', 'vip_message_ru', 'vip_message_uk']])
+            ->all();
+
+        foreach ($settings as $option) {
+            $val = $option['option_value'];
+            $options[$option['name']] = $val;
+        }
+
         try {
 
             if( $model->load( Yii::$app->request->post()) && $model->save()) {
@@ -103,6 +115,7 @@ class PagesController extends Controller
 
             return $this->render('update_'.$link, [
                 'model' => $model,
+                'settings' => $options
             ]);
         } catch (ViewNotFoundException $e) {
             $this->redirect(['index']);

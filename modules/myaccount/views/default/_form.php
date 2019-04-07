@@ -14,13 +14,23 @@ $catList = $categories->advertisement;
 $subList = $categories->subAdvertisement;
 $areas  = $stickAreas->stickingAreas;
 $types  =  $types->types;
+$script = '';
+
+ob_start(); ?>
+    window.deletePath = "<?= Url::toRoute(['/myaccount/default/remove-adv-img']) ?>";
+<?php
+$script = ob_get_contents();
+ob_end_clean();
+
+$this->registerJs($script);
 ?>
 <div class="content">
     <?php $form = ActiveForm::begin([
         'id' => 'createPost',
         'options' => [
             'class' => 'form-user',
-            'enctype' => 'multipart/form-data'
+            'enctype' => 'multipart/form-data',
+            'data-catUrl' => Url::toRoute(['/myaccount/default/update-cat'])
         ]
     ]);
     ?>

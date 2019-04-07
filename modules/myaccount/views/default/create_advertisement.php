@@ -14,7 +14,7 @@ $catList = $categories->advertisement;
 $subList = $categories->subAdvertisement;
 $areas  = $stickAreas->stickingAreas;
 $types  =  $types->types;
-
+$currentLang = (Yii::$app->language == 'ru-Ru') ? 'ru' : 'uk';
 ?>
 <?= \app\widgets\SearchAdverts::widget()?>
     <div class="holder-crumbs">
@@ -38,7 +38,8 @@ $types  =  $types->types;
             ])?>
             <!-- end User bar -->
             <?= $this->render('_form.php', [
-                'model' => $model
+                'model' => $model,
+                'lang' => $currentLang
             ]);
             ?>
         </div>

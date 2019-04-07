@@ -12,6 +12,7 @@ use yii\widgets\ActiveForm;
 use brussens\bootstrap\select\Widget as Select;
 
 $this->title = 'Редактирование: Главная страница';
+$maxSlides = $settings['main_slider_max'] - count($model->imagesLinksData);
 ?>
 
 <div class="page-title">
@@ -42,7 +43,7 @@ $this->title = 'Редактирование: Главная страница';
                             'Images[module]' => $model->formName(),
                             'Images[item_id]' => $model->id
                         ],
-                        'maxFileCount' => 10
+                        'maxFileCount' => $maxSlides
                     ],
                     'pluginEvents' => [
                         'filesorted' => new \yii\web\JsExpression('function(event, params){

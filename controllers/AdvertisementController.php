@@ -230,8 +230,8 @@ class AdvertisementController extends Controller
                     $asideFilter->maxDistance = $requested['maxDistance'];
                 }
 
-                if(!empty($requested['stickingArea'])) {
-                    $asideFilter->stickingArea = $requested['stickingArea'];
+                if(!empty($requested['extraFilter'])) {
+                    $asideFilter->extraFilter = $requested['extraFilter'];
                 }
 
                 if(!empty($requested['orderBy'])) {
@@ -242,8 +242,6 @@ class AdvertisementController extends Controller
                 $filter->district = (!empty($requested['district'])) ? $requested['district'] : '';
                 $requested['category_id'] = $catId->id;
                 $dataProvider = $searchModel->searchCat($requested);
-
-
             $advPosts = $model;
             $breadcrumbs = [
                 ['label' => Yii::t('app', 'Объявления'), 'url' => Url::to('/advertisement')],

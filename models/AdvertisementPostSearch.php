@@ -133,8 +133,6 @@ class AdvertisementPostSearch extends AdvertisementPost
     public function searchCat($params)
     {
         $query = AdvertisementPost::find();
-
-
         $params['page'] = (! empty($params['page'])) ? $params['page']: 1;
 
         $dataProvider = new ActiveDataProvider([
@@ -175,6 +173,7 @@ class AdvertisementPostSearch extends AdvertisementPost
         }
 
         $query->leftJoin('{{%advertise_cities_regions}} `cr`','{{%advertisement_post}}.`id` = `cr`.`advertise_id`');
+//        $query->leftJoin('{{%advertisement_cat_filters}} `filter`','{{%advertisement_post}}.`id` = `cr`.`advertise_id`');
         // grid filtering conditions
         if( ! empty($params['category_id'])) {
             $query->andFilterWhere([
@@ -217,6 +216,10 @@ class AdvertisementPostSearch extends AdvertisementPost
 
         if(! empty($params['stickingArea'])) {
             $query->andFilterWhere(['in', 'sticking_area', $params['stickingArea']]);
+        }
+
+        if(! empty($params['extraFilter'])) {
+            $query->andFilterWhere(['in', 'filter_id', $params['extraFilter']]);
         }
 
         $query->andFilterWhere(['like', 'title', $this->title])

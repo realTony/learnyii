@@ -218,9 +218,14 @@ class AdvertisementFilter extends Widget
                 }
                 ?>
                 <div class="aside-accordion">
-                    <span class="title"><?= Yii::t('app', $current ) ?></span>
-                    <?php if( $this->options['custom_filters'] == false ) :?>
-                        <div class="expanded">
+                    <?php
+                    if( $this->options['custom_filters'] == true ) {
+                        $item['title'] = ($item['title'] == 'Реклама')? Yii::t('app', 'Область поклейки') : Yii::t('app', 'Виды транспорта');
+                    }
+                    ?>
+                    <span class="title"><?= $item['title'] ?></span>
+
+                    <div class="expanded">
                             <ul>
                                 <?php foreach ($item['subList'] as $li => $val ):?>
                                     <?php
@@ -233,28 +238,6 @@ class AdvertisementFilter extends Widget
                                 <?php endforeach; ?>
                             </ul>
                         </div>
-                    <?php else: ?>
-                        <div class="expanded">
-                            <?=
-                            $form->field($this->filter, 'extraFilter', [
-                                'options' => [
-                                    'tag' => 'ul',
-                                    'class' => 'list-checkbox'
-                                ]
-                            ])
-                                ->label(false)
-                                ->checkboxList($extraFilter, ['item' => function($index, $label, $name, $checked, $value){
-                                    $checkedLabel = $checked ? 'checked' : '';
-                                    $inputId = str_replace(['[', ']'], ['', ''], $name) . '_' . $index;
-
-                                    return "<li><label  class='checkbox' for=$inputId>
-                                    <input type='checkbox' name=$name value=$value id=$inputId $checkedLabel>
-                                    <span><i class=\"fas fa-check\"></i> $label </span>
-                                    </label></li>";
-                                }, 'name' => 'extraFilter' ]);
-                            ?>
-                        </div>
-                    <?php endif; ?>
                 </div>
             <?php endforeach; ?>
 
@@ -277,27 +260,31 @@ class AdvertisementFilter extends Widget
                 </div>
                 <?php if($current != 'Исполнители'): ?>
                     <div class="aside-accordion">
+                        <?php if(! empty($current)): ?>
+                        <span class="title"><?= Yii::t('app', $current ) ?></span>
+                        <?php else : ?>
                         <span class="title"><?= Yii::t('app', 'Область поклейки') ?></span>
-                        <div class="expanded">
-                            <?=
-                            $form->field($this->filter, 'stickingArea', [
-                                'options' => [
-                                    'tag' => 'ul',
-                                    'class' => 'list-checkbox'
-                                ]
-                            ])
-                                ->label(false)
-                                ->checkboxList($stickingAreas, ['item' => function($index, $label, $name, $checked, $value){
-                                    $checkedLabel = $checked ? 'checked' : '';
-                                    $inputId = str_replace(['[', ']'], ['', ''], $name) . '_' . $index;
+                        <?php endif; ?>
+                            <div class="expanded">
+                                <?=
+                                $form->field($this->filter, 'extraFilter', [
+                                    'options' => [
+                                        'tag' => 'ul',
+                                        'class' => 'list-checkbox'
+                                    ]
+                                ])
+                                    ->label(false)
+                                    ->checkboxList($extraFilter, ['item' => function($index, $label, $name, $checked, $value){
+                                        $checkedLabel = $checked ? 'checked' : '';
+                                        $inputId = str_replace(['[', ']'], ['', ''], $name) . '_' . $index;
 
-                                    return "<li><label  class='checkbox' for=$inputId>
+                                        return "<li><label  class='checkbox' for=$inputId>
                                     <input type='checkbox' name=$name value=$value id=$inputId $checkedLabel>
                                     <span><i class=\"fas fa-check\"></i> $label </span>
                                     </label></li>";
-                                }, 'name' => 'stickingArea' ]);
-                            ?>
-                        </div>
+                                    }, 'name' => 'extraFilter' ]);
+                                ?>
+                            </div>
                     </div>
                     <div class="aside-accordion">
                         <span class="title"><?= Yii::t('app', 'пробег (км/мес)')?></span>

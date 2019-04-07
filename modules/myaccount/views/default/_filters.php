@@ -16,6 +16,7 @@ $areas  = $stickAreas->stickingAreas;
 $types  =  $types->types;
 $catFilters = Yii::createObject(\app\models\AdvertisementCatFilters::className());
 $filters = [];
+$currentLang = (Yii::$app->language == 'ru-Ru') ? 'ru' : 'uk';
 ?>
 <!--
 Sticking Area - sticking_area
@@ -31,7 +32,11 @@ Coverage type (coverage_type)
     $catFilters = $catFilters->find()
         ->where(['category_id' => $model->category_id])
         ->all();
-    $filters = ArrayHelper::map($catFilters, 'id', 'filter_name');
+    if( $currentLang == 'uk' ) {
+        $filters = ArrayHelper::map($catFilters, 'id', 'filter_translation');
+    }else {
+        $filters = ArrayHelper::map($catFilters, 'id', 'filter_name');
+    }
 ?>
 <ul class="input-list">
     <?php if( $model->category_id == 8) : ?>
@@ -60,7 +65,7 @@ Coverage type (coverage_type)
         ->textInput(['type' => 'number', 'maxlength' => true, 'placeholder' => Yii::t('app', 'Цена (грн/мес)'), 'class' => 'input']) ?>
     <li>
         <?= $form->field($model, 'coverage_type', ['options' => ['class' => 'checkbox'], 'template' => '<label>{input}<span><i class="fas fa-check"></i>{label}</span></label>{error}'] )
-            ->label(Yii::t('app', 'Полная обклейка'))->checkbox([], false) ?>
+            ->label(Yii::t('app', 'Договорная'))->checkbox([], false) /* What the f*ck is that should be?*/ ?>
 
     </li>
 </ul>

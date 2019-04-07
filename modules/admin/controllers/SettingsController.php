@@ -64,9 +64,25 @@ class SettingsController extends Controller
     {
         $model = new SettingsFormModel();
         $settings = Yii::createObject(Settings::className())->find()->all();
+        $additions = Yii::createObject(Settings::className())->find()->
+            where(['in', 'name', ['main_slider_max', 'advertisement_pageSize', 'vip_message_ru', 'vip_message_uk',
+            'liqpay_public_key', 'liqpay_private_key']])->all();
+
         $propList = array_keys(get_object_vars($model));
 
         foreach ($settings as $option) {
+            $name = $option['name'];
+
+            //Lil bit fast hardcode not to change previous DB structure
+            if( $name == 'account_settings') {
+                break;
+            }
+
+            $val = $option['option_value'];
+            $model->$name = $val;
+        }
+
+        foreach ($additions as $option) {
             $name = $option['name'];
 
             //Lil bit fast hardcode not to change previous DB structure
