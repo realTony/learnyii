@@ -52,10 +52,10 @@ class TextExcerption
             case 2:
             case 3:
             case 4:
-                $days = \Yii::t('app', 'деня');
+                $days = \Yii::t('app', 'дня');
                 break;
             default:
-                $days = \Yii::t('app', 'деней');
+                $days = \Yii::t('app', 'дней');
         }
 
         return $days;
