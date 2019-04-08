@@ -132,7 +132,7 @@ class ImageUpload extends Model
         if( !is_dir($path ) )
         {
             $realpath = Yii::getAlias('@webroot').$path;
-            FileHelper::createDirectory($realpath, '0775' );
+            FileHelper::createDirectory($realpath, '775' );
             return $path;
         }
 

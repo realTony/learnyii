@@ -124,6 +124,14 @@ class AdvertisementPost extends \yii\db\ActiveRecord
             $this->authorId = $user;
         }
 
+        if( empty($this->contract_term)) {
+            $this->contract_term = 0;
+        }
+
+        if( empty($this->distancePerMonth)) {
+            $this->distancePerMonth = 0;
+        }
+
         $this->image_items = UploadedFile::getInstances($this, 'image_items');
         return parent::beforeValidate();
     }

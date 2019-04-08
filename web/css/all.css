@@ -3462,6 +3462,9 @@ hr{
     color: #787880;
     margin: 0;
 }
+.vip-price .text form{
+    padding-top: 1.5vh;
+}
 .vip-price strong{
     display: block;
     font-weight: 600;

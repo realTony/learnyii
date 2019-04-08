@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use LiqPay;
 use Yii;
 use yii\helpers\ArrayHelper;
 
@@ -88,5 +89,48 @@ class PremiumRates extends \yii\db\ActiveRecord
         }
 
         return $ratesArr;
+    }
+
+    public function setAdvertisement($id)
+    {
+        $this->advertisement = ( new AdvertisementPost())->findOne(['id' => $id]);
+
+        return $this;
+    }
+
+    public function getAdvertisement()
+    {
+        return $this->advertisement;
+    }
+
+    public function getLiqForm()
+    {
+        $settings = (Yii::createObject(Settings::className()));
+        $public_key = ($settings->findOne(['name' => 'liqpay_public_key']))->option_value;
+        $private_key = ($settings->findOne(['name' => 'liqpay_private_key']))->option_value;;
+        $user = Yii::$app->user->id;
+        $advertisement = $this->getAdvertisement();
+
+        $currentLang = (Yii::$app->language == 'ru-Ru') ? 'ru' : 'uk';
+
+        $description = $this->rate;
+
+        if( $currentLang == 'uk') {
+            $description = $this->rate_ua;
+        }
+
+        $liqpay = new LiqPay($public_key, $private_key);
+
+        $settings = [
+            'action'         => 'pay',
+            'amount'         => floatval($this->price),
+            'currency'       => 'UAH',
+            'description'    => $description,
+            'order_id'       => 'order_id_1',
+            'version'        => '3',
+            'sandbox'        => YII_ENV_DEV
+        ];
+
+        return $liqpay->cnb_form($settings);
     }
 }

@@ -198,7 +198,17 @@ class DefaultController extends Controller
             }
             \Yii::$app->session->setFlash('successPost', \Yii::t('app', $options['vip_message_'.$currentLang]));
 
-            return $this->redirect(['/myaccount/posts']);
+
+            $model = (new PremiumRates())
+                ->find()
+                ->all();
+
+            return $this->render('premium_list', [
+                'model' => $model,
+                'breadcrumbs' => self::$breadcrumbs,
+                'user' => $user,
+                'advertisementId' => $id
+            ]);
         }
 
 
@@ -512,9 +522,20 @@ class DefaultController extends Controller
     }
 
 
-    public function actionPremium($id) : string
+    public function actionPremiumRates($id) : string
     {
-        return '';
+        if(! Yii::$app->user->isGuest) {
+            $model = (new PremiumRates())
+                ->find()
+                ->all();
+
+            return $this->render('premium_list', [
+                'model' => $model
+            ]);
+        } else {
+            throw new NotFoundHttpException();
+        }
+
     }
 
     /**
@@ -534,20 +555,20 @@ class DefaultController extends Controller
             $advertisement = (Yii::createObject(AdvertisementPost::className()))
                 ->findOne(['id' => $id]);
             $premiumPack = (Yii::createObject(PremiumRates::className()))
-                ->findOne(['id' => $link]);
+                ->find()->where(['id' => $link])->all();
             $currentLang = (Yii::$app->language == 'ru-Ru') ? 'ru' : 'uk';
 
-            $description = $premiumPack->rate;
+            $description = $premiumPack[0]->rate;
 
             if( $currentLang == 'uk') {
-                $description = $premiumPack->rate_ua;
+                $description = $premiumPack[0]->rate_ua;
             }
 
             $liqpay = new LiqPay($public_key, $private_key);
 
             $settings = [
                 'action'         => 'pay',
-                'amount'         => floatval($premiumPack->price),
+                'amount'         => floatval($premiumPack[0]->price),
                 'currency'       => 'UAH',
                 'description'    => $description,
                 'order_id'       => 'order_id_1',
@@ -557,9 +578,9 @@ class DefaultController extends Controller
 
             $html = $liqpay->cnb_form($settings);
 
-            return  $this->renderAjax('premium_list', [
-                'form' => $html,
-                'model' => $premiumPack
+            return  $this->renderAjax('pricelist', [
+                'model' => $premiumPack,
+                'advertisementId' => $id
             ]);
         } else {
             throw new NotFoundHttpException();
