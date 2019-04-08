@@ -406,6 +406,7 @@ $(document).ready(function(){
 
     });
     $('.holder-nav .closed-menu, .holder-nav .bg-nav').click(function(){
+        var menu = $('.holder-nav');
         menu.slideUp();
         menu.removeClass('open');
         $('body').removeClass("fix-page");
