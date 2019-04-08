@@ -171,7 +171,9 @@ class Categories extends \yii\db\ActiveRecord
             $i = 0;
             foreach ($cat as $item ) {
                 $data = json_decode($item->translation);
-                $cat[$i]->title = $data->title;
+                if(! empty($data->title)) {
+                    $cat[$i]->title = $data->title;
+                }
                 $i++;
             }
             $advert = ArrayHelper::map($cat,'id', 'title');
