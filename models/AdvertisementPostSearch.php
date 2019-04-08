@@ -221,7 +221,10 @@ class AdvertisementPostSearch extends AdvertisementPost
         if(! empty($params['extraFilter'])) {
             $query->andFilterWhere(['in', 'filter_id', $params['extraFilter']]);
         }
-
+        $query
+            ->andWhere(['is_approved' => 1])
+            ->andWhere(['is_banned' => 0])
+            ->andWhere(['is_archived' => 0]);
         $query->andFilterWhere(['like', 'title', $this->title])
             ->andFilterWhere(['like', 'condition', $this->condition]);
 

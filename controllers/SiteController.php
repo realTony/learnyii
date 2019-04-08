@@ -64,7 +64,11 @@ class SiteController extends Controller
         $categories = Yii::createObject(Categories::className());
         $news = Yii::createObject(BlogPosts::className());
         $advertisement = (Yii::createObject(AdvertisementPost::className()))
-            ->find()->orderBy('isPremium DESC, published_at DESC')->limit(12)->all();
+            ->find()
+            ->andWhere(['is_approved' => 1])
+            ->andWhere(['is_banned' => 0])
+            ->andWhere(['is_archived' => 0])
+            ->orderBy('isPremium DESC, published_at DESC')->limit(12)->all();
 
 
         if (! empty($model->options->promo)) {
@@ -75,7 +79,9 @@ class SiteController extends Controller
         $slider = $model->imagesLinks;
         $advertIds = [];
 
-        $adverts = (! empty($model->options->categories))? $categories->find()->where(['in', 'id', array_values($model->options->categories)])->all(): [];
+        $adverts = (! empty($model->options->categories))? $categories->find()
+            ->where(['in', 'id', array_values($model->options->categories)])
+            ->all(): [];
 
         $news->category = (! empty($categories->category))? array_values((array)$model->options->promo): [];
         $promo = (! empty($categories->category))? $news->postsByCat : [];
