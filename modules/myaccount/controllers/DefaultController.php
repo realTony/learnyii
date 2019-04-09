@@ -50,6 +50,12 @@ class DefaultController extends Controller
         ];
     }
 
+    public function beforeAction($action)
+    {
+        $this->enableCsrfValidation = false;
+        return parent::beforeAction($action);
+    }
+    
     public function actionIndex() : string
     {
         if( Yii::$app->user->isGuest ){
