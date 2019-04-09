@@ -669,6 +669,17 @@ class DefaultController extends Controller
 
         return $this->redirect(['posts']);
     }
+    
+    public function actionSuccess()
+    {
+        if(Yii::$app->request->isPost) {
+            $post = Yii::$app->request->isPost;
+            
+            echo "<pre>";
+            print_r($post);
+            echo "</pre>";
+        }
+    }
 
 
 }
