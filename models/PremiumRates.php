@@ -5,6 +5,7 @@ namespace app\models;
 use LiqPay;
 use Yii;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
 
 /**
  * This is the model class for table "{{%premium_rates}}".
@@ -120,15 +121,16 @@ class PremiumRates extends \yii\db\ActiveRecord
         }
 
         $liqpay = new LiqPay($public_key, $private_key);
-
+        $order_id = uniqid(000);
         $settings = [
             'action'         => 'pay',
             'amount'         => floatval($this->price),
             'currency'       => 'UAH',
             'description'    => $description,
-            'order_id'       => 'order_id_1',
+            'order_id'       => $order_id,
+            'result_url'    => Url::toRoute(['/myaccount/success/'.$advertisement->id.'/'.$order_id]),
             'version'        => '3',
-            'sandbox'        => YII_ENV_DEV
+            'sandbox'        => 1
         ];
 
         return $liqpay->cnb_form($settings);

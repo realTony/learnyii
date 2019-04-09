@@ -579,15 +579,16 @@ class DefaultController extends Controller
             }
 
             $liqpay = new LiqPay($public_key, $private_key);
-
+            $order_id =  uniqid(000);
             $settings = [
                 'action'         => 'pay',
                 'amount'         => floatval($premiumPack[0]->price),
                 'currency'       => 'UAH',
                 'description'    => $description,
-                'order_id'       => rand(1, 1000000),
+                'order_id'       => $order_id,
+                'result_url'    => Url::toRoute(['/myaccount/success/'.$id.'/'.$order_id]),
                 'version'        => '3',
-                'sandbox'        => YII_ENV_DEV
+                'sandbox'        => '1'
             ];
 
             $html = $liqpay->cnb_form($settings);
@@ -684,9 +685,15 @@ class DefaultController extends Controller
         return $this->redirect(['posts']);
     }
     
-    public function actionSuccess()
+    public function actionSuccess($id, $link)
     {
         if(Yii::$app->request->isPost) {
+            echo "<pre>";
+            print_r($id);
+            echo "</pre>";
+            echo "<pre>";
+            print_r($link);
+            echo "</pre>";
             $post = Yii::$app->request->post();
 
             if(! empty($post['data'] && ! empty($post['signature']))) {

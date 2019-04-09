@@ -14,6 +14,7 @@ return [
 	'myaccount/at-moderation' => 'myaccount/default/at-moderation',
 	'myaccount/archived' => 'myaccount/default/archived',
 	'myaccount/premium/<id:\d+>/<link:\d+>' => 'myaccount/default/set-premium',
+	'myaccount/success/<id:\d+>/<link:\d+>' => 'myaccount/default/success',
 	'myaccount/success' => 'myaccount/default/success',
     'user/recover/<id:\d+>/<code:[A-Za-z0-9_-]+>' => 'user/recovery/reset',
     'admin/blog' => 'admin/blog/index',

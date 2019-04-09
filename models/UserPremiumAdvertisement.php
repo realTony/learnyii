@@ -83,4 +83,13 @@ class UserPremiumAdvertisement extends \yii\db\ActiveRecord
     {
         return $this->hasOne(PremiumRates::className(), ['id' => 'premium_type_id']);
     }
+
+    /**
+     * {@inheritdoc}
+     * @return UserPremiumAdvertisementQuery the active query used by this AR class.
+     */
+    public static function find()
+    {
+        return new UserPremiumAdvertisementQuery(get_called_class());
+    }
 }
