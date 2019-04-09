@@ -14,6 +14,7 @@ use app\models\UserFav;
 use LiqPay;
 use Yii;
 use yii\data\Pagination;
+use yii\filters\VerbFilter;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\web\Controller;
