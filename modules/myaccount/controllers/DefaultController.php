@@ -585,7 +585,7 @@ class DefaultController extends Controller
                 'amount'         => floatval($premiumPack[0]->price),
                 'currency'       => 'UAH',
                 'description'    => $description,
-                'order_id'       => 'order_id_1',
+                'order_id'       => rand(1, 1000000),
                 'version'        => '3',
                 'sandbox'        => YII_ENV_DEV
             ];
