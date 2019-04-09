@@ -55,7 +55,7 @@ class DefaultController extends Controller
         $this->enableCsrfValidation = false;
         return parent::beforeAction($action);
     }
-    
+
     public function actionIndex() : string
     {
         if( Yii::$app->user->isGuest ){
@@ -564,7 +564,7 @@ class DefaultController extends Controller
 
             $settings = (Yii::createObject(Settings::className()));
             $public_key = ($settings->findOne(['name' => 'liqpay_public_key']))->option_value;
-            $private_key = ($settings->findOne(['name' => 'liqpay_private_key']))->option_value;;
+            $private_key = ($settings->findOne(['name' => 'liqpay_private_key']))->option_value;
             $user = Yii::$app->user->id;
             $advertisement = (Yii::createObject(AdvertisementPost::className()))
                 ->findOne(['id' => $id]);
@@ -687,11 +687,21 @@ class DefaultController extends Controller
     public function actionSuccess()
     {
         if(Yii::$app->request->isPost) {
-            $post = Yii::$app->request->isPost;
-            
-            echo "<pre>";
-            print_r($post);
-            echo "</pre>";
+            $post = Yii::$app->request->post();
+
+            if(! empty($post['data'] && ! empty($post['signature']))) {
+
+                $settings = (Yii::createObject(Settings::className()));
+                $public_key = ($settings->findOne(['name' => 'liqpay_public_key']))->option_value;
+                $private_key = ($settings->findOne(['name' => 'liqpay_private_key']))->option_value;
+
+                $liqpay = new LiqPay($public_key, $private_key);
+                $data = $liqpay->decode_params($post['data']);
+                echo "<pre>";
+                print_r($data);
+                echo "</pre>";
+
+            }
         }
     }
 
