@@ -219,7 +219,6 @@ class DefaultController extends Controller
             $model = (new PremiumRates())
                 ->find()
                 ->all();
-
             return $this->render('premium_list', [
                 'model' => $model,
                 'breadcrumbs' => self::$breadcrumbs,

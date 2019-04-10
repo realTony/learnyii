@@ -220,7 +220,7 @@ class AdvertisementPost extends \yii\db\ActiveRecord
            return false;
         }
 
-        return true;
+        return $this->id;
     }
 
     public function updateAdvertisement()
