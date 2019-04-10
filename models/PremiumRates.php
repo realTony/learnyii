@@ -131,8 +131,6 @@ class PremiumRates extends \yii\db\ActiveRecord
             'currency'       => 'UAH',
             'description'    => $description,
             'order_id'       => $order_id,
-            'result_url'    => Url::toRoute(['/myaccount/success/'.$advertisement->id.'/'.$order_id]),
-            'server_url'    => Url::toRoute(['/myaccount/success/'.$advertisement->id.'/'.$order_id]),
             'version'        => '3',
             'sandbox'        => 1
         ];
