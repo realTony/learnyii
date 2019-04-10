@@ -13,6 +13,7 @@ use Yii;
  * @property int $premium_type_id
  * @property string $confirmation_timestamp
  * @property string $expiration_timestamp
+ * @property string $order_id
  * @property int $is_notification_sent
  *
  * @property AdvertisementPost $advertisement
@@ -38,6 +39,7 @@ class UserPremiumAdvertisement extends \yii\db\ActiveRecord
             [['author_id', 'advertisement_id', 'premium_type_id'], 'required'],
             [['author_id', 'advertisement_id', 'premium_type_id', 'is_notification_sent'], 'integer'],
             [['confirmation_timestamp', 'expiration_timestamp'], 'safe'],
+            [['order_id'], 'string'],
             [['advertisement_id'], 'exist', 'skipOnError' => true, 'targetClass' => AdvertisementPost::className(), 'targetAttribute' => ['advertisement_id' => 'id']],
             [['author_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['author_id' => 'id']],
             [['premium_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => PremiumRates::className(), 'targetAttribute' => ['premium_type_id' => 'id']],

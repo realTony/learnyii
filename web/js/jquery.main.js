@@ -558,6 +558,30 @@ $(document).ready(function(){
     });
     // end list-add-del
 
+    $(document).on('click', '.liqpay_submit', function (e) {
+       e.preventDefault();
+       let $form = $(this).parents('form');
+       var _csrf = $('[name = "_csrf"]').val();
+
+       let requestObj = {
+         rate: $form.attr('data-rate'),
+         advertisement: $form.attr('data-advertisement'),
+         data: $form.find('input[name=data]').val(),
+         _csrf: $('[name = "_csrf"]').val(),
+       };
+
+       $.ajax({
+           url: $form.attr('data-orderurl'),
+           type: 'POST',
+           data: requestObj,
+           success: function (response) {
+                if( typeof response != 'undefined' && response != '') {
+                    $form.trigger('submit');
+                }
+           }
+       })
+
+    });
 
     //up page
     $(window).scroll(function(){

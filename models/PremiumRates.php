@@ -120,7 +120,10 @@ class PremiumRates extends \yii\db\ActiveRecord
             $description = $this->rate_ua;
         }
 
-        $liqpay = new LiqPay($public_key, $private_key);
+        $liqpay = new CustomPayment($public_key, $private_key);
+        $liqpay->advertisementId = $advertisement->id;
+        $liqpay->premiumRateId = $this->id;
+
         $order_id = uniqid(000);
         $settings = [
             'action'         => 'pay',
@@ -129,10 +132,12 @@ class PremiumRates extends \yii\db\ActiveRecord
             'description'    => $description,
             'order_id'       => $order_id,
             'result_url'    => Url::toRoute(['/myaccount/success/'.$advertisement->id.'/'.$order_id]),
+            'server_url'    => Url::toRoute(['/myaccount/success/'.$advertisement->id.'/'.$order_id]),
             'version'        => '3',
             'sandbox'        => 1
         ];
+        $liqpay->setData($settings);
 
-        return $liqpay->cnb_form($settings);
+        return $liqpay->getPaymentForm($settings);
     }
 }

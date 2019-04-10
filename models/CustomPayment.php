@@ -5,6 +5,7 @@ namespace app\models;
 
 use InvalidArgumentException;
 use Yii;
+use yii\helpers\Url;
 
 class CustomPayment extends \LiqPay
 {
@@ -14,6 +15,8 @@ class CustomPayment extends \LiqPay
     private $privateKey;
     private $_checkout_url = 'https://www.liqpay.ua/api/3/checkout';
     private $language = 'ru';
+    public $advertisementId = '';
+    public $premiumRateId = '';
 
     public function __construct(string $public_key, string $private_key)
     {
@@ -22,6 +25,8 @@ class CustomPayment extends \LiqPay
         $this->publicKey = $public_key;
         $this->privateKey = $private_key;
         $this->language = (Yii::$app->language == 'ru-Ru') ? 'ru' : 'uk';
+
+        return $this;
     }
 
     public function setData($data) : void
@@ -40,10 +45,10 @@ class CustomPayment extends \LiqPay
         $signature = $this->cnb_signature($params);
 
         return sprintf('
-            <form method="POST" action="%s" accept-charset="utf-8">
+            <form method="POST" action="%s" accept-charset="utf-8" data-orderUrl="'.Url::toRoute(['/myaccount/premium-order']).'" data-advertisement="'.$this->advertisementId.'" data-rate="'.$this->premiumRateId.'">
                 %s
                 %s
-                <input type="image" src="//static.liqpay.ua/buttons/p1%s.radius.png" name="btn_text" />
+                <input type="image" class="liqpay_submit" src="//static.liqpay.ua/buttons/p1%s.radius.png" name="btn_text" />
             </form>
             ',
             $this->_checkout_url,

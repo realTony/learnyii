@@ -3,6 +3,7 @@
 namespace app\modules\myaccount\controllers;
 
 use app\models\AdvertisementPost;
+use app\models\CustomPayment;
 use app\models\Images;
 use app\models\ImageUpload;
 use app\models\MetaTrait;
@@ -11,6 +12,7 @@ use app\models\Profile;
 use app\models\Settings;
 use app\models\User;
 use app\models\UserFav;
+use app\models\UserPremiumAdvertisement;
 use LiqPay;
 use Yii;
 use yii\data\Pagination;
@@ -19,6 +21,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\MethodNotAllowedHttpException;
+use yii\web\NotAcceptableHttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\UploadedFile;
 use app\modules\myaccount\models\EditProfileForm;
@@ -552,12 +555,7 @@ class DefaultController extends Controller
 
     }
 
-    /**
-     * @param $id
-     * @param $link
-     * @throws NotFoundHttpException
-     * @throws \yii\base\InvalidConfigException
-     */
+
     public function actionSetPremium($id, $link)
     {
         if(! Yii::$app->user->isGuest) {
@@ -578,7 +576,8 @@ class DefaultController extends Controller
                 $description = $premiumPack[0]->rate_ua;
             }
 
-            $liqpay = new LiqPay($public_key, $private_key);
+            $liqpay = new CustomPayment($public_key, $private_key);
+            $liqpay->advertisementId = $id;
             $order_id =  uniqid(000);
             $settings = [
                 'action'         => 'pay',
@@ -688,12 +687,6 @@ class DefaultController extends Controller
     public function actionSuccess($id, $link)
     {
         if(Yii::$app->request->isPost) {
-            echo "<pre>";
-            print_r($id);
-            echo "</pre>";
-            echo "<pre>";
-            print_r($link);
-            echo "</pre>";
             $post = Yii::$app->request->post();
 
             if(! empty($post['data'] && ! empty($post['signature']))) {
@@ -704,11 +697,67 @@ class DefaultController extends Controller
 
                 $liqpay = new LiqPay($public_key, $private_key);
                 $data = $liqpay->decode_params($post['data']);
-                echo "<pre>";
-                print_r($data);
-                echo "</pre>";
+
+                $sign = base64_encode( sha1(
+                    $private_key .
+                    $post['data'] .
+                    $private_key
+                    , 1 ));
+
+                if($data['status'] == 'success' || $data['status'] == 'sandbox') {
+                    $userPrem = (new UserPremiumAdvertisement())
+                    ->findOne(['order_id' => $data['order_id']]);
+
+                    if(! empty($userPrem)) {
+                        $premRate = ( new PremiumRates())
+                            ->findOne(['id' => $userPrem->premium_type_id]);
+                        $duration = $premRate->duration/24;
+                        $userPrem->confirmation_timestamp = date('Y-m-d G:i:s');
+                        $userPrem->expiration_timestamp = date('Y-m-d G:i:s', strtotime(' +'.$duration.' day'));
+                        $advertisement = (new AdvertisementPost())
+                            ->findOne(['id' => $userPrem->advertisement_id]);
+
+                        if($userPrem->save()) {
+                            $advertisement->isPremium = 1;
+                            $advertisement->save();
+                        }
+                    }
+
+                }
 
             }
+        }
+
+        return $this->redirect(['posts']);
+    }
+    
+    public function actionPremiumOrder()
+    {
+        if( Yii::$app->request->isAjax && ! Yii::$app->user->isGuest) {
+            $post = Yii::$app->request->post();
+
+            $settings = (Yii::createObject(Settings::className()));
+            $public_key = ($settings->findOne(['name' => 'liqpay_public_key']))->option_value;
+            $private_key = ($settings->findOne(['name' => 'liqpay_private_key']))->option_value;
+
+            $liqpay = new CustomPayment($public_key, $private_key);
+            $data = $liqpay->decode_params($post['data']);
+
+            $userPrem = new UserPremiumAdvertisement();
+
+            if(! $userPrem->findOne(['order_id' => $data['order_id']])) {
+                $userPrem->author_id =  Yii::$app->user->id;
+                $userPrem->advertisement_id =  $post['advertisement'];
+                $userPrem->premium_type_id =  $post['rate'];
+                $userPrem->order_id =  $data['order_id'];
+
+                if( $userPrem->save() ) {
+                    return 'niceu';
+                }
+            }
+
+        } else {
+            throw new NotAcceptableHttpException();
         }
     }
 
