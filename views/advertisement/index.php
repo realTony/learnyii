@@ -60,7 +60,7 @@ $this->params['breadcrumbs'] = $breadcrumbs;
             ]) ?>
             <ul class="list-announcements">
                 <?php foreach ($models as $model):?>
-                    <li <?php if($model->isPremium):?>class="premium" <?php endif ?>>
+                    <li <?php if($model->isPremium || $model->isTop): ?>class="premium" <?php endif ?>>
                         <a class="like-star" href="#" data-id="<?= $model->id ?>">&#160;</a>
                         <a href="<?= Url::to('/advertisement/page/'.$model->id)?>">
                             <?php if(! empty($model->images)):

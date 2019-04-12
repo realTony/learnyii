@@ -317,4 +317,19 @@ class AdvertisementPost extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Categories::className(), ['id' => 'subCat_id']);
     }
+
+    public function getIsTop()
+    {
+        $userPrem = (new UserPremiumAdvertisement())
+            ->findOne(['advertisement_id' => $this->id]);
+
+        $premiumRates = new PremiumRates();
+
+        if(! empty($userPrem)) {
+            $premiumRates =
+            (new PremiumRates())
+                ->findOne(['id' =>  $userPrem->premium_type_id ]);
+        }
+        return (! empty($premiumRates->isTop) && $premiumRates->isTop == 1) ? true : false;
+    }
 }

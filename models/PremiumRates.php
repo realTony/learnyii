@@ -18,6 +18,8 @@ use yii\helpers\Url;
  * @property string $description
  * @property string $description_ua
  * @property string $rate_icon
+ * @property boolean $isTop
+ * @property boolean $isUp
  *
  * @property UserPremiumAdvertisement[] $userPremiumAdvertisements
  */
@@ -39,6 +41,7 @@ class PremiumRates extends \yii\db\ActiveRecord
         return [
             [['price'], 'number'],
             [['duration'], 'integer'],
+            [['isTop', 'isUp'], 'boolean'],
             [['description', 'description_ua'], 'string'],
             [['rate', 'rate_ua', 'rate_icon'], 'string', 'max' => 255],
         ];
@@ -53,6 +56,8 @@ class PremiumRates extends \yii\db\ActiveRecord
             'duration' => \Yii::t('app','Длительность'),
             'description' => \Yii::t('app','Описание'),
             'description_ua' => \Yii::t('app','Описание Укр'),
+            'isTop' => \Yii::t('app','Топ'),
+            'isUp' => \Yii::t('app','Поднятие'),
         ];
     }
 

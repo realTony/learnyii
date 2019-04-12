@@ -109,11 +109,11 @@ class AdvertisementPostSearch extends AdvertisementPost
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'category_id' => $this->category_id,
-            'subCat_id' => $this->subCat_id,
-            'pricePerMonth' => $this->pricePerMonth,
-            'contract_term' => $this->contract_term,
-            'distancePerMonth' => $this->distancePerMonth,
+//            'category_id' => $this->category_id,
+//            'subCat_id' => $this->subCat_id,
+//            'pricePerMonth' => $this->pricePerMonth,
+//            'contract_term' => $this->contract_term,
+//            'distancePerMonth' => $this->distancePerMonth,
             'adv_type' => $this->adv_type,
             'sticking_area' => $this->sticking_area,
             'showEmail' => $this->showEmail,
@@ -121,11 +121,13 @@ class AdvertisementPostSearch extends AdvertisementPost
             'coverage_type' => $this->coverage_type,
             'published_at' => $this->published_at,
             'is_approved' => $this->is_approved,
+            'is_archived' => 0,
         ]);
 
         $query->andFilterWhere(['like', 'title', $this->title])
             ->andFilterWhere(['like', 'description', $this->description])
-            ->andFilterWhere(['like', 'condition', $this->condition]);
+            ->andFilterWhere(['like', 'condition', $this->condition])
+        ->orderBy('published_at DESC');
 
         return $dataProvider;
     }
@@ -134,7 +136,8 @@ class AdvertisementPostSearch extends AdvertisementPost
     {
         $query = AdvertisementPost::find();
         $params['page'] = (! empty($params['page'])) ? $params['page']: 1;
-
+        $query->leftJoin('{{%user_premium_advertisement}} `upa`', '{{%advertisement_post}}.`id` = `upa`.`advertisement_id`');
+        $query->leftJoin('{{%premium_rates}} `pr`', '`upa`.`premium_type_id` = `pr`.`id`');
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
@@ -242,6 +245,7 @@ class AdvertisementPostSearch extends AdvertisementPost
             }
 
         }
+        $query->orderBy('`pr`.`isUp` DESC, `pr`.`isTop` DESC, {{%advertisement_post}}.`published_at` DESC');
 
 
         return $dataProvider;

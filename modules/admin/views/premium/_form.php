@@ -108,6 +108,24 @@ $icons = [
                         ])->label(Yii::t('app', 'Длительность'))
                         ->textInput(['type' => 'number', 'min' => 1, 'placeholder' => Yii::t('app', 'Суток')]) ?>
                 </div>
+                <div class="row">
+                    <?= $form
+                        ->field($model, 'isTop', [
+                            'options' => [
+                                'class' => 'col-md-1',
+                                'tag' => 'div'
+                            ]
+                        ])->label(Yii::t('app', 'Топ'))
+                        ->checkbox([]) ?>
+                    <?= $form
+                        ->field($model, 'isUp', [
+                            'options' => [
+                                'class' => 'col-md-1',
+                                'tag' => 'div'
+                            ]
+                        ])->label(Yii::t('app', 'Поднятие'))
+                        ->checkbox([]) ?>
+                </div>
 
             </div>
         </div>
