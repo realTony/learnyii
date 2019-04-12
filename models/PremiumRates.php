@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\components\TextExcerption;
 use LiqPay;
 use Yii;
 use yii\helpers\ArrayHelper;
@@ -124,7 +125,7 @@ class PremiumRates extends \yii\db\ActiveRecord
         if( $currentLang == 'uk') {
             $description = $this->rate_ua;
         }
-
+        $description.= ' ('.($this->duration/24).' '.TextExcerption::getDayString($this->duration/24).')';
         $liqpay = new CustomPayment($public_key, $private_key);
         $liqpay->advertisementId = $advertisement->id;
         $liqpay->premiumRateId = $this->id;
@@ -137,7 +138,8 @@ class PremiumRates extends \yii\db\ActiveRecord
             'description'    => $description,
             'order_id'       => $order_id,
             'version'        => '3',
-            'sandbox'        => 1
+            'sandbox'        => YII_ENV_DEV,
+            'language'       => $currentLang,
         ];
         $liqpay->setData($settings);
 
