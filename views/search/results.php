@@ -1,5 +1,6 @@
 <?php
 
+use app\components\Premium;
 use app\components\TextExcerption;
 use app\widgets\FooterInfo;
 use app\widgets\SearchAdverts;
@@ -58,12 +59,13 @@ use yii\widgets\Pjax;
                     $categories->category = $item->category_id;
                     $cat  = $categories->category;
                 ?>
-                    <li <?php if($item->isPremium ): ?> class="premium" <?php endif; ?>>
+                    <li
+                    <li <?php if(Premium::checkPrem($item->id)): ?>class="premium" <?php endif ?>>
                         <a class="like-star" href="#">&#160;</a>
                         <a href="<?= Url::to('/advertisement/page/'.$item->id)?>">
-                            <div class="holder-img">
+                            <div class="holder-img" style="background: url('<?= $img ?>') no-repeat center center; background-size: cover;">
                                 <?php if(! empty($item->images) && ! empty($item->images[0])): ?>
-                                    <img src="<?= $img ?>" alt="<?= $item->images[0]['alt']?>">
+                                    <img src="/images/avatar-holder.png" alt="<?= $item->images[0]['alt']?>">
                                 <?php endif?>
                             </div>
                             <div class="holder-text">

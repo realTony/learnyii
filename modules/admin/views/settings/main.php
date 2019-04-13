@@ -42,6 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?= $form->field($model, 'site_instagram')->label('Instagram')->textInput(['maxlength' => true]) ?>
                     <?= $form->field($model, 'liqpay_public_key')->label('Публичный ключ LiqPay')->textInput(['maxlength' => true]) ?>
                     <?= $form->field($model, 'liqpay_private_key')->label('Приватный ключ LiqPay')->textInput(['maxlength' => true]) ?>
+                    <?= $form->field($model, 'premium_alert_message')->label('Текст E-mail уведомления об окончании премиум тарифа')->textarea(['rows' => 5]) ?>
                     <div class="form-group">
                         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
                     </div>

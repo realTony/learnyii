@@ -552,7 +552,7 @@ class AdvertisementController extends Controller
         $profile = (new Profile())->findOne(['user_id' => $model->authorId]);
         $similar = (new AdvertisementPost())
             ->find()
-            ->where(['subCat_id' => $model->subCat_id])
+            ->where(['subCat_id' => $model->subCat_id, 'is_approved' => 1, 'is_archived' => 0, 'is_banned' => 0])
             ->andWhere(['not in', 'id', $id])
             ->orderBy('isPremium DESC, published_at DESC')
             ->limit(4)

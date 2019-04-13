@@ -88,7 +88,7 @@ $this->params['breadcrumbs'] = $breadcrumbs;
                         ->rates;
 
                     ?>
-                        <li>
+                        <li <?php if($item->isPremium || $item->isTop): ?>class="premium" <?php endif ?>>
                             <!-- Fav items -->
                             <ul class="edit-list">
                                 <li>

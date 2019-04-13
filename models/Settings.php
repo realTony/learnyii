@@ -53,4 +53,14 @@ class Settings extends \yii\db\ActiveRecord
     {
         return new SettingsQuery(get_called_class());
     }
+
+    public function getSiteEmail()
+    {
+        return $this->findOne(['name' => 'site_email']);
+    }
+
+    public function getEmailNotification()
+    {
+        return $this->findOne(['name' => 'premium_alert_message']);
+    }
 }

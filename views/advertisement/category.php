@@ -1,5 +1,6 @@
 <?php
 
+use app\components\Premium;
 use app\widgets\AdvertisementFilter;
 use app\widgets\SearchAdverts;
 use app\widgets\SortingForm;
@@ -73,7 +74,7 @@ $this->params['breadcrumbs'] = $breadcrumbs;
                     $cat  = $categories->category;
 
                     ?>
-                    <li <?php if($model->isPremium):?>class="premium" <?php endif ?>>
+                    <li <?php if(Premium::checkPrem($model->id)): ?>class="premium" <?php endif ?>>
                                 <a class="like-star" href="#" data-id="<?= $model->id ?>">&#160;</a>
                                 <a href="<?= Url::to('/advertisement/page/'.$model->id)?>">
                                     <div class="holder-img" <?php if(! empty($model->images)):?> style="background: url('<?= $img ?>') no-repeat center center; background-size: cover;" <?php endif; ?>>

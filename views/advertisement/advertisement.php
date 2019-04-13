@@ -1,5 +1,6 @@
 <?php
 
+use app\components\Premium;
 use app\models\Profile;
 use app\widgets\FooterInfo;
 use app\widgets\SearchAdverts;
@@ -40,7 +41,16 @@ use ymaker\social\share\widgets\SocialShare;
 
                 <div class="accordion-inform">
                     <div class="item">
-                        <div class="holder-block">
+                        <?php if(Yii::$app->user->isGuest) : ?>
+                            <div class="holder-block">
+                                <strong class="heading"><?= Yii::t('app', 'Контактная информация') ?></strong>
+                                <div class="expanded">
+                                    <span class="title"><?= Yii::t('app', 'Контактная информация') ?></span>
+                                    <a  href="<?= Url::toRoute(['/account#login']) ?>"><?= Yii::t('app', 'Для просмотра необходимо войти в учётную запись') ?> </a>
+                                </div>
+                            </div>
+                        <?php else: ?>
+                            <div class="holder-block">
                             <strong class="heading"><?= Yii::t('app', 'Контактная информация') ?></strong>
                             <div class="expanded">
                                 <span class="title"><?= Yii::t('app', 'Контактная информация') ?></span>
@@ -73,6 +83,7 @@ use ymaker\social\share\widgets\SocialShare;
                                 </ul>
                             </div>
                         </div>
+                        <?php endif; ?>
                     </div>
                     <?php
                     if(! empty($model->cityNames) && ! empty($model->districtNames)):
@@ -104,9 +115,9 @@ use ymaker\social\share\widgets\SocialShare;
                 <?php foreach ($model->images as $image) :?>
                     <?php if( !strpos($image['image_name'],'thumbnail')):?>
                         <div>
-                            <div class="holder-img">
+                            <div class="holder-img" style="background: url('<?= $image['image_name'] ?>') no-repeat center center; background-size: cover;">
                                 <a class="like-star" href="#" tabindex="0">&nbsp;</a>
-                                <img src="<?= $image['image_name'] ?>" alt="<?= $image['alt'] ?>">
+                                <img src="/images/post_placeholder.png" alt="<?= $image['alt'] ?>">
                             </div>
                         </div>
                     <?php endif; ?>
@@ -180,14 +191,14 @@ use ymaker\social\share\widgets\SocialShare;
                     $categories->category = $item->category_id;
                     $cat  = $categories->category;
                 ?>
-                    <li <?php if($item->isPremium): ?>class="premium"<?php endif; ?>>
+                    <li <?php if(Premium::checkPrem($item->id)): ?>class="premium"<?php endif; ?>>
                         <a class="like-star" href="#" data-id="<?= $item->id ?>">&#160;</a>
                         <a href="<?= Url::to('/advertisement/page/'.$item->id)?>">
-                            <div class="holder-img">
-                                <?php if(! empty($item->images)): ?>
-                                <img src="<?= Url::home(true).$item->images[0]['image_name'] ?>" alt="<?= $item->images[0]['alt']?>">
-                                <?php endif; ?>
+                            <?php if(! empty($item->images)): ?>
+                            <div class="holder-img" style="background: url('<?= Url::home(true).$item->images[0]['image_name'] ?>') no-repeat center center; background-size: cover;">
+                                <img src="/images/avatar-holder.png" alt="<?= $item->images[0]['alt']?>">
                             </div>
+                            <?php endif; ?>
                             <div class="holder-text">
                                 <span><?= $item->title ?></span>
                                 <p><?= $cat->title ?></p>

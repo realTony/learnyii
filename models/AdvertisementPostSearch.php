@@ -235,17 +235,21 @@ class AdvertisementPostSearch extends AdvertisementPost
 
             switch ($params['orderBy']) {
                 case 'price_desc':
-                    $query->orderBy('isPremium DESC, pricePerMonth DESC');
+
+                    $query->orderBy('`pr`.`isUp` DESC, `pr`.`isTop` DESC, pricePerMonth DESC');
                     break;
                 case 'price_asc':
-                    $query->orderBy('isPremium DESC, pricePerMonth ASC');
+                    $query->orderBy('`pr`.`isUp` DESC, `pr`.`isTop` DESC, pricePerMonth ASC');
+                    break;
+                case 'popular':
+                    $query->orderBy('`pr`.`isUp` DESC, `pr`.`isTop` DESC, {{%advertisement_post}}.views DESC');
                     break;
                 default:
+                    $query->orderBy('`pr`.`isUp` DESC, `pr`.`isTop` DESC, {{%advertisement_post}}.`published_at` DESC');
                     break;
             }
 
         }
-        $query->orderBy('`pr`.`isUp` DESC, `pr`.`isTop` DESC, {{%advertisement_post}}.`published_at` DESC');
 
 
         return $dataProvider;

@@ -40,6 +40,7 @@ class SettingsFormModel extends Model
     public $site_maintenance = 'Off';
     public $liqpay_public_key;
     public $liqpay_private_key;
+    public $premium_alert_message;
 
     public function rules()
     {
@@ -47,7 +48,7 @@ class SettingsFormModel extends Model
             [['site_name', 'site_email', 'site_facebook', 'site_instagram', 'site_viber', 'site_telegram', 'main_slider_max',
                 'advertisement_pageSize', 'vip_message_ru', 'vip_message_uk', 'liqpay_public_key', 'liqpay_private_key'], 'safe'],
             [['site_name', 'site_facebook', 'site_instagram', 'site_viber', 'site_telegram', 'vip_message_ru', 'vip_message_uk',
-                'liqpay_public_key', 'liqpay_private_key'], 'string'],
+                'liqpay_public_key', 'liqpay_private_key', 'premium_alert_message'], 'string'],
             [['main_slider_max', 'advertisement_pageSize'] ,'integer'],
             [['site_email'], 'email'],
         ];

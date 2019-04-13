@@ -1,5 +1,6 @@
 <?php
 
+use app\components\Premium;
 use app\widgets\FooterInfo;
 use app\widgets\SearchAdverts;
 use yii\helpers\Url;
@@ -73,7 +74,7 @@ use app\modules\admin\models\Categories;
                     $categories->category = $item->category_id;
                     $cat  = $categories->category;
                     ?>
-                    <li <?php if( $item->isPremium == 1): ?>class="premium" <?php endif; ?>>
+                    <li <?php if(Premium::checkPrem($item->id)): ?>class="premium" <?php endif ?>>
                         <a class="like-star" href="#">&#160;</a>
                         <a href="<?= Url::to(['/advertisement/page/'.$item->id]) ?>">
                             <div class="holder-img" style="background: url('<?= (!empty($item->images[0])) ? $item->images[0]['image_name'] : ''; ?>') no-repeat 50% 50%; background-size: cover;">

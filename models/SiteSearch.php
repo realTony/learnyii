@@ -36,7 +36,8 @@ class SiteSearch extends Model
 
     public function search($params)
     {
-        $query = AdvertisementPost::find();
+        $query = AdvertisementPost::find()
+        ->where(['is_archived' => 0, 'is_approved' => 1, 'is_banned' => 0]);
 
 
         $this->load($params);
