@@ -38,6 +38,8 @@ class PremiumDemonController extends Controller
 
     public function actionSendNotifications()
     {
+        $startTime = microtime(true);
+        $endTime = false;
         $userPurchases = new UserPremiumAdvertisement();
         $currentDate = date('Y-m-d H:i:s', time());
         $expiredPosts  = $userPurchases
@@ -68,5 +70,8 @@ class PremiumDemonController extends Controller
                     ->query();
 
         }
+        $endTime = microtime(true);
+
+        echo 'Processing for '.($endTime - $startTime).' seconds';
     }
 }
