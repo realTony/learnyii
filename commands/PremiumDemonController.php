@@ -66,7 +66,9 @@ class PremiumDemonController extends Controller
                     ->send();
 
                 $res = Yii::$app->db
-                    ->createCommand('UPDATE {{%user_premium_advertisement}} SET `is_notification_sent` = 1')
+                    ->createCommand('UPDATE {{%user_premium_advertisement}} SET `is_notification_sent` = 1
+                    WHERE `id`=:id')
+                    ->bindValue(':id',$userPost->id)
                     ->query();
 
         }
