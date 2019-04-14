@@ -1,8 +1,8 @@
-+<?php
+<?php
 
 return [
     'site/*',
-    'premium-demon/*',
+    'cron-demon/*',
 //    'myaccount/*',
     'rbac/*',
     'user/*',
