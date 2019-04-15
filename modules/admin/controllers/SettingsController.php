@@ -6,9 +6,6 @@ use Yii;
 use app\models\Settings;
 use app\models\SettingsSearch;
 use app\modules\admin\models\SettingsFormModel;
-use app\modules\admin\models\SaveDynamicSettings;
-use yii\base\DynamicModel;
-use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -34,7 +31,7 @@ class SettingsController extends Controller
         ];
     }
 
-    public function beforeAction($action) : string
+    public function beforeAction($action) : void
     {
         if (Yii::$app->user->isGuest) {
             Yii::$app->response->redirect(['account#login']);
@@ -49,7 +46,7 @@ class SettingsController extends Controller
      * Lists all Settings models.
      * @return mixed
      */
-    public function actionIndex() : string
+    public function actionIndex()
     {
         $searchModel = new SettingsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -60,36 +57,14 @@ class SettingsController extends Controller
         ]);
     }
 
-    public function actionMain() : string
+    public function actionMain()
     {
         $model = new SettingsFormModel();
         $settings = Yii::createObject(Settings::className())->find()->all();
-        $additions = Yii::createObject(Settings::className())->find()->
-            where(['in', 'name', ['main_slider_max', 'advertisement_pageSize', 'vip_message_ru', 'vip_message_uk',
-            'liqpay_public_key', 'premium_alert_message', '']])->all();
-
         $propList = array_keys(get_object_vars($model));
 
         foreach ($settings as $option) {
             $name = $option['name'];
-
-            //Lil bit fast hardcode not to change previous DB structure
-            if( $name == 'account_settings') {
-                break;
-            }
-
-            $val = $option['option_value'];
-            $model->$name = $val;
-        }
-
-        foreach ($additions as $option) {
-            $name = $option['name'];
-
-            //Lil bit fast hardcode not to change previous DB structure
-            if( $name == 'account_settings') {
-                break;
-            }
-
             $val = $option['option_value'];
             $model->$name = $val;
         }
@@ -99,7 +74,74 @@ class SettingsController extends Controller
         }
         return $this->render('main', [
             'model' => $model
+//            'searchModel' => $searchModel,
+//            'dataProvider' => $dataProvider,
         ]);
+    }
+
+    /**
+     * Displays a single Settings model.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionView($id)
+    {
+        return $this->render('view', [
+            'model' => $this->findModel($id),
+        ]);
+    }
+
+    /**
+     * Creates a new Settings model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+    public function actionCreate()
+    {
+        $model = new Settings();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
+
+        return $this->render('create', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
+     * Updates an existing Settings model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionUpdate($id)
+    {
+        $model = $this->findModel($id);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
+
+        return $this->render('update', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
+     * Deletes an existing Settings model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionDelete($id)
+    {
+        $this->findModel($id)->delete();
+
+        return $this->redirect(['index']);
     }
 
     /**
@@ -123,72 +165,8 @@ class SettingsController extends Controller
         return $this->render('menu');
     }
 
-    public function actionSeo() : string
+    public function actionSeo()
     {
-        $options = (Yii::createObject(Settings::className()))
-            ->find()
-            ->where(['>=', 'id', '8'])
-            ->all();
-        $options = ArrayHelper::map($options,'name', 'option_value');
-
-        $model = new DynamicModel($options);
-        $attributes = $model->getAttributes();
-
-        foreach ($attributes as $attribute => $val) {
-            if(! empty($val)) {
-                $val = json_decode($val, true);
-            }
-
-           $default = [
-               'lang' => 0,
-                'options' => [
-                    'seo_title' => '',
-                    'seo_description' => '',
-                    'seo_text' => '',
-                    'no_index' => 0,
-                    'no_follow' => 0,
-                ],
-               'translation' => [
-                   'seo_title' => '',
-                   'seo_description' => '',
-                   'seo_text' => '',
-                   'no_index' => 0,
-                   'no_follow' => 0,
-               ]
-           ];
-
-            $model->$attribute = (empty($val)) ? $default : $val;
-        }
-
-        if(Yii::$app->request->isPost) {
-            $post = Yii::$app->request->post();
-            $formData = $post['DynamicModel'];
-            $settingsModel = new SaveDynamicSettings();
-
-            if( $settingsModel->load($formData) && $settingsModel->saveSettings()) {
-                Yii::$app->response->redirect(['/admin/settings/seo']);
-            }
-        }
-
-        Yii::$app->getView()->title = Yii::t('app', 'Настройки SEO');
-        return $this->render('seo-settings', [
-            'model' => $model,
-            'options' => $attributes
-        ]);
-    }
-
-    public function getLabels() : array
-    {
-        $labels = [
-            'account_settings' => Yii::t('app', 'Кабинет'),
-            'account_create_settings' => Yii::t('app', 'Новое объявление'),
-            'news_settings' => Yii::t('app', 'Новости'),
-            'search_settings' => Yii::t('app', 'Поиск'),
-            'advertisement_settings' => Yii::t('app', 'Объявления'),
-            'inner_advertisement' => Yii::t('app', 'Внутренняя страница объявлений'),
-            'user_advertisement' => Yii::t('app', 'Объявления пользователя'),
-        ];
-
-        return $labels;
+        return $this->render('seo-settings');
     }
 }
