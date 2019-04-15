@@ -2625,6 +2625,9 @@ input[type="number"] {
     -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
+.fa-half {
+    font-size: 1.5em;
+}
 .view-list:focus{
     text-decoration: none;
     color: #303033;

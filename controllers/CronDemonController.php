@@ -15,6 +15,8 @@ class CronDemonController extends Controller
     {
         if ($_SERVER['REMOTE_ADDR'] == $_SERVER['SERVER_ADDR'])
         {
+            var_dump($_SERVER['REMOTE_ADDR']);
+            var_dump($_SERVER['SERVER_ADDR']);
             return true;
         }
         return false; // or false to not run the action

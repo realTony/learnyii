@@ -3,6 +3,7 @@
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 $secure = parse_ini_file(__DIR__.'/../../secure/stickit.ini', true);
+
 $config = [
     'id' => 'basic-console',
     'basePath' => dirname(__DIR__),
@@ -28,6 +29,18 @@ $config = [
             ],
         ],
         'db' => $db,
+        'mailer' => [
+            'class' => 'yii\swiftmailer\Mailer',
+            'transport' => [
+                'class' => 'Swift_SmtpTransport',
+                'host' => $config['smtp_host'],
+                'username' => $config['smtp_username'],
+                'password' => $config['smtp_password'],
+                'port' => '587',
+                'encryption' => 'tls',
+            ],
+            'useFileTransport' => false,
+        ],
     ],
     'params' => $params,
     /*

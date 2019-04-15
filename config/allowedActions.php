@@ -2,7 +2,6 @@
 
 return [
     'site/*',
-    'cron-demon/*',
 //    'myaccount/*',
     'rbac/*',
     'user/*',

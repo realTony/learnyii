@@ -58,7 +58,7 @@ class PremiumDemonController extends Controller
 
             $settings = new Settings();
 
-                Yii::$app->mailer->compose()
+                $status = Yii::$app->mailer->compose()
                     ->setFrom($settings->siteEmail->option_value)
                     ->setTo($userEmail['email'])
                     ->setSubject('Уведомление')
