@@ -56,7 +56,12 @@ class DefaultController extends Controller
     public function beforeAction($action)
     {
         $this->enableCsrfValidation = false;
-        return parent::beforeAction($action);
+
+        if( Yii::$app->user->isGuest ){
+            Yii::$app->response->redirect(['account#login']);
+        } else {
+            return parent::beforeAction($action);
+        }
     }
 
     public function actionIndex() : string
@@ -64,6 +69,7 @@ class DefaultController extends Controller
         if( Yii::$app->user->isGuest ){
             Yii::$app->response->redirect(['account#login']);
         }
+
         $title = Yii::t('app', 'Личный кабинет');
 
         self::$breadcrumbs = [
@@ -175,6 +181,7 @@ class DefaultController extends Controller
 
     public function actionCreateAdvertisement()
     {
+
         $model = Yii::createObject(AdvertisementPost::className());
         $imgModel = Yii::createObject(Images::className());
         $user = User::findOne(['id'=>Yii::$app->user->getId()]);
