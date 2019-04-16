@@ -90,7 +90,7 @@
                     <img src="/images/avatar-holder.png" alt="img">
                 </div>
                 <div class="holder-text">
-                    <a href="#" class="name">{{ getUsername(app.user.id)}}</a>
+                    <a href="{{ url.toRoute('/myaccount') }}" class="name">{{ getUsername(app.user.id)}}</a>
                     <span>{{ t('app', 'Дата регистрации') }}</span>
                     <span class="date">{{ getUserDate(app.user.id) }}</span>
                 </div>

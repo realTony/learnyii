@@ -43,7 +43,7 @@ $this->params['breadcrumbs'] = $breadcrumbs;
                         'cat_id' => (!empty($catInfo->parent_id))? $catInfo->parent_id : $catInfo->id,
                         'user_id' => false,
                         'use_wrapper' => true,
-                        'custom_filters' => false
+                        'custom_filters' => true
                 ]
         ]); ?>
 

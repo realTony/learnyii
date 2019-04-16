@@ -54,8 +54,8 @@ class AdvertisementFilter extends Widget
         $cat = new Categories();
         $catList = $cat->advList;
         ?>
-        <?php if( $this->options['use_wrapper'] == true):?>
-        <div class="aside-left">
+        <?php if( $this->options['use_wrapper'] == true): ?>
+            <div class="aside-left">
         <?php endif; ?>
         <?php $form = ActiveForm::begin([
         'method' => 'GET',

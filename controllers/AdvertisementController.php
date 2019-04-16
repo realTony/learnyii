@@ -31,6 +31,7 @@ class AdvertisementController extends Controller
      * Main advertisement page controller
      *
      * @return string
+     * @throws \yii\base\InvalidConfigException
      */
     public function actionIndex() : string
     {
@@ -243,10 +244,7 @@ class AdvertisementController extends Controller
                 $requested['category_id'] = $catId->id;
                 $dataProvider = $searchModel->searchCat($requested);
             $advPosts = $model;
-            $breadcrumbs = [
-                ['label' => Yii::t('app', 'Объявления'), 'url' => Url::to('/advertisement')],
-                ['label' => Yii::t('app', ($metaData['title'])?:$catId->title)]
-            ];
+            $breadcrumbs = [['label' => Yii::t('app', 'Объявления')],];
 
             $pages = new Pagination([
                 'totalCount' => $dataProvider->getTotalCount(),
@@ -388,8 +386,7 @@ class AdvertisementController extends Controller
 
             $breadcrumbs = [
                 ['label' => Yii::t('app', 'Объявления'), 'url' => Url::to('/advertisement')],
-                ['label' => Yii::t('app', $parentCat->meta['title']), 'url' => Url::to('/' . $parentCat->link)],
-                ['label' => Yii::t('app', $catId->meta['title'])]
+                ['label' => Yii::t('app', $parentCat->meta['title'])],
             ];
 
             $catId->title = $catId->meta['title'];

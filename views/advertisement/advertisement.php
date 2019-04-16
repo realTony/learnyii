@@ -181,7 +181,7 @@ use ymaker\social\share\widgets\SocialShare;
 <div class="holder-section fon-grey inner-grey relative">
     <div class="container">
         <div class="title-text">
-            <h1><?= Yii::t('app', 'Похожие объявления')?></h1>
+            <h1><?= Yii::t('app', 'Рекомендованные объявления') ?></h1>
         </div>
         <?php if(! empty($similar)):?>
         <div class="slider-announcements">
