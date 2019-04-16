@@ -547,9 +547,15 @@ class AdvertisementController extends Controller
         $subCategory = (new Categories())->findOne($model->subCat_id);
         $user = (new User())->findOne($model->authorId);
         $profile = (new Profile())->findOne(['user_id' => $model->authorId]);
+        /*Piece of hardcode*/
+        $recommendedCat = [
+            8 => 9,
+            9 => 8,
+        ];
+
         $similar = (new AdvertisementPost())
             ->find()
-            ->where(['subCat_id' => $model->subCat_id, 'is_approved' => 1, 'is_archived' => 0, 'is_banned' => 0])
+            ->where(['category_id' => $recommendedCat[$model->category_id], 'is_approved' => 1, 'is_archived' => 0, 'is_banned' => 0])
             ->andWhere(['not in', 'id', $id])
             ->orderBy('isPremium DESC, published_at DESC')
             ->limit(4)
