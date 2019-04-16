@@ -17,7 +17,7 @@ class PremiumDemonController extends Controller
     {
         $posts = new AdvertisementPost();
         $userPurchases = new UserPremiumAdvertisement();
-        $currentDate = date('Y-m-d H:i:s', time());
+        $currentDate = (new \DateTime())->format('Y-m-d H:i:s');
         $expiredPosts  = $userPurchases
             ->find()
             ->where(['not', ['confirmation_timestamp' => null, 'expiration_timestamp' => null]])
