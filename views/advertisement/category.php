@@ -2,6 +2,7 @@
 
 use app\components\Premium;
 use app\widgets\AdvertisementFilter;
+use app\widgets\FooterInfo;
 use app\widgets\SearchAdverts;
 use app\widgets\SortingForm;
 use yii\helpers\Html;
@@ -66,75 +67,12 @@ $this->params['breadcrumbs'] = $breadcrumbs;
                 'formSelector' => '#sortingForm'
             ]) ?>
             <ul class="list-announcements">
-                <?php
-                foreach ($models as $model) {
-                    $img = (! empty($model->images[0])) ? Url::home(true).'/'.$model->images[0]['image_name']: '';
-                    $categories = Yii::createObject(Categories::className());
-                    $categories->category = $model->category_id;
-                    $cat  = $categories->category;
-
-                    ?>
-                    <li <?php if(Premium::checkPrem($model->id)): ?>class="premium" <?php endif ?>>
-                                <a class="like-star" href="#" data-id="<?= $model->id ?>">&#160;</a>
-                                <a href="<?= Url::to('/advertisement/page/'.$model->id)?>">
-                                    <div class="holder-img" <?php if(! empty($model->images)):?> style="background: url('<?= $img ?>') no-repeat center center; background-size: cover;" <?php endif; ?>>
-                                        <?php if(! empty($model->images)):?>
-                                            <img src="/images/avatar-holder.png" alt="<?= $model->images[0]['alt'] ?>">
-                                        <?php endif; ?>
-                                    </div>
-                                    <div class="holder-text">
-                                        <div class="group">
-                                            <div class="topic">
-                                                <span><?= Html::encode($model->title) ?></span>
-                                                <p><?= $cat->title; ?></p>
-                                            </div>
-                                            <strong><?= $model->pricePerMonth; ?> <sup><small><?= Yii::t('app', 'грн/мес')?></small></sup></strong>
-                                        </div>
-                                        <div class="overflow-text">
-                                            <?php
-                                            if(! empty($model->cityNames) && ! empty($model->districtNames)):
-                                                ?>
-                                                    <?php foreach ( $model->districtNames as $districtName): ?>
-                                                        <span class="region"><em><?= $model->cityNames[0] ?></em>, <em><?= $districtName ?></em></span>
-                                                    <?php endforeach; ?>
-                                            <?php endif; ?>
-                                            <p><?= TextExcerption::excerptText( Html::encode($model->description), 110); ?></p>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                    <?php
-                }
-
-                $counter = $data->getTotalCount();
-                $curr = ((int) $pages->page)+2;
-                $maxLimit = $curr * (int) $pages->pageSize;
-                $itemsLeft = ($maxLimit < $data->getTotalCount()) ? $pages->pageSize : ($data->getTotalCount() - $maxLimit) + $pages->pageSize;
-                $txt = Yii::t('app', ' объявлений');
-
-                switch ($itemsLeft) {
-                    case 1:
-                        $txt = Yii::t('app', ' объявление');
-                        break;
-                    case 2:
-                    case 3:
-                    case 4:
-                        $txt = Yii::t('app', ' объявления');
-                        break;
-                }
+                <?= $this->render('_loop', [
+                    'models' => $models,
+                    'data' => $data,
+                    'pages' => $pages
+                ]);
                 ?>
-                <?php if( $itemsLeft > 0): ?>
-                    <li class="ajax-load">
-                        <a href="#">
-                            <div class="load-more">
-                                <div>
-                                    <i class="fas fa-sync-alt"></i>
-                                    <span><?= Yii::t('app', 'Загрузить еще '). ($itemsLeft). $txt ?></span>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                <?php endif; ?>
             </ul>
 
 
@@ -159,4 +97,4 @@ $this->params['breadcrumbs'] = $breadcrumbs;
         </div>
     </div>
 </div>
-<?= \app\widgets\FooterInfo::widget() ?>
+<?= FooterInfo::widget() ?>

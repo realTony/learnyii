@@ -1,19 +1,21 @@
 <?php
 
+use app\components\Premium;
 use app\components\TextExcerption;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
-foreach ($models as $model) {
-    ?>
-    <li>
+foreach ($models as $model):?>
+    <li <?php if(Premium::checkPrem($model->id)): ?>class="premium" <?php endif ?>>
         <a class="like-star" href="#" data-id="<?= $model->id ?>">&#160;</a>
         <a href="<?= Url::to('/advertisement/page/'.$model->id)?>">
             <?php if(! empty($model->images)):
-                $img = Url::home(true).'/'.$model->images[0]['image_name'];
+                $img = $model->images[0]['image_name'];
                 ?>
-                <div class="holder-img">
-                    <img src="<?= $img ?>" alt="img">
+                <div class="holder-img" <?php if(! empty($model->images)):?> style="background: url('<?= $img ?>') no-repeat center center; background-size: cover;" <?php endif; ?>>
+                    <?php if(! empty($model->images)):?>
+                        <img src="/images/avatar-holder.png" alt="<?= $model->images[0]['alt'] ?>">
+                    <?php endif; ?>
                 </div>
             <?php else:?>
                 <div class="holder-img">
@@ -28,19 +30,19 @@ foreach ($models as $model) {
                     <strong><?= $model->pricePerMonth; ?> <sup><small><?= Yii::t('app', 'грн/мес')?></small></sup></strong>
                 </div>
                 <div class="overflow-text">
-                    <?php if(! empty($model->cityNames) && ! empty($model->districtNames)): ?>
-                        <?php foreach ( $model->districtNames as $districtName): ?>
-                            <span class="region"><em><?= $model->cityNames[0] ?></em>, <em><?=Html::encode( $districtName) ?></em></span>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                    <p><?= TextExcerption::excerptText(Html::encode($model->description), 110); ?></p>
+                    <div class="overflow-text">
+                        <?php if(! empty($model->cityNames) && ! empty($model->districtNames)): ?>
+                            <?php foreach ( $model->districtNames as $districtName): ?>
+                                <span class="region"><em><?= $model->cityNames[0] ?></em>, <em><?= $districtName ?></em></span>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                        <p><?= TextExcerption::excerptText(Html::encode($model->description), 110); ?></p>
+                    </div>
                 </div>
             </div>
         </a>
     </li>
-    <?php
-}
-?>
+<?php endforeach; ?>
 <?php if( $data->getCount() > 1):?>
     <?php
     $counter = $data->getTotalCount();
