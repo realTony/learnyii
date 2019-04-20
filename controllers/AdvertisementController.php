@@ -551,6 +551,7 @@ class AdvertisementController extends Controller
         $recommendedCat = [
             8 => 9,
             9 => 8,
+            10 => 10
         ];
 
         $similar = (new AdvertisementPost())

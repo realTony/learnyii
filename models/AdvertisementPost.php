@@ -56,12 +56,12 @@ class AdvertisementPost extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'category_id', 'subCat_id', 'pricePerMonth', 'contract_term', 'distancePerMonth', 'authorId'], 'required'],
+            [['title', 'category_id', 'subCat_id', 'pricePerMonth', 'contract_term', 'distancePerMonth', 'authorId', 'city'], 'required'],
             [['category_id', 'subCat_id', 'views', 'contract_term', 'adv_type', 'sticking_area', 'authorId', 'showEmail', 'isPremium', 'coverage_type', 'filter_id'], 'integer'],
             [['description'], 'string'],
             [['pricePerMonth', 'distancePerMonth'], 'number'],
             [['published_at'], 'safe'],
-            [['title', 'condition'], 'string', 'max' => 255],
+            [['title', 'condition'], 'string', 'max' => 60],
             [['image_items'], 'image', 'maxFiles' => 5, 'skipOnEmpty' => true, 'extensions' => 'png, jpg']
         ];
     }
@@ -88,6 +88,7 @@ class AdvertisementPost extends \yii\db\ActiveRecord
             'isPremium' => Yii::t('app', 'Is Premium'),
             'coverage_type' => Yii::t('app', 'Coverage Type'),
             'published_at' => Yii::t('app', 'Published At'),
+            'city' => Yii::t('app', 'Город')
         ];
     }
 
@@ -195,12 +196,12 @@ class AdvertisementPost extends \yii\db\ActiveRecord
             }
 
             $i = 0;
+
             if(! empty($this->city)) {
                 foreach ($this->city as $city) {
                     $cities = new Cities();
                     $districts = new CityRegions();
 
-                    $advCityRegions = new AdvertiseCitiesRegions();
                     $cityId = $cities->find()->where(['like', 'name', $city])->one();
                     $districtId = 0;
 
@@ -208,9 +209,20 @@ class AdvertisementPost extends \yii\db\ActiveRecord
                         $districtId = $districts->find()->where(['like', 'region', $this->city_district[$i]])->one();
                     }
 
-                    $advCityRegions->city_id = $cityId['id'];
-                    $advCityRegions->advertise_id = $this->id;
-                    $advCityRegions->region_id = $districtId['id'];
+                    $advCityRegions = new AdvertiseCitiesRegions();
+
+                    if(empty($advCityRegions->find()->where(['advertise_id' => $this->id])->all())) {
+                        $advCityRegions->city_id = $cityId['id'];
+                        $advCityRegions->advertise_id = $this->id;
+                        $advCityRegions->region_id = $districtId;
+                        $advCityRegions->save();
+                    } else {
+                        if($districtId == 0) {
+                            $advCityRegions = $advCityRegions->find()
+                                ->where(['advertise_id' => $this->id, 'city_id' => $cityId['id'] ])
+                                ->all();
+                        }
+                    }
 
                     $i++;
                 }
