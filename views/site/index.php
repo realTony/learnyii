@@ -62,7 +62,7 @@ use app\modules\admin\models\Categories;
 <?php if(! empty($posts)): ?>
 <div class="holder-section fon-grey relative">
     <div class="container">
-        <div class="title-text">
+        <div class="group-content title-text">
             <h1><?= Yii::t('app', 'Новые объявления') ?></h1>
             <a class="old-ads" href="<?= Url::to(['/advertisement']) ?>"><?= Yii::t('app', 'Все объявления') ?></a>
         </div>
@@ -100,7 +100,7 @@ use app\modules\admin\models\Categories;
 <?php if(! empty($promo) && (! empty($model->options->is_promo) && $model->options->is_promo == 1)): ?>
 <div class="holder-section relative">
     <div class="container">
-        <div class="title-text">
+        <div class="group-content title-text">
             <?php if(! empty($news)): ?>
                 <h1><?= $news->title?></h1>
                 <a class="old-ads" href="<?= Url::to(['/news/category']).'/'.$news->link ?>"><?= Yii::t('app','Все акции') ?></a>
@@ -171,7 +171,7 @@ use app\modules\admin\models\Categories;
     <div class="holder-section fon-grey">
         <div class="container">
             <div class="item-accordion">
-                <div class="title-text">
+                <div class="group-content title-text">
                     <h1 class="btn-accordion"><?= Yii::t('app', 'Как это работает?') ?></h1>
                 </div>
                 <div class="content-accordion">
