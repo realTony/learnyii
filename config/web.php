@@ -220,7 +220,7 @@ $config = [
             ]
         ]
     ],
-    'layout' => 'main.twig',
+    'layout' => 'main.php',
     'params' => $params,
 ];
 
