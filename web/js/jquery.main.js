@@ -552,6 +552,9 @@ $(document).ready(function(){
             lastNum = '<li><div class="holder-input"><input class="input" type="text" name="'+cityName+'" placeholder="'+parents.city.attr('placeholder')+'"></div><div class="holder-input"><a class="btn-change add-input" href="#"></a><input class="input" name="'+districtName+'" type="text" placeholder="'+parents.district.attr('placeholder')+'"></div></li>';
             numsList.append(lastNum);
             thisEl.removeClass('add-input');
+            $('.list-add-del > li:last').find('input:first').autocomplete({
+                source: Object.values(avaibleCities)
+            });
         } else{
             thisEl.closest('li').remove();
         }
@@ -823,8 +826,8 @@ function initDropCity(){
          "Каменец-Подольский"
     ];
     if( $(document).find('input').is('.tags-city')) {
-        $(".tags-city").autocomplete({
-            source: Object.values(avaibleCities)
+        $('.tags-city').autocomplete({
+              source: Object.values(avaibleCities)
         });
     }
 }
