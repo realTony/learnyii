@@ -48,9 +48,11 @@ Coverage type (coverage_type)
         ->label(false)
         ->dropDownList($filters, ['class' => 'dropdown', 'prompt' => Yii::t('app', 'Тип транспорта')]) ?>
     <?php endif; ?>
+    <?php if( $model->category_id != 10): ?>
     <?= $form->field($model, 'distancePerMonth', ['options' => ['class' => false, 'tag' => 'li']])
         ->label(false)
         ->textInput(['type' => 'number', 'maxlength' => true, 'placeholder' => Yii::t('app', 'Пробег (км/мес)'), 'class' => 'input']) ?>
+    <?php endif; ?>
 
 </ul>
 <ul class="input-list">
@@ -60,9 +62,16 @@ Coverage type (coverage_type)
         ->label(false)
         ->textInput(['type' => 'number', 'maxlength' => true, 'placeholder' => Yii::t('app', 'Срок договора (мес)'), 'class' => 'input']) ?>
     <?php endif; ?>
+    <?php if( $model->category_id != 10): ?>
     <?= $form->field($model, 'pricePerMonth', ['options' => ['class' => false, 'tag' => 'li']])
         ->label(false)
         ->textInput(['type' => 'number', 'maxlength' => true, 'placeholder' => Yii::t('app', 'Цена (грн/мес)'), 'class' => 'input']) ?>
+    <?php else: ?>
+        <?= $form->field($model, 'pricePerMonth', ['options' => ['class' => false, 'tag' => 'li']])
+            ->label(false)
+            ->textInput(['type' => 'number', 'maxlength' => true, 'placeholder' => Yii::t('app', 'Цена'), 'class' => 'input']) ?>
+
+    <?php endif; ?>
     <li>
         <?= $form->field($model, 'coverage_type', ['options' => ['class' => 'checkbox'], 'template' => '<label>{input}<span><i class="fas fa-check"></i>{label}</span></label>{error}'] )
             ->label(Yii::t('app', 'Договорная'))->checkbox([], false) /* What the f*ck is that should be?*/ ?>
