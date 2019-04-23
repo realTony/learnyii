@@ -80,7 +80,7 @@ class AdvertisementFilter extends Widget
                     $current = $item['title'];
                     ?>
                     <div class="aside-accordion">
-                        <span class="title"><?= $item['title'] ?></span>
+                        <span class="title"><?= Yii::t('app', $item['title'] ) ?></span>
                         <div class="expanded">
                             <ul>
                                 <?php foreach ($item['subList'] as $li => $val ):?>
@@ -219,11 +219,20 @@ class AdvertisementFilter extends Widget
                 ?>
                 <div class="aside-accordion">
                     <?php
+
                     if( $this->options['custom_filters'] == true ) {
-                        $item['title'] = ($item['title'] == 'Реклама')? Yii::t('app', 'Область поклейки') : Yii::t('app', 'Виды транспорта');
+                        if ( $item['title'] == 'Реклама' ) {
+                            $item['title']  = Yii::t('app', 'Область поклейки');
+                        }
+                        if ( $item['title'] == 'Транспорт' ) {
+                            $item['title']  = Yii::t('app', 'Виды транспорта');
+                        }
+                        if ( $item['title'] == 'Исполнители' ) {
+                            $item['title']  = Yii::t('app', 'Исполнители');
+                        }
                     }
                     ?>
-                    <span class="title"><?= $item['title'] ?></span>
+                    <span class="title"><?= Yii::t('app', $item['title'] ) ?></span>
 
                     <div class="expanded">
                             <ul>
@@ -258,7 +267,7 @@ class AdvertisementFilter extends Widget
                         </div>
                     </div>
                 </div>
-                <?php if($current != 'Исполнители'): ?>
+                <?php if($this->options['cat_id'] != 10): ?>
                     <div class="aside-accordion">
                         <?php if(! empty($current)): ?>
                         <span class="title"><?= Yii::t('app', $current ) ?></span>
