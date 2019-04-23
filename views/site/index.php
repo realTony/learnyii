@@ -10,7 +10,9 @@ use app\modules\admin\models\Categories;
 
 <?php if(! empty($slider)): ?>
     <div class="promo-slider">
-        <?php foreach ($slider as $slide):?>
+        <?php foreach ($slider as $slide):
+            $slide = str_replace('//uploads', '/uploads', $slide);
+            ?>
             <div>
                 <div class="img" style="background-image: url(<?= $slide ?>);"></div>
             </div>
@@ -75,7 +77,7 @@ use app\modules\admin\models\Categories;
                     $cat  = $categories->category;
                     ?>
                     <li <?php if(Premium::checkPrem($item->id)): ?>class="premium" <?php endif ?>>
-                        <a class="like-star" href="#">&#160;</a>
+                        <a class="like-star" href="#" data-id="<?= $item->id ?>">&#160;</a>
                         <a href="<?= Url::to(['/advertisement/page/'.$item->id]) ?>">
                             <div class="holder-img" style="background: url('<?= (!empty($item->images[0])) ? $item->images[0]['image_name'] : ''; ?>') no-repeat 50% 50%; background-size: cover;">
                                 <?php if(! empty($item->images[0]['image_name']) && $item->images[0]['image_name'] != '' ): ?>
