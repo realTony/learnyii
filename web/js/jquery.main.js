@@ -836,11 +836,11 @@ function initDropCity(){
          "Лисичанск",
          "Каменец-Подольский"
     ];
-    if( $(document).find('input').is('.tags-city')) {
+    /*if( $(document).find('input').is('.tags-city')) {
         $('.tags-city').autocomplete({
               source: Object.values(avaibleCities)
         });
-    }
+    }*/
 }
 
 function initDropDistrict(){
