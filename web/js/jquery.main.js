@@ -471,9 +471,20 @@ $(document).ready(function(){
         $('.pagination').find('.next > a').trigger('click');
     });
 
-    $('#sortingForm').find('input').on('blur', function (e) {
-        $('#sortingForm').trigger('submit');
-    });
+    if(
+        !$('.resolutions900').is(':visible') &&
+        !$('.resolutions768').is(':visible') &&
+        !$('.resolutions660').is(':visible') &&
+        !$('.resolutions500').is(':visible')
+
+    ) {
+        $('#sortingForm').find('input').on( "autocompleteclose", function( event, ui ) {
+            if( $(this).val() != '' && $(this).val() != 'undefined') {
+                $('#sortingForm').trigger('submit');
+            }
+        });
+    }
+
 
     $('#sortingForm').find('select').on('change', function (e) {
         $('#sortingForm').trigger('submit');
@@ -847,6 +858,11 @@ function initDropDistrict(){
     $( ".district" ).autocomplete({
         source: availableTags
     });
+    if( $(document).find('input').is('#advertisementpost-city_district')) {
+        $('#advertisementpost-city_district').autocomplete({
+            source: Object.values(availableTags)
+        });
+    }
 }
 
 function resetAutocomplete() {
