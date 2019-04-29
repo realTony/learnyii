@@ -772,10 +772,10 @@ function init_and_resize3(){
     if($('.resolutions768').is(':visible')){
         $('.content .title-text').append($('.holder-aside-right'));
         $('.info-car').prepend($('.aside-profile'));
-        $('.holder-filters .block-filter').append($('.holder-aside-left'));
-        $('.holder-filters .block-filter').prepend($('.form-content'));
+        //$('.holder-filters .block-filter').append($('.holder-aside-left'));
+        //$('.holder-filters .block-filter').prepend($('.form-content'));
         // $('.block-filter').prepend($('.aside-profile'));
-        $('.holder-information .block-filter').prepend($('.aside-profile'));
+        //$('.holder-information .block-filter').prepend($('.aside-profile'));
     }
     if($('.resolutions768').is(':hidden')){
         $('.aside-right').prepend($('.holder-aside-right'));
@@ -836,11 +836,11 @@ function initDropCity(){
          "Лисичанск",
          "Каменец-Подольский"
     ];
-    /*if( $(document).find('input').is('.tags-city')) {
+    if( $(document).find('input').is('.tags-city')) {
         $('.tags-city').autocomplete({
               source: Object.values(avaibleCities)
         });
-    }*/
+    }
 }
 
 function initDropDistrict(){
