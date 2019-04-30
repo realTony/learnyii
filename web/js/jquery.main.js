@@ -20,12 +20,12 @@ $(document).ready(function(){
         $('.slider-arrow').css({opacity:1});
     }
 
-    //$(window).resize(function() {
+    $(window).resize(function() {
         init_and_resize();
         init_and_resize1();
         init_and_resize2();
         init_and_resize3();
-    //});
+    });
     acardionMobileAside();
     initTabs();
     blockText();
@@ -775,8 +775,9 @@ function init_and_resize3(){
     if($('.resolutions768').is(':visible')){
         $('.content .title-text').append($('.holder-aside-right'));
         $('.info-car').prepend($('.aside-profile'));
+        $('.form-content:last').css({display: 'none'});
+        // $('.holder-filters .block-filter').prepend($('.form-content'));
         $('.holder-filters .block-filter').append($('.holder-aside-left'));
-        $('.holder-filters .block-filter').prepend($('.form-content'));
         $('.block-filter').prepend($('.aside-profile'));
         $('.holder-information .block-filter').prepend($('.aside-profile'));
     }
