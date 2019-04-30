@@ -54,7 +54,10 @@ $this->params['breadcrumbs'] = $breadcrumbs;
             <div class="holder-information">
                 <span class="filters"><?= Yii::t('app', 'информация')?></span>
                 <div class="block-filter">
-
+                    <?= SortingForm::widget([
+                        'filter' => $filter,
+                        'viewButton' => true
+                    ]) ?>
                 </div>
             </div>
             <div class="holder-filters">
