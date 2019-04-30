@@ -20,12 +20,12 @@ $(document).ready(function(){
         $('.slider-arrow').css({opacity:1});
     }
 
-    $(window).resize(function() {
+    //$(window).resize(function() {
         init_and_resize();
         init_and_resize1();
         init_and_resize2();
         init_and_resize3();
-    });
+    //});
     acardionMobileAside();
     initTabs();
     blockText();
