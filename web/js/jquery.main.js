@@ -777,8 +777,8 @@ function init_and_resize3(){
         $('.info-car').prepend($('.aside-profile'));
         $('.holder-filters .block-filter').append($('.holder-aside-left'));
         $('.holder-filters .block-filter').prepend($('.form-content'));
-        // $('.block-filter').prepend($('.aside-profile'));
-        //$('.holder-information .block-filter').prepend($('.aside-profile'));
+        $('.block-filter').prepend($('.aside-profile'));
+        $('.holder-information .block-filter').prepend($('.aside-profile'));
     }
     if($('.resolutions768').is(':hidden')){
         $('.aside-right').prepend($('.holder-aside-right'));
