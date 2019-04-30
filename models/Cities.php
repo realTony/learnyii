@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
 
 /**
  * This is the model class for table "{{%cities}}".
@@ -57,7 +58,16 @@ class Cities extends \yii\db\ActiveRecord
     public function getCities()
     {
         $cities = $this->find()->all();
+        $citiesList = [];
+        if(Yii::$app->language == 'uk-Uk')
+            $citiesList = ArrayHelper::map($cities, 'id', 'name_ua');
+        else
+            $citiesList = ArrayHelper::map($cities, 'id', 'name');
 
-        return ArrayHelper::map($cities, 'id', 'name');
+        foreach ($citiesList as $k => $item) {
+            $citiesList[$k] = Html::encode($item);
+        }
+
+        return $citiesList;
     }
 }
