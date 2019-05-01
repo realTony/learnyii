@@ -48,13 +48,19 @@ class CustomPayment extends \LiqPay
             <form method="POST" action="%s" accept-charset="utf-8" data-orderUrl="'.Url::toRoute(['/myaccount/premium-order']).'" data-advertisement="'.$this->advertisementId.'" data-rate="'.$this->premiumRateId.'">
                 %s
                 %s
-                <input type="image" class="liqpay_submit" src="//static.liqpay.ua/buttons/p1%s.radius.png" name="btn_text" />
+                <button style="border: none !important; display:inline-block !important;text-align: center !important;padding: 7px 20px !important;
+                    color: #fff !important; font-size:16px !important; font-weight: 600 !important; font-family:OpenSans, sans-serif; cursor: pointer !important; border-radius: 2px !important;
+                    background: rgb(122,183,43) !important;"onmouseover="this.style.opacity=\'0.5\';" onmouseout="this.style.opacity=\'1\';">
+                    <img src="https://static.liqpay.ua/buttons/logo-small.png" name="btn_text"
+                        style="display: inline; margin-right: 7px !important; vertical-align: middle !important;"/>
+                    <span style="vertical-align:middle !important;">%s</span>
+                </button>
             </form>
             ',
             $this->_checkout_url,
             sprintf('<input type="hidden" name="%s" value="%s" />', 'data', $data),
             sprintf('<input type="hidden" name="%s" value="%s" />', 'signature', $signature),
-            $this->language
+            Yii::t('app', 'Оплатить')
         );
     }
 
