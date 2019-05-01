@@ -114,8 +114,9 @@ use ymaker\social\share\widgets\SocialShare;
             <div class="car-slider">
                 <?php foreach ($model->images as $image) :?>
                     <?php if( !strpos($image['image_name'],'thumbnail')):?>
+                        <?php $img = file_exists(realpath(Yii::getAlias('@webroot').$image['image_name'])) ? $image['image_name'] : '/images/no-photo_big.png'; ?>
                         <div>
-                            <div class="holder-img" style="background: url('<?= $image['image_name'] ?>') no-repeat center center; background-size: cover;">
+                            <div class="holder-img" style="background: url('<?= $img ?>') no-repeat center center; background-size: cover;">
                                 <a class="like-star" href="#" tabindex="0">&nbsp;</a>
                                 <img src="/images/post_placeholder.png" alt="<?= $image['alt'] ?>">
                             </div>

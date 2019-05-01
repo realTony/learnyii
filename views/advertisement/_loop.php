@@ -9,19 +9,13 @@ foreach ($models as $model):?>
     <li <?php if(Premium::checkPrem($model->id)): ?>class="premium" <?php endif ?>>
         <a class="like-star" href="#" data-id="<?= $model->id ?>">&#160;</a>
         <a href="<?= Url::to('/advertisement/page/'.$model->id)?>">
-            <?php if(! empty($model->images)):
-                $img = $model->images[0]['image_name'];
+            <?php
+                $img = (empty($model->images[0])) ? '/images/no-photo_item-small.png' : $model->images[0]['image_name'];
+                $img = file_exists(realpath(Yii::getAlias('@webroot').$img)) ? $img : '/images/no-photo_item-small.png';
                 ?>
-                <div class="holder-img" <?php if(! empty($model->images)):?> style="background: url('<?= $img ?>') no-repeat center center; background-size: cover;" <?php endif; ?>>
-                    <?php if(! empty($model->images)):?>
-                        <img src="/images/avatar-holder.png" alt="<?= $model->images[0]['alt'] ?>">
-                    <?php endif; ?>
-                </div>
-            <?php else:?>
-                <div class="holder-img">
-                    <img src="<?= Url::home(true); ?>/images/img-2.jpg" alt="img">
-                </div>
-            <?php endif?>
+            <div class="holder-img" style="background: url('<?= $img ?>') no-repeat center center; background-size: cover;" >
+                <img src="/images/avatar-holder.png" alt="<?= (!empty($model->images[0])) ? $model->images[0]['alt'] : 'no-photo'?>">
+            </div>
             <div class="holder-text">
                 <div class="group">
                     <div class="topic">

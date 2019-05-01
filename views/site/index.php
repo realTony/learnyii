@@ -75,14 +75,15 @@ use app\modules\admin\models\Categories;
                     $categories = Yii::createObject(Categories::className());
                     $categories->category = $item->category_id;
                     $cat  = $categories->category;
+                    $img = (empty($item->images[0])) ? '/images/no-photo_item-small.png' : $item->images[0]['image_name'];
+                    $img = file_exists(realpath(Yii::getAlias('@webroot').$img)) ? $img : '/images/no-photo_item-small.png';
+
                     ?>
                     <li <?php if(Premium::checkPrem($item->id)): ?>class="premium" <?php endif ?>>
                         <a class="like-star" href="#" data-id="<?= $item->id ?>">&#160;</a>
                         <a href="<?= Url::to(['/advertisement/page/'.$item->id]) ?>">
-                            <div class="holder-img" style="background: url('<?= (!empty($item->images[0])) ? $item->images[0]['image_name'] : ''; ?>') no-repeat 50% 50%; background-size: cover;">
-                                <?php if(! empty($item->images[0]['image_name']) && $item->images[0]['image_name'] != '' ): ?>
-                                <img src="<?= '/images/announcement_holder.png' ?>" alt="<?= $item->images[0]['alt']?>">
-                                <?php endif; ?>
+                            <div class="holder-img" style="background: url('<?= $img ?>') no-repeat 50% 50%; background-size: cover;">
+                                <img src="<?= '/images/announcement_holder.png' ?>" alt="<?= (!empty($item->images[0])) ? $item->images[0]['alt'] : 'no-photo'?>">
                             </div>
                             <div class="holder-text">
                                 <span><?= $item->title ?></span>
