@@ -3,6 +3,8 @@
 namespace app\controllers;
 
 use app\models\AdvertisementPost;
+use app\models\Cities;
+use app\models\CityRegions;
 use app\models\ImageUpload;
 use app\models\MetaTrait;
 use app\models\Pages;
@@ -14,6 +16,7 @@ use app\models\AjaxValidationTrait;
 use dektrium\user\models\RecoveryForm;
 use dektrium\user\traits\EventTrait;
 use Yii;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
@@ -277,6 +280,59 @@ class SiteController extends Controller
             $session = Yii::$app->session;
             $session['attributes'] = $attributes;
             $this->successUrl = \yii\helpers\Url::to(['account#login']);
+        }
+    }
+
+    public function actionAutocomplete()
+    {
+        if(Yii::$app->request->isAjax) {
+            $post = Yii::$app->request->post();
+            $cities = (new Cities())
+                ->find();
+
+            $city  = $post['city'];
+            $district = (! empty($post['district'])) ? $post['district'] : '';
+            $found = false;
+
+            if(Yii::$app->language == 'uk-Uk')
+                $cities = $cities->where(['like', 'name_ua', $city])
+                    ->all();
+            else
+                $cities = $cities->where(['like', 'name', $city])
+                    ->all();
+            $citiesList = $jsonList = [];
+            if(Yii::$app->language == 'uk-Uk')
+                $citiesList = ArrayHelper::map($cities, 'id', 'name_ua');
+            else
+                $citiesList = ArrayHelper::map($cities, 'id', 'name');
+
+            foreach ($citiesList as $k => $item) {
+//                $item = str_replace('\'', '', $item);
+                $jsonList['label'] = $item;
+                $jsonList['value'] = $item;
+                $citiesList[$k] = $item;
+            }
+
+            if($district == '' )
+                return json_encode($citiesList);
+            else {
+                if( count($citiesList) == 1) {
+                    $found = (new CityRegions())
+                        ->find();
+                    if(Yii::$app->language == 'uk-Uk')
+                        $found = $found->where(['like', 'region_ua', $district]);
+                    else
+                        $found = $found->andWhere(['like', 'region', $district]);
+
+                    $found = $found->all();
+                    if(Yii::$app->language == 'uk-Uk')
+                        $citiesList = ArrayHelper::map($found, 'id', 'region_ua');
+                    else
+                        $citiesList = ArrayHelper::map($found, 'id', 'region');
+                }
+
+                return json_encode($citiesList);
+            }
         }
     }
 }

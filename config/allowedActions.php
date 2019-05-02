@@ -2,6 +2,8 @@
 
 return [
     'site/*',
+    'site-map/sitemap',
+    'sitemap.xml',
     'myaccount/*',
     'rbac/*',
     'user/*',

@@ -80,6 +80,10 @@ class AdvertiseCitiesRegions extends \yii\db\ActiveRecord
             $uaList[] = '<a href="">'.$city['name_ua'].'</a>';
         }
 
-        return implode(', ', $ruList);
+        if( Yii::$app->language == 'ru-Ru') {
+            return implode(', ', $ruList);
+        } else {
+            return implode(', ', $uaList);
+        }
     }
 }

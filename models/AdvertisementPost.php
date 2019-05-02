@@ -56,7 +56,7 @@ class AdvertisementPost extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'category_id', 'subCat_id', 'pricePerMonth', 'contract_term', 'distancePerMonth', 'authorId', 'city'], 'required'],
+            [['title', 'category_id', 'subCat_id', 'pricePerMonth', 'contract_term', 'distancePerMonth', 'authorId'], 'required'],
             [['category_id', 'subCat_id', 'views', 'contract_term', 'adv_type', 'sticking_area', 'authorId', 'showEmail', 'isPremium', 'coverage_type', 'filter_id'], 'integer'],
             [['description'], 'string'],
             [['pricePerMonth', 'distancePerMonth'], 'number'],

@@ -563,18 +563,33 @@ $(document).ready(function(){
         };
         var cityName = parents.city.attr('name');
         var districtName = parents.district.attr('name');
+
         if($(this).hasClass('add-input')){
             var numsList = $('.list-add-del');
-            lastNum = '<li><div class="holder-input"><input class="input" type="text" name="'+cityName+'" placeholder="'+parents.city.attr('placeholder')+'"></div><div class="holder-input"><a class="btn-change add-input" href="#"></a><input class="input" name="'+districtName+'" type="text" placeholder="'+parents.district.attr('placeholder')+'"></div></li>';
+            lastNum = '<li><div class="holder-input"><input class="input" type="text" name="'+cityName+'" placeholder="'+parents.city.attr('placeholder')+'"></div><div class="holder-input"><a class="btn-change add-input" href="#"></a><input class="input" name="'+districtName+'" type="text" disabled placeholder="'+parents.district.attr('placeholder')+'"></div></li>';
             numsList.append(lastNum);
             thisEl.removeClass('add-input');
             $('.list-add-del > li:last').find('input:first').autocomplete({
-                source: Object.values(avaibleCities)
+                source: function (request, response) {
+                    $.post("/autocomplete", {
+                        city: request.term
+                    }, function (data) {
+                        data = JSON.parse(data);
+                        response(data);
+                    });
+                },
+                select: function(event, ui) {
+                    if ($(this).parents('li').find('.city-district > input') != 'undefined') {
+                        $(this).parents('li').find('.city-district > input').removeAttr('disabled');
+                    }
+                },
+                minLength: 3
             });
         } else{
             thisEl.closest('li').remove();
         }
     });
+
     // end list-add-del
 
     $(document).on('click', '.liqpay_submit', function (e) {
@@ -794,56 +809,22 @@ function init_and_resize3(){
 
 
 function initDropCity(){
-    var availableTags = [
-         "Киев",
-         "Харьков",
-         "Одесса",
-         "Днепропетровск",
-         "Донецк",
-         "Запорожье",
-         "Львов",
-         "Кривой Рог",
-         "Николаев",
-         "Мариуполь",
-         "Луганск",
-         "Севастополь",
-         "Винница",
-         "Макеевка",
-         "Симферополь",
-         "Херсон",
-         "Полтава",
-         "Чернигов",
-         "Черкассы",
-         "Житомир",
-         "Сумы",
-         "Хмельницкий",
-         "Горловка",
-         "Ровно",
-         "Кировоград",
-         "Днепродзержинск",
-         "Черновцы",
-         "Кременчуг",
-         "Ивано-Франковск",
-         "Тернополь",
-         "Белая Церковь",
-         "Луцк",
-         "Краматорск",
-         "Мелитополь",
-         "Керчь",
-         "Никополь",
-         "Северодонецк",
-         "Славянск",
-         "Бердянск",
-         "Ужгород",
-         "Алчевск",
-         "Павлоград",
-         "Евпатория",
-         "Лисичанск",
-         "Каменец-Подольский"
-    ];
     if( $(document).find('input').is('.tags-city')) {
         $('.tags-city').autocomplete({
-              source: Object.values(avaibleCities)
+            source: function (request, response) {
+                $.post("/autocomplete", {
+                    city: request.term
+                }, function (data) {
+                    data = JSON.parse(data);
+                    response(data);
+                });
+            },
+            select: function(event, ui) {
+              if ($(this).parents('li').find('.city-district > input') != 'undefined') {
+                  $(this).parents('li').find('.city-district > input').removeAttr('disabled');
+              }
+            },
+            minLength: 3
         });
     }
 }
@@ -865,7 +846,21 @@ function initDropDistrict(){
     });
     if( $(document).find('input').is('#advertisementpost-city_district')) {
         $('#advertisementpost-city_district').autocomplete({
-            source: Object.values(availableTags)
+            source: function (request, response) {
+                $.post("/autocomplete", {
+                    city: $('#advertisementpost-city').val(),
+                    district: request.term
+                }, function (data) {
+                    data = JSON.parse(data);
+                    response(data);
+                });
+            },
+            select: function(event, ui) {
+                if ($(this).parents('li').find('.city-district > input') != 'undefined') {
+                    $(this).parents('li').find('.city-district > input').removeAttr('disabled');
+                }
+            },
+            minLength: 3
         });
     }
 }

@@ -73,9 +73,9 @@ $this->registerJs($script);
                     ->label(false)
                     ->textInput([ 'maxlength' => true, 'placeholder' => Yii::t('app', 'Город'), 'class' => 'input tags-city']) ?>
                 <?= $form->field($model, 'city_district[]',
-                    ['options' => ['class' => 'holder-input', 'tag' => 'div'], 'template' => '<a class="btn-change add-input" href="#"></a>{input}{error}'])
+                    ['options' => ['class' => 'holder-input city-district', 'tag' => 'div'], 'template' => '<a class="btn-change add-input" href="#"></a>{input}{error}'])
                     ->label(false)
-                    ->textInput([ 'maxlength' => true, 'placeholder' => Yii::t('app', 'Район'), 'class' => 'input']) ?>
+                    ->textInput([ 'maxlength' => true, 'placeholder' => Yii::t('app', 'Район'), 'class' => 'input district', 'disabled' => true]) ?>
         </ul>
         <hr>
         <?= $form->field($model, 'description', ['options' => ['class' => 'holder-area', 'tag' => 'div']])

@@ -1,9 +1,8 @@
 <?php
 
 return [
-    'cron-demon/sent-notifications' => 'cron-demon/sent-notifications',
 	'' => 'site/index',
-	'<action:(account|logout|how-it-works|privacy-policy)>' => 'site/<action>',
+	'<action:(account|logout|how-it-works|privacy-policy|autocomplete)>' => 'site/<action>',
 	'myaccount' => 'myaccount/default/index',
 	'myaccount/edit' => 'myaccount/default/edit',
 	'myaccount/create' => 'myaccount/default/create-advertisement',

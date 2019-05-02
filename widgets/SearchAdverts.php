@@ -47,7 +47,7 @@ class SearchAdverts extends Widget
                 </div>
             </div>
             <script id="autocomplete-cities">
-                var avaibleCities = JSON.parse('<?= json_encode($cities) ?>');
+                var avaibleCities = JSON.parse('<?= json_encode($cities,JSON_UNESCAPED_UNICODE) ?>');
             </script>
         </div>
         <?php
