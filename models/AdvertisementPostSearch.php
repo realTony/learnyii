@@ -224,6 +224,9 @@ class AdvertisementPostSearch extends AdvertisementPost
         if(! empty($params['extraFilter'])) {
             $query->andFilterWhere(['in', 'filter_id', $params['extraFilter']]);
         }
+        if(! empty($params['subCategory'])) {
+            $query->andFilterWhere(['in', 'subCat_id', $params['subCategory']]);
+        }
         $query
             ->andWhere(['is_approved' => 1])
             ->andWhere(['is_banned' => 0])

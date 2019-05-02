@@ -175,12 +175,14 @@ class AdvertisementFilter extends Widget
         <?php if( $this->options['use_wrapper'] == true):?>
             <div class="aside-left">
         <?php endif; ?>
-        <?php $form = ActiveForm::begin([
-        'method' => 'GET',
-        'options' => [
-            'class' => 'holder-aside-left'
-        ]
-    ]);
+
+        <?php
+        $form = ActiveForm::begin([
+            'method' => 'GET',
+            'options' => [
+                'class' => 'holder-aside-left'
+            ]
+        ]);
         $stickingAreas = (new StickingAreas())->find()->all();
         $stickingAreas = ArrayHelper::map($stickingAreas, 'id', 'title');
 
@@ -236,17 +238,48 @@ class AdvertisementFilter extends Widget
 
                     <div class="expanded">
                             <ul>
-                                <?php foreach ($item['subList'] as $li => $val ):?>
+                                <?php
+                                if($this->options['custom_filters'] == false):
+                                    foreach ($item['subList'] as $li => $val ):?>
+                                        <?php
+                                        $cat = new Categories();
+                                        $cat->category = $li;
+                                        $quantity = $cat->advertisementCount;
+
+                                        ?>
+                                        <li><a href="<?= Url::to(['/'.$cat->category['link']]) ?>"><?= Yii::t('app', $cat->category->meta['title']) ?> <sup><small>(<?= $quantity ?>)</small></sup></a></li>
+                                    <?php endforeach;
+                                    else: ?>
+                                <?php
+                                $catList = [];
+                                foreach ($item['subList'] as $li => $val ):?>
                                     <?php
                                     $cat = new Categories();
                                     $cat->category = $li;
                                     $quantity = $cat->advertisementCount;
-
+                                    $catList[$cat->category->id] = Yii::t('app', $cat->category->meta['title']).' <sup><small>('.$quantity.')</small></sup>';
                                     ?>
-                                    <li><a href="<?= Url::to(['/'.$cat->category['link']]) ?>"><?= Yii::t('app', $cat->category->meta['title']) ?> <sup><small>(<?= $quantity ?>)</small></sup></a></li>
                                 <?php endforeach; ?>
+                                <?=
+                                $form->field($this->filter, 'subCategory', [
+                                    'options' => [
+                                        'tag' => 'ul',
+                                        'class' => 'list-checkbox'
+                                    ]
+                                ])->label(false)
+                                    ->checkboxList($catList, ['item' => function($index, $label, $name, $checked, $value){
+                                        $checkedLabel = $checked ? 'checked' : '';
+                                        $inputId = str_replace(['[', ']'], ['', ''], $name) . '_' . $index;
+
+                                        return "<li><label  class='checkbox' for=$inputId>
+                                    <input type='checkbox' name=$name value=$value id=$inputId $checkedLabel>
+                                    <span><i class=\"fas fa-check\"></i> $label </span>
+                                    </label></li>";
+                                    }, 'name' => 'subCategory' ]);
+                                endif;
+                                ?>
                             </ul>
-                        </div>
+                    </div>
                 </div>
             <?php endforeach; ?>
 
