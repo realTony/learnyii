@@ -166,7 +166,7 @@ use ymaker\social\share\widgets\SocialShare;
                 <span class="share-title"><?=\Yii::t('app', 'Поделиться') ?></span>
                 <?= SocialShare::widget([
                     'configurator'  => 'socialShare',
-                    'url'           => Url::to(Url::home(true).'advertisement/'.$model->id),
+                    'url'           => Url::to(Url::home(true).'advertisement/page/'.$model->id),
                     'title'         => $model->title,
                     'description'   => $model->description,
 //                    'imageUrl'      => Url::to('@web'.$model->post_image, true),

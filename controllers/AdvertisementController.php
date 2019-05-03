@@ -149,12 +149,13 @@ class AdvertisementController extends Controller
         $path = str_replace($name.'/', $name, Yii::$app->request->pathInfo);
         $catId = $advCategories->find()->where([ 'link' => $path]) ->andWhere(['is_blog' => 0]) ->one();
         $options = (!empty($catId->options)) ? json_decode($catId->options, true) : [];
-        $catId->translation = (!empty($catId->translation)) ? json_decode($catId->translation, true) : [];
-        $catId->options = $options;
 
         if(empty($catId)) {
             throw new NotFoundHttpException();
         }
+
+        $catId->translation = (!empty($catId->translation)) ? json_decode($catId->translation, true) : [];
+        $catId->options = $options;
 
         $metaData = [
             'ru' => [
