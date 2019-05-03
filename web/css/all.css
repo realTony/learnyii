@@ -5438,6 +5438,9 @@ hr{
     .edit-list {
         top: 39vw;
     }
+    .holder-rates dt{
+        width: 85%;
+    }
     .vip-price .icon{
         display: none;
     }
