@@ -3410,6 +3410,7 @@ hr{
     display: inline;
     padding: 0;
     margin: 0;
+    white-space: nowrap;
 }
 .holder-rates dd{
     overflow: hidden;
