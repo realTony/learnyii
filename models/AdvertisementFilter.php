@@ -21,12 +21,16 @@ class AdvertisementFilter extends Model
     public $stickingArea;
     public $extraFilter;
     public $subCategory;
+    public $city;
+    public $district;
+    public $orderBy;
 
     public function rules()
     {
         return [
             [['minDistance', 'minPrice', 'maxDistance', 'maxPrice'], 'integer'],
             [['stickingArea', 'extraFilter', 'subCategory'], 'safe'],
+            [['city', 'district', 'orderBy'], 'string']
         ];
     }
 

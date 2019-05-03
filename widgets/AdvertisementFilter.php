@@ -188,6 +188,13 @@ class AdvertisementFilter extends Widget
 
         ?>
         <fieldset>
+            <?= $form->field($this->filter, 'city', ['options' => ['id' => 'hiddenCity']])
+                ->label(false)->textInput(['type'=> 'hidden', 'name' => 'city', 'value' => $this->filter['city']])?>
+            <?= $form->field($this->filter, 'district', ['options' => ['id' => 'hiddenDistrict']])
+                ->label(false)->textInput(['type'=> 'hidden', 'name' => 'district', 'value' => $this->filter['district']])?>
+            <?= $form->field($this->filter, 'orderBy', ['options' => ['id' => 'hiddenOrder']])
+                ->label(false)->textInput(['type'=> 'hidden', 'name' => 'orderBy', 'value' => $this->filter['orderBy']])?>
+
             <?php
             $current = '';
 
