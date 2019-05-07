@@ -5815,3 +5815,7 @@ hr{
 .loader {
     width: 100%;
 }
+/* Autocomplete fix*/
+.ui-autocomplete {
+    z-index: 99999;
+}
