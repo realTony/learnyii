@@ -19,7 +19,7 @@ echo SearchAdverts::widget();
         <div class="holder-bread-crumbs">
             <ul class="bread-crumbs">
                 <li>
-                    <a href="#">Главная</a>
+                    <a href="/"><?= Yii::t('app','Главная') ?></a>
                 </li>
                 <li>404</li>
             </ul>
@@ -37,19 +37,3 @@ echo SearchAdverts::widget();
 </div>
 <?= AdvertisementCat::widget() ?>
 <?= FooterInfo::widget() ?>
-<!--<div class="site-error">-->
-<!---->
-<!--    <h1>--><?//= Html::encode($this->title) ?><!--</h1>-->
-<!---->
-<!--    <div class="alert alert-danger">-->
-<!--        --><?//= nl2br(Html::encode($message)) ?>
-<!--    </div>-->
-<!---->
-<!--    <p>-->
-<!--        The above error occurred while the Web server was processing your request.-->
-<!--    </p>-->
-<!--    <p>-->
-<!--        Please contact us if you think this is a server error. Thank you.-->
-<!--    </p>-->
-<!---->
-<!--</div>-->

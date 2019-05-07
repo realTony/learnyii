@@ -47,9 +47,6 @@ class LanguageSwitcher extends Widget
             ];
         }
 
-//        if(Yii::$app->language == 'uk-Uk') {
-            $this->items = array_reverse($this->items);
-//        }
         parent::init();
     }
 
@@ -67,7 +64,7 @@ class LanguageSwitcher extends Widget
                 if($lang['url']['active']) {
                     $activeClass = 'active';
                 }
-                $link = str_replace('/ru', '', Url::current());
+                $link = str_replace('/uk', '', Url::current());
 
 
                 $langList .= "<li class=\"$activeClass\">";

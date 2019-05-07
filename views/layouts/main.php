@@ -44,7 +44,6 @@ $this->beginPage();
 
         $('#login-form').on('submit', function(e) {
             e.preventDefault();
-            //
             $('#login-form').data('yiiActiveForm').submitting = true;
             $('#login-form').yiiActiveForm('validate');
         });

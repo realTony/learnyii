@@ -23,7 +23,7 @@ $config = [
         '@npm'   => '@vendor/npm-asset',
     ],
     'name' => ' STICKIT',
-    'language' => 'uk-Uk',
+    'language' => 'ru-Ru',
     'components' => [
         'authManager' => [
             'class' => 'yii\rbac\DbManager'
