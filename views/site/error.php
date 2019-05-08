@@ -9,6 +9,7 @@ use app\widgets\AdvertisementCat;
 use app\widgets\FooterInfo;
 use app\widgets\SearchAdverts;
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 $this->title = $name;
 
@@ -29,10 +30,10 @@ echo SearchAdverts::widget();
 <div class="container">
     <div class="not-found">
         <div class="holder-img">
-            <img src="<?= \yii\helpers\Url::home(true)?>images/bg-46.png" alt="img">
+            <img src="<?= Url::home(true)?>images/bg-46.png" alt="img">
         </div>
         <strong><?= Yii::t('app', 'Что-то пошло <br>не так...')?></strong>
-        <p>К сожалению такой страницы не существует. <a href="<?= \yii\helpers\Url::home(true) ?>">Вернитесь на главную,</a> либо попробуйте найти нужное вам объявление с помощью категорий.</p>
+        <p><?= Yii::t('app', 'К сожалению такой страницы не существует.')?> <a href="<?= Url::home(true) ?>"><?= Yii::t('app', 'Вернитесь на главную') ?>,</a> <?= Yii::t('app', 'либо попробуйте найти нужное вам объявление с помощью категорий.')?></p>
     </div>
 </div>
 <?= AdvertisementCat::widget() ?>

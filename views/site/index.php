@@ -1,5 +1,6 @@
 <?php
 
+use app\components\Images;
 use app\components\Premium;
 use app\widgets\FooterInfo;
 use app\widgets\SearchAdverts;
@@ -76,7 +77,7 @@ use app\modules\admin\models\Categories;
                     $categories->category = $item->category_id;
                     $cat  = $categories->category;
                     $img = (empty($item->images[0])) ? '/images/no-photo_item-small.png' : $item->images[0]['image_name'];
-                    $img = file_exists(realpath(Yii::getAlias('@webroot').$img)) ? $img : '/images/no-photo_item-small.png';
+                    $img = Images::isThumbnailExists($img);
 
                     ?>
                     <li <?php if(Premium::checkPrem($item->id)): ?>class="premium" <?php endif ?>>

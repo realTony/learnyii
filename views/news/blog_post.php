@@ -1,5 +1,6 @@
 <?php
 
+use app\widgets\FooterInfo;
 use app\widgets\SearchAdverts;
 use app\widgets\SimilarNews;
 use yii\helpers\Html;
@@ -44,6 +45,9 @@ $this->params['breadcrumbs'] = $breadcrumbs;
             <div class="title-text">
                 <h1><?= $model->title; ?></h1>
             </div>
+            <?php
+                $model->post_image = \app\components\Images::isImageExists($model->post_image);
+            ?>
             <div class="blog-photo" style="background: url('<?= Url::home(true).$model->post_image ?>') no-repeat 50% 50%; background-size: cover;">
                 <img src="/images/post_placeholder.png" alt="<?= $model->title ?>">
             </div>
@@ -66,4 +70,4 @@ $this->params['breadcrumbs'] = $breadcrumbs;
         </div>
     </div>
 </div>
-<?= \app\widgets\FooterInfo::widget() ?>
+<?= FooterInfo::widget() ?>

@@ -1,5 +1,6 @@
 <?php
 
+use app\components\Images;
 use app\widgets\FooterInfo;
 use app\widgets\SearchAdverts;
 use yii\helpers\Html;
@@ -64,8 +65,11 @@ $this->params['breadcrumbs'] = $breadcrumbs;
                         ?>
                             <li class="grid-item">
                                 <?php if(! empty($model->post_thumbnail) ): ?>
+                                <?php
+                                    $model->post_thumbnail = Images::isThumbnailExists($model->post_thumbnail);
+                                ?>
                                     <div class="holder-img">
-                                            <img src="<?= (! empty($model->post_thumbnail))? $model->post_thumbnail: $model->post_image ?>" alt="<?= $title ?>_image">
+                                        <img src="<?= (! empty($model->post_thumbnail))? $model->post_thumbnail: $model->post_image ?>" alt="<?= $title ?>_image">
                                     </div>
                                 <?php endif;?>
                                 <div class="holder-text">

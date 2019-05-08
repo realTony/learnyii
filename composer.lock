@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1d8c1cc538d445f0a3ad1a488924f4c1",
+    "content-hash": "2fb58702de3eddf49fe08b6683c0ccba",
     "packages": [
         {
             "name": "2amigos/yii2-tinymce-widget",
@@ -248,7 +248,7 @@
             "version": "3.3.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/jquery/jquery-dist.git",
+                "url": "git@github.com:jquery/jquery-dist.git",
                 "reference": "9e8ec3d10fad04748176144f108d7355662ae75e"
             },
             "dist": {
@@ -3870,16 +3870,16 @@
         },
         {
             "name": "tinymce/tinymce",
-            "version": "5.0.3",
+            "version": "4.9.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tinymce/tinymce-dist.git",
-                "reference": "0d275010c122a955b14ff5ed5d9e4ebff058e677"
+                "reference": "3a997f24eb54d890b1c88f22cff03092e0b73378"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tinymce/tinymce-dist/zipball/0d275010c122a955b14ff5ed5d9e4ebff058e677",
-                "reference": "0d275010c122a955b14ff5ed5d9e4ebff058e677",
+                "url": "https://api.github.com/repos/tinymce/tinymce-dist/zipball/3a997f24eb54d890b1c88f22cff03092e0b73378",
+                "reference": "3a997f24eb54d890b1c88f22cff03092e0b73378",
                 "shasum": ""
             },
             "type": "component",
@@ -3912,7 +3912,7 @@
                 "tinymce",
                 "wysiwyg"
             ],
-            "time": "2019-03-19T05:27:15+00:00"
+            "time": "2019-03-20T13:56:58+00:00"
         },
         {
             "name": "twig/twig",
