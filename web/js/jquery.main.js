@@ -576,7 +576,15 @@ $(document).ready(function() {
 
         if($(this).hasClass('add-input')){
             var numsList = $('.list-add-del');
-            lastNum = '<li><div class="holder-input"><input class="input" type="text" name="'+cityName+'" placeholder="'+parents.city.attr('placeholder')+'"></div><div class="holder-input"><a class="btn-change add-input" href="#"></a><input class="input" name="'+districtName+'" type="text" disabled placeholder="'+parents.district.attr('placeholder')+'"></div></li>';
+            lastNum = '<li>' +
+                        '<div class="holder-input field-advertisementpost-city">' +
+                        '   <input class="input" type="text" name="'+cityName+'" placeholder="'+parents.city.attr('placeholder')+'">' +
+                        '</div>' +
+                        '<div class="holder-input city-district">' +
+                        '<a class="btn-change add-input" href="#"></a>' +
+                        '<input class="input" name="'+districtName+'" type="text" disabled placeholder="'+parents.district.attr('placeholder')+'">' +
+                        '</div>' +
+                    '</li>';
             numsList.append(lastNum);
             thisEl.removeClass('add-input');
             $('.list-add-del > li:last').find('input:first').autocomplete({
@@ -597,6 +605,8 @@ $(document).ready(function() {
             });
         } else{
             thisEl.closest('li').remove();
+            $('.list-add-del >li:first').find('input:first').attr('id', 'advertisementpost-city');
+            $('.list-add-del >li:first').find('input:last').attr('id', 'advertisementpost-city_district');
         }
     });
 

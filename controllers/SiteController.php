@@ -313,14 +313,17 @@ class SiteController extends Controller
                 $citiesList[$k] = $item;
             }
 
-            if($district == '' )
+            if(empty($post['district']) )
                 return json_encode($citiesList);
+
             else {
                 if( count($citiesList) == 1) {
                     $found = (new CityRegions())
-                        ->find();
+                        ->find()
+                        ->where(['city_id' => array_keys($citiesList)]);
+
                     if(Yii::$app->language == 'uk-Uk')
-                        $found = $found->where(['like', 'region_ua', $district]);
+                        $found = $found->andWhere(['like', 'region_ua', $district]);
                     else
                         $found = $found->andWhere(['like', 'region', $district]);
 
