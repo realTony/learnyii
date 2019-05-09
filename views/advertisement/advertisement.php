@@ -1,5 +1,6 @@
 <?php
 
+use app\components\Images;
 use app\components\Premium;
 use app\models\Profile;
 use app\widgets\FooterInfo;
@@ -110,11 +111,13 @@ use ymaker\social\share\widgets\SocialShare;
                 <h1><?= $model->title ?></h1>
             </div>
             <!-- Slider-->
+
             <?php if(! empty($model->images)): ?>
             <div class="car-slider">
                 <?php foreach ($model->images as $image) :?>
                     <?php if( !strpos($image['image_name'],'thumbnail')):?>
                         <?php $img = file_exists(realpath(Yii::getAlias('@webroot').$image['image_name'])) ? $image['image_name'] : '/images/no-photo_big.png'; ?>
+                        <?php $img = \app\components\Images::isImageExists($img); ?>
                         <div>
                             <div class="holder-img" style="background: url('<?= $img ?>') no-repeat center center; background-size: cover;">
                                 <a class="like-star" href="#" tabindex="0">&nbsp;</a>
@@ -124,6 +127,17 @@ use ymaker\social\share\widgets\SocialShare;
                     <?php endif; ?>
                 <?php endforeach;?>
             </div>
+            <?php else: ?>
+                <div class="car-slider">
+                    <?php $img = '/images/no-photo_big.png'; ?>
+                    <?php $img = \app\components\Images::isImageExists($img); ?>
+                    <div>
+                        <div class="holder-img" style="background: url('<?= $img ?>') no-repeat center center; background-size: cover;">
+                            <a class="like-star" href="#" tabindex="0">&nbsp;</a>
+                            <img src="/images/post_placeholder.png" alt="no photo">
+                        </div>
+                    </div>
+                </div>
             <?php endif; ?>
             <div class="info-car">
                 <ul class="list status-car">
@@ -191,15 +205,16 @@ use ymaker\social\share\widgets\SocialShare;
                     $categories = Yii::createObject(Categories::className());
                     $categories->category = $item->category_id;
                     $cat  = $categories->category;
+                    $images = (empty($item->images[0])) ? '/images/no-photo_item-small.png' : $item->images[0]['image_name'];
+                    $images = Images::isThumbnailExists($images);
+                    Images::isThumbnailExists($images);
                 ?>
                     <li <?php if(Premium::checkPrem($item->id)): ?>class="premium"<?php endif; ?>>
                         <a class="like-star" href="#" data-id="<?= $item->id ?>">&#160;</a>
                         <a href="<?= Url::to('/advertisement/page/'.$item->id)?>">
-                            <?php if(! empty($item->images)): ?>
-                            <div class="holder-img" style="background: url('<?= Url::home(true).$item->images[0]['image_name'] ?>') no-repeat center center; background-size: cover;">
-                                <img src="/images/avatar-holder.png" alt="<?= $item->images[0]['alt']?>">
+                            <div class="holder-img" style="background: url('<?= $images ?>') no-repeat center center; background-size: cover;">
+                                <img src="/images/avatar-holder.png" alt="<?= (empty($item->images[0]['alt']) ? 'no-photo' : $item->images[0]['alt'])?>">
                             </div>
-                            <?php endif; ?>
                             <div class="holder-text">
                                 <span><?= $item->title ?></span>
                                 <p><?= $cat->title ?></p>

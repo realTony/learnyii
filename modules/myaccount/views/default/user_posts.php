@@ -1,5 +1,6 @@
 <?php
 
+use app\components\Images;
 use app\components\TextExcerption;
 use app\models\PremiumRates;
 use app\widgets\PremiumFlash;
@@ -167,10 +168,13 @@ $this->params['breadcrumbs'] = $breadcrumbs;
                             <!-- end fav -->
                             <a class="like-star" href="#">&#160;</a>
                             <a href="<?= Url::to('/advertisement/page/'.$item->id)?>">
-                                <div class="holder-img" <?php if(! empty($item->images[0])):?> style="background: url('<?= $images ?>') no-repeat center center; background-size: cover;" <?php endif; ?>>
-                                    <?php if(! empty($item->images[0])):?>
-                                        <img src="/images/avatar-holder.png" alt="<?= $item->images[0]['alt'] ?>">
-                                    <?php endif; ?>
+                                <?php
+                                    $images = (empty($item->images[0])) ? '/images/no-photo_item-small.png' : $item->images[0]['image_name'];
+                                    $images = Images::isThumbnailExists($images);
+                                    Images::isThumbnailExists($images);
+                                ?>
+                                <div class="holder-img" style="background: url('<?= $images ?>') no-repeat center center; background-size: cover;">
+                                    <img src="/images/avatar-holder.png" alt="<?= (!empty($item->images[0])) ? $item->images[0]['alt'] : 'no-photo'?>" >
                                 </div>
                                 <div class="holder-text">
                                     <div class="group">

@@ -207,6 +207,16 @@ class AdvertisementPost extends \yii\db\ActiveRecord
 
                     if(! empty($this->city_district[$i])) {
                         $districtId = $districts->find()->where(['like', 'region', $this->city_district[$i]])->one();
+
+                        if(empty($districtId)) {
+
+                            $newDistrict = new CityRegions();
+                            $newDistrict->region = $this->city_district[$i];
+                            $newDistrict->district_approved_flag = 0;
+                            $newDistrict->city_id = 0;
+                            $newDistrict->save();
+                            $districtId = $newDistrict->id;
+                        }
                     }
 
                     $advCityRegions = new AdvertiseCitiesRegions();

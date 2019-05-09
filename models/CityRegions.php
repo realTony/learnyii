@@ -11,6 +11,7 @@ use Yii;
  * @property int $city_id
  * @property string $region
  * @property string $region_ua
+ * @property string $district_approved_flag
  */
 class CityRegions extends \yii\db\ActiveRecord
 {
@@ -29,7 +30,7 @@ class CityRegions extends \yii\db\ActiveRecord
     {
         return [
             [['city_id', 'region'], 'required'],
-            [['city_id'], 'integer'],
+            [['city_id', 'district_approved_flag'], 'integer'],
             [['region', 'region_ua'], 'string', 'max' => 255],
         ];
     }
