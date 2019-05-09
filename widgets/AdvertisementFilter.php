@@ -105,9 +105,9 @@ class AdvertisementFilter extends Widget
                         <div class="range-slider">
                             <div class="slider-range">
                                 <input type="text" class="min_max_currentmin_currentmax" value="0/11000/<?= $this->filter['minPrice'].'/'.$this->filter['maxPrice']?>">
-                                <?= $form->field($this->filter, 'minPrice', ['options' => ['id' => 'minDistance']])
+                                <?= $form->field($this->filter, 'minPrice', ['options' => ['id' => 'minPrice']])
                                     ->label(false)->textInput(['type'=> 'hidden', 'class' => 'minVal', 'name' => 'minPrice', 'value' => $this->filter['minPrice']])?>
-                                <?= $form->field($this->filter, 'maxPrice', ['options' => ['id' => 'maxDistance']])
+                                <?= $form->field($this->filter, 'maxPrice', ['options' => ['id' => 'maxPrice']])
                                     ->label(false)->textInput(['type'=> 'hidden', 'class' => 'maxVal', 'name' => 'maxPrice','value' => $this->filter['maxPrice']])?>
 
                             </div>
@@ -298,9 +298,9 @@ class AdvertisementFilter extends Widget
                         <div class="range-slider">
                             <div class="slider-range">
                                 <input type="text" class="min_max_currentmin_currentmax" value="0/11000/<?= $this->filter['minPrice'].'/'.$this->filter['maxPrice']?>">
-                                <?= $form->field($this->filter, 'minPrice', ['options' => ['id' => 'minDistance']])
+                                <?= $form->field($this->filter, 'minPrice', ['options' => ['id' => 'minPrice']])
                                     ->label(false)->textInput(['type'=> 'hidden', 'class' => 'minVal', 'name' => 'minPrice', 'value' => $this->filter['minPrice']])?>
-                                <?= $form->field($this->filter, 'maxPrice', ['options' => ['id' => 'maxDistance']])
+                                <?= $form->field($this->filter, 'maxPrice', ['options' => ['id' => 'maxPrice']])
                                     ->label(false)->textInput(['type'=> 'hidden', 'class' => 'maxVal', 'name' => 'maxPrice','value' => $this->filter['maxPrice']])?>
 
                             </div>
