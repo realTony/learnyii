@@ -315,12 +315,19 @@ class SiteController extends Controller
 
             if(empty($post['district']) )
                 return json_encode($citiesList);
-
             else {
-                if( count($citiesList) == 1) {
+                $cities = (new Cities())
+                    ->find();
+                if(Yii::$app->language == 'uk-Uk')
+                    $cities = $cities->where(['name_ua' => $city])
+                        ->one();
+                else
+                    $cities = $cities->where(['name' => $city])
+                        ->one();
+
                     $found = (new CityRegions())
                         ->find()
-                        ->where(['city_id' => array_keys($citiesList)]);
+                        ->where(['city_id' => $cities->id]);
 
                     if(Yii::$app->language == 'uk-Uk')
                         $found = $found->andWhere(['like', 'region_ua', $district]);
@@ -328,14 +335,17 @@ class SiteController extends Controller
                         $found = $found->andWhere(['like', 'region', $district]);
 
                     $found = $found->all();
+
                     if(Yii::$app->language == 'uk-Uk')
                         $citiesList = ArrayHelper::map($found, 'id', 'region_ua');
                     else
                         $citiesList = ArrayHelper::map($found, 'id', 'region');
-                }
 
                 return json_encode($citiesList);
+
             }
+        } else {
+            throw new NotFoundHttpException();
         }
     }
 }
