@@ -69,7 +69,7 @@ class LanguageSwitcher extends Widget
 
                 $langList .= "<li class=\"$activeClass\">";
                 $langList .= Html::a($lang['label'], Url::to([$link, 'language' => $lang['url']['language']]));
-                $langList .= '</li>/n';
+                $langList .= '</li>';
             }
         }
         $langList .= '</ul>';
