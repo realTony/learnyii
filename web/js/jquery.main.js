@@ -599,9 +599,14 @@ $(document).ready(function() {
                 select: function(event, ui) {
                     if ($(this).parents('li').find('.city-district > input') != 'undefined') {
                         $(this).parents('li').find('.city-district > input').removeAttr('disabled');
+                        window.tmpCity = ui.value;
                     }
                 },
                 minLength: 3
+            });
+            $('body').find('.city-district > input').on('hover change', function () {
+                var city = $(this).parents('li').find('.field-advertisementpost-city > input').val();
+                $('body').find('.city-district > input')
             });
         } else{
             thisEl.closest('li').remove();
@@ -610,8 +615,25 @@ $(document).ready(function() {
         }
     });
 
-    // end list-add-del
 
+    $('.list-add-del').on('focus','.city-district > input', function (e) {
+
+        var city = $(this).parents('li').find('.field-advertisementpost-city > input').val();
+        $(this).autocomplete({
+            source: function (request, response) {
+                $.post("/autocomplete", {
+                    city: city,
+                    district: request.term
+                }, function (data) {
+                    data = JSON.parse(data);
+                    response(data);
+                });
+            },
+            minLength: 3
+        });
+    });
+
+    // end list-add-del
     $(document).on('click', '.liqpay_submit', function (e) {
        e.preventDefault();
        let $form = $(this).parents('form');
