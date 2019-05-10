@@ -287,6 +287,8 @@ class SiteController extends Controller
     {
         if(Yii::$app->request->isAjax) {
             $post = Yii::$app->request->post();
+
+
             $cities = (new Cities())
                 ->find();
 
@@ -316,6 +318,27 @@ class SiteController extends Controller
             if(empty($post['district']) )
                 return json_encode($citiesList);
             else {
+                if(empty($post['city']) && !empty($post['district'])) {
+                    $district = $post['district'];
+
+                    $found = (new CityRegions())
+                        ->find();
+
+                    if(Yii::$app->language == 'uk-Uk')
+                        $found = $found->andWhere(['like', 'region_ua', $district]);
+                    else
+                        $found = $found->andWhere(['like', 'region', $district]);
+
+                    $found = $found->limit('1')->all();
+
+                    if(Yii::$app->language == 'uk-Uk')
+                        $citiesList = ArrayHelper::map($found, 'id', 'region_ua');
+                    else
+                        $citiesList = ArrayHelper::map($found, 'id', 'region');
+
+                    return json_encode($citiesList);
+                }
+
                 $cities = (new Cities())
                     ->find();
                 if(Yii::$app->language == 'uk-Uk')

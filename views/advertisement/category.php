@@ -69,14 +69,13 @@ $this->params['breadcrumbs'] = $breadcrumbs;
                 'timeout' => false,
                 'formSelector' => '#sortingForm'
             ]) ?>
-            <ul class="list-announcements">
+
                 <?= $this->render('_loop', [
                     'models' => $models,
                     'data' => $data,
                     'pages' => $pages
                 ]);
                 ?>
-            </ul>
 
 
             <?php if (! empty($pages) && $pages->pageSize < $pages->totalCount):?>

@@ -385,7 +385,7 @@ $(document).ready(function() {
                         maxDistance: maxDistance,
                         stickingArea: stickingArea,
                         action: 'lazyLoad',
-                        _csrf: _csrf,
+                        _csrf: _csrf
                     },
                     success: function (response) {
                         if (typeof response != 'undefined' && response != '') {
@@ -487,11 +487,20 @@ $(document).ready(function() {
         });
     }
 
-    if (!window.mobilecheck) {
-        $('#sortingForm').find('select').on('change', function (e) {
-            $('#sortingForm').trigger('submit');
+    $('#sortingForm').find('input, select').on('change', function (e) {
+        var _csrf = $('[name = "_csrf"]').val();
+        var url = $('#sortingForm').attr('action')+'?action=lazyLoad';
+        $.pjax.reload({
+            type: 'GET',
+            container: '#search-sort',
+            data: {
+                _csrf: _csrf,
+                city: $('#advsearch-city').val(),
+                district: $('#advsearch-district').val(),
+            },
+            url: url
         });
-    }
+    });
     // popp-form
     $(".forgot").click(function(){
         $('.for-login, .form-recovery').addClass("active");
@@ -872,20 +881,24 @@ function initDropCity(){
 }
 
 function initDropDistrict(){
-    var availableTags = [
-        "Киевский район",
-        "Московский район",
-        "Немышлянский район",
-        "Новобаварский район",
-        "Индустриальный район",
-        "Основянский район",
-        "Слободской район",
-        "Холодногорский район",
-        "Шевченковский район"
-    ];
-    $( ".district" ).autocomplete({
-        source: availableTags
+    $('.district').autocomplete({
+        source: function (request, response) {
+            $.post("/autocomplete", {
+                city: $('#advsearch-city').val(),
+                district: request.term
+            }, function (data) {
+                data = JSON.parse(data);
+                response(data);
+            });
+        },
+        select: function(event, ui) {
+            if ($(this).parents('li').find('.city-district > input') != 'undefined') {
+                $(this).parents('li').find('.city-district > input').removeAttr('disabled');
+            }
+        },
+        minLength: 3
     });
+
     if( $(document).find('input').is('#advertisementpost-city_district')) {
         $('#advertisementpost-city_district').autocomplete({
             source: function (request, response) {

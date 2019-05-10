@@ -173,7 +173,6 @@ class AdvertisementController extends Controller
         ];
         $currentLang = (Yii::$app->language == 'ru-Ru') ? 'ru' : 'uk';
         $metaData = $metaData[$currentLang];
-
         if (Yii::$app->request->isAjax && (Yii::$app->request->queryParams)['action'] == 'lazyLoad') {
 
             $asideFilter = new AdvertisementFilter();

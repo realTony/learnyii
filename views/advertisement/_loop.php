@@ -5,6 +5,9 @@ use app\components\TextExcerption;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
+?>
+<ul class="list-announcements">
+<?php
 foreach ($models as $model):?>
     <li <?php if(Premium::checkPrem($model->id)): ?>class="premium" <?php endif ?>>
         <a class="like-star" href="#" data-id="<?= $model->id ?>">&#160;</a>
@@ -70,3 +73,4 @@ foreach ($models as $model):?>
         </li>
     <?php endif; ?>
 <?php endif; ?>
+</ul>

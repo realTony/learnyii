@@ -77,14 +77,12 @@ $this->params['breadcrumbs'] = $breadcrumbs;
                 'formSelector' => '#sortingForm'
             ]) ?>
             <?php if(! empty($models)): ?>
-                <ul class="list-announcements">
-                    <?= $this->render('_loop', [
-                        'models' => $models,
-                        'data' => $data,
-                        'pages' => $pages
-                    ]);
-                    ?>
-                </ul>
+                <?= $this->render('_loop', [
+                    'models' => $models,
+                    'data' => $data,
+                    'pages' => $pages
+                ]);
+                ?>
             <?php endif; ?>
             <?php if (! empty($pages) && $pages->pageSize < $pages->totalCount):?>
                 <div class="holder-pagination">

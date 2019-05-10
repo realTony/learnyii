@@ -73,6 +73,17 @@ class UserBar extends Widget
                 else:
                 ?>
                     <div class="accordion-inform">
+                    <?php if(Yii::$app->user->isGuest) : ?>
+                        <div class="item">
+                            <span class="title visible"><?= Yii::t('app', 'Контактная информация') ?></span>
+                            <ul class="list-contakt">
+                                <li>
+                                    <a  href="<?= Url::toRoute(['/account#login']) ?>"><?= Yii::t('app', 'Для просмотра необходимо войти в учётную запись') ?> </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <?php else: ?>
                         <div class="item">
                             <span class="title visible"><?= Yii::t('app', 'Контактная информация') ?></span>
                             <ul class="list-contakt">
@@ -102,6 +113,7 @@ class UserBar extends Widget
                             </ul>
                         </div>
                     </div>
+                    <?php endif; ?>
                 <?php
                 endif;
             echo Html::endTag('div');
