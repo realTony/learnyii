@@ -4827,10 +4827,15 @@ hr{
     .content .title-text h1{
         padding-top: 11px;
     }
+    /*.group-content h1 {*/
+    /*    font-size: 28px;*/
+    /*    line-height: 32px;*/
+    /*}*/
     .group-content h1 {
-        font-size: 28px;
-        line-height: 32px;
+        font-size: 18px;
+        line-height: 20px;
     }
+
     .aside-right{
         overflow: visible;
     }
