@@ -599,7 +599,8 @@ $(document).ready(function() {
             thisEl.removeClass('add-input');
             $('.list-add-del > li:last').find('input:first').autocomplete({
                 source: function (request, response) {
-                    $.post("/autocomplete", {
+                    var url = $('.holder-form-search').attr('data-autocomplete');
+                    $.post(url, {
                         city: request.term
                     }, function (data) {
                         data = JSON.parse(data);
@@ -631,7 +632,8 @@ $(document).ready(function() {
         var city = $(this).parents('li').find('.field-advertisementpost-city > input').val();
         $(this).autocomplete({
             source: function (request, response) {
-                $.post("/autocomplete", {
+                var url = $('.holder-form-search').attr('data-autocomplete');
+                $.post(url, {
                     city: city,
                     district: request.term
                 }, function (data) {
@@ -862,9 +864,11 @@ function init_and_resize3(){
 
 function initDropCity(){
     if( $(document).find('input').is('.tags-city')) {
+        var url = $('.holder-form-search').attr('data-autocomplete');
+
         $('.tags-city').autocomplete({
             source: function (request, response) {
-                $.post("/autocomplete", {
+                $.post(url, {
                     city: request.term
                 }, function (data) {
                     data = JSON.parse(data);

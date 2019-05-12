@@ -23,7 +23,7 @@ class SearchAdverts extends Widget
         <div class="form-search">
             <div class="container">
                 <a class="search-query" href="#"><?= Yii::t('app', 'Поисковый запрос')?></a>
-                <div class="holder-form-search">
+                <div class="holder-form-search" data-autocomplete="<?= Url::toRoute('/autocomplete') ?>">
                     <span class="bg-search"></span>
                     <?php $form = ActiveForm::begin([
                             'action' => Url::toRoute('/search'),
