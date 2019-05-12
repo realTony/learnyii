@@ -55,7 +55,7 @@ $this->title = 'Редактирование: Главная страница';
                                                     'plugins' => [
                                                         "advlist autolink lists link charmap print preview anchor",
                                                         "searchreplace visualblocks code fullscreen",
-                                                        "insertdatetime media table contextmenu paste"
+                                                        "insertdatetime table contextmenu paste"
                                                     ],
                                                     'toolbar' => "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | responsivefilemanager link image media",
                                                     'external_filemanager_path' => '../../../plugins/responsive_filemanager/filemanager/',
@@ -133,7 +133,7 @@ $this->title = 'Редактирование: Главная страница';
                                                         'plugins' => [
                                                             "advlist autolink lists link charmap print preview anchor",
                                                             "searchreplace visualblocks code fullscreen",
-                                                            "insertdatetime media table contextmenu paste"
+                                                            "insertdatetime table contextmenu paste"
                                                         ],
                                                         'toolbar' => "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
                                                     ]
@@ -217,9 +217,50 @@ $this->title = 'Редактирование: Главная страница';
                                                     'plugins' => [
                                                         "advlist autolink lists link charmap print preview anchor",
                                                         "searchreplace visualblocks code fullscreen",
-                                                        "insertdatetime media table contextmenu paste"
+                                                        "insertdatetime table contextmenu paste"
                                                     ],
-                                                    'toolbar' => "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
+                                                    'toolbar' => "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | responsivefilemanager link image media",
+                                                    'external_filemanager_path' => '../../../plugins/responsive_filemanager/filemanager/',
+                                                    'filemanager_title' => 'Responsive Filemanager',
+                                                    'external_plugins' => [
+                                                        //Иконка/кнопка загрузки файла в диалоге вставки изображения.
+                                                        'filemanager' => '../../../plugins/responsive_filemanager/filemanager/plugin.min.js',
+                                                        //Иконка/кнопка загрузки файла в панеле иснструментов.
+                                                        'responsivefilemanager' => '../../../plugins/responsive_filemanager/tinymce/plugins/responsivefilemanager/plugin.min.js',
+                                                    ],
+                                                    'file_picker_callback' => new JsExpression("function(cb, value, meta) {
+                                                     var input = document.createElement('input');
+                                                     input.setAttribute('type', 'file');
+                                                     input.setAttribute('accept', 'image/*');
+                                                     
+                                                     // Note: In modern browsers input[type=\"file\"] is functional without 
+                                                     // even adding it to the DOM, but that might not be the case in some older
+                                                     // or quirky browsers like IE, so you might want to add it to the DOM
+                                                     // just in case, and visually hide it. And do not forget do remove it
+                                                     // once you do not need it anymore.
+                                                    
+                                                     input.onchange = function() {
+                                                       var file = this.files[0];
+                                                       
+                                                       var reader = new FileReader();
+                                                       reader.onload = function () {
+                                                         // Note: Now we need to register the blob in TinyMCEs image blob
+                                                         // registry. In the next release this part hopefully won't be
+                                                         // necessary, as we are looking to handle it internally.
+                                                         var id = 'blobid' + (new Date()).getTime();
+                                                         var blobCache =  tinymce.activeEditor.editorUpload.blobCache;
+                                                         var base64 = reader.result.split(',')[1];
+                                                         var blobInfo = blobCache.create(id, file, base64);
+                                                         blobCache.add(blobInfo);
+                                                    
+                                                         // call the callback and populate the Title field with the file name
+                                                         cb(blobInfo.blobUri(), { title: file.name });
+                                                       };
+                                                       reader.readAsDataURL(file);
+                                                     };
+                                                     
+                                                     input.click();
+                                                    }")
                                                 ]
                                             ]);?>
                                     </div>
@@ -253,7 +294,7 @@ $this->title = 'Редактирование: Главная страница';
                                                         'plugins' => [
                                                             "advlist autolink lists link charmap print preview anchor",
                                                             "searchreplace visualblocks code fullscreen",
-                                                            "insertdatetime media table contextmenu paste"
+                                                            "insertdatetime table contextmenu paste"
                                                         ],
                                                         'toolbar' => "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
                                                     ]
