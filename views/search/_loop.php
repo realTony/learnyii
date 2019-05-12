@@ -1,5 +1,6 @@
 <?php
 
+use app\components\SiteComponents;
 use app\components\TextExcerption;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -10,9 +11,12 @@ foreach ($model as $item ):
     $categories = Yii::createObject(Categories::className());
     $categories->category = $item->category_id;
     $cat  = $categories->category;
+    $likeClass = '';
+    $likeClass = (SiteComponents::checkUserFav($model->id) == true) ? 'active' : '';
+
     ?>
     <li <?php if($item->isPremium ): ?> class="premium" <?php endif; ?>>
-        <a class="like-star" href="<?= Url::toRoute('/myaccount/default/make-fav')?>" data-id="<?= $item->id ?>">&#160;</a>
+        <a class="like-star <?= $likeClass ?>" href="<?= Url::toRoute('/myaccount/default/make-fav')?>" data-id="<?= $item->id ?>">&#160;</a>
         <a href="<?= Url::to('/advertisement/page/'.$item->id)?>">
             <div class="holder-img">
                 <?php if(! empty($item->images)): ?>

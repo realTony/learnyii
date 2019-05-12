@@ -2,6 +2,7 @@
 
 use app\components\Images;
 use app\components\Premium;
+use app\components\SiteComponents;
 use app\widgets\FooterInfo;
 use app\widgets\SearchAdverts;
 use yii\helpers\Url;
@@ -81,7 +82,11 @@ use app\modules\admin\models\Categories;
 
                     ?>
                     <li <?php if(Premium::checkPrem($item->id)): ?>class="premium" <?php endif ?>>
-                        <a class="like-star" href="<?= Url::toRoute('/myaccount/default/make-fav')?>" data-id="<?= $item->id ?>">&#160;</a>
+                        <?php
+                            $likeClass = '';
+                            $likeClass = (SiteComponents::checkUserFav($item->id) == true ) ? 'active': '';
+                        ?>
+                        <a class="like-star <?= $likeClass ?>" href="<?= Url::toRoute('/myaccount/default/make-fav')?>" data-id="<?= $item->id ?>">&#160;</a>
                         <a href="<?= Url::to(['/advertisement/page/'.$item->id]) ?>">
                             <div class="holder-img" style="background: url('<?= $img ?>') no-repeat 50% 50%; background-size: cover;">
                                 <img src="<?= '/images/announcement_holder.png' ?>" alt="<?= (!empty($item->images[0])) ? $item->images[0]['alt'] : 'no-photo'?>">

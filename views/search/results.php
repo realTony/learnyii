@@ -1,6 +1,7 @@
 <?php
 
 use app\components\Premium;
+use app\components\SiteComponents;
 use app\components\TextExcerption;
 use app\widgets\FooterInfo;
 use app\widgets\SearchAdverts;
@@ -58,10 +59,12 @@ use yii\widgets\Pjax;
                     $categories = Yii::createObject(Categories::className());
                     $categories->category = $item->category_id;
                     $cat  = $categories->category;
+                    $likeClass = '';
+                    $likeClass = (SiteComponents::checkUserFav($model->id) == true) ? 'active' : '';
                 ?>
                     <li
                     <li <?php if(Premium::checkPrem($item->id)): ?>class="premium" <?php endif ?>>
-                        <a class="like-star" href="<?= Url::toRoute('/myaccount/default/make-fav')?>" data-id="<?= $item->id ?>">&#160;</a>
+                        <a class="like-star <?= $likeClass ?>" href="<?= Url::toRoute('/myaccount/default/make-fav')?>" data-id="<?= $item->id ?>">&#160;</a>
                         <a href="<?= Url::toRoute('/advertisement/page/'.$item->id)?>">
                             <div class="holder-img" style="background: url('<?= $img ?>') no-repeat center center; background-size: cover;">
                                 <?php if(! empty($item->images) && ! empty($item->images[0])): ?>

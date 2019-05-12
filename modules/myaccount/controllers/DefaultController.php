@@ -349,14 +349,21 @@ class DefaultController extends Controller
             $post = Yii::$app->request->post();
             $user = User::findOne(Yii::$app->user->id);
             $fav = Yii::createObject(UserFav::className());
-            $exists = $fav->find()->where(['advertisement_id' => $post['id']])->exists();
+            $exists = $fav->find()
+                ->where(['advertisement_id' => $post['id']])
+                ->andWhere(['user_id' => $user->id])
+                ->exists();
+
             if(! $exists) {
                 $fav->user_id = $user->id;
                 $fav->advertisement_id  = $post['id'];
                 $fav->save();
+
+                return true;
+            } else {
+                return false;
             }
 
-            return true;
         } else {
             throw new MethodNotAllowedHttpException();
         }

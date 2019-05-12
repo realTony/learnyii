@@ -1,6 +1,7 @@
 <?php
 
 use app\components\Premium;
+use app\components\SiteComponents;
 use app\components\TextExcerption;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -9,8 +10,12 @@ use yii\helpers\Url;
 <ul class="list-announcements">
 <?php
 foreach ($models as $model):?>
+    <?php
+        $likeClass = '';
+        $likeClass = (SiteComponents::checkUserFav($model->id) == true ) ? 'active': '';
+    ?>
     <li <?php if(Premium::checkPrem($model->id)): ?>class="premium" <?php endif ?>>
-        <a class="like-star" href="<?= Url::toRoute('/myaccount/default/make-fav')?>" data-id="<?= $model->id ?>">>&#160;</a>
+        <a class="like-star <?= $likeClass ?>" href="<?= Url::toRoute('/myaccount/default/make-fav')?>" data-id="<?= $model->id ?>">>&#160;</a>
         <a href="<?= Url::to('/advertisement/page/'.$model->id)?>">
             <?php
                 $img = (empty($model->images[0])) ? '/images/no-photo_item-small.png' : $model->images[0]['image_name'];

@@ -2,6 +2,7 @@
 
 use app\components\Images;
 use app\components\Premium;
+use app\components\SiteComponents;
 use app\models\Profile;
 use app\widgets\FooterInfo;
 use app\widgets\SearchAdverts;
@@ -117,10 +118,14 @@ use ymaker\social\share\widgets\SocialShare;
                 <?php foreach ($model->images as $image) :?>
                     <?php if( !strpos($image['image_name'],'thumbnail')):?>
                         <?php $img = file_exists(realpath(Yii::getAlias('@webroot').$image['image_name'])) ? $image['image_name'] : '/images/no-photo_big.png'; ?>
-                        <?php $img = \app\components\Images::isImageExists($img); ?>
+                        <?php $img = Images::isImageExists($img); ?>
                         <div>
+                            <?php
+                                $likeClass = '';
+                                $likeClass = (SiteComponents::checkUserFav($model->id) == true ) ? 'active': '';
+                            ?>
                             <div class="holder-img" style="background: url('<?= $img ?>') no-repeat center center; background-size: cover;">
-                                <a class="like-star" href="<?= Url::toRoute('/myaccount/default/make-fav')?>" data-id="<?= $model->id ?>"tabindex="0">&nbsp;</a>
+                                <a class="like-star <?= $likeClass ?>" href="<?= Url::toRoute('/myaccount/default/make-fav')?>" data-id="<?= $model->id ?>"tabindex="0">&nbsp;</a>
                                 <img src="/images/post_placeholder.png" alt="<?= $image['alt'] ?>">
                             </div>
                         </div>
