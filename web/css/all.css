@@ -3812,8 +3812,8 @@ hr{
     }
     .bread-crumbs li{
         font-size: 11px;
-        margin: 0 20px 1px 0;
-        padding: 0 0 0 26px;
+        margin: 0 10px 1px 0;
+        padding: 0 0 0 13px;
     }
     .search-negative, .not-found {
         padding: 36px 0 25px;
