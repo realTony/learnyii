@@ -767,6 +767,8 @@ h1{
 .like-star:hover,
 .like-star.active{
     background: url("../images/bg-11.png") no-repeat;
+    background-size: cover;
+    right: 21px;
 }
 .list-announcements a{
     position: relative;
