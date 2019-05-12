@@ -61,8 +61,8 @@ use yii\widgets\Pjax;
                 ?>
                     <li
                     <li <?php if(Premium::checkPrem($item->id)): ?>class="premium" <?php endif ?>>
-                        <a class="like-star" href="#">&#160;</a>
-                        <a href="<?= Url::to('/advertisement/page/'.$item->id)?>">
+                        <a class="like-star" href="<?= Url::toRoute('/myaccount/default/make-fav')?>" data-id="<?= $item->id ?>">&#160;</a>
+                        <a href="<?= Url::toRoute('/advertisement/page/'.$item->id)?>">
                             <div class="holder-img" style="background: url('<?= $img ?>') no-repeat center center; background-size: cover;">
                                 <?php if(! empty($item->images) && ! empty($item->images[0])): ?>
                                     <img src="/images/avatar-holder.png" alt="<?= $item->images[0]['alt']?>">

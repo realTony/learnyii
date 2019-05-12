@@ -281,12 +281,15 @@ $(document).ready(function() {
     // like-heart active
     $(".like-star").on('click', function (e) {
 
-        var id = $(this).attr('data-id');
-        var _csrf = $('[name = "_csrf"]').val();
+
+        e.preventDefault();
         var $self = $(this);
-        if (!$(this).hasClass('active')) {
+        var id = $self.attr('data-id');
+        var url = $self.attr('href');
+        var _csrf = $('[name = "_csrf"]').val()
+        if (!$self.hasClass('active')) {
             $.ajax({
-                url: '/myaccount/default/make-fav',
+                url: url,
                 type: 'POST',
                 data: {
                     id: id,
@@ -299,7 +302,7 @@ $(document).ready(function() {
             });
         } else {
             $.ajax({
-                url: '/myaccount/default/remove-fav',
+                url: url.replace('make-fav', 'remove-fav'),
                 type: 'POST',
                 data: {
                     id: id,
@@ -311,8 +314,6 @@ $(document).ready(function() {
                 }
             });
         }
-
-        e.preventDefault();
     });
 
     $('.pjax-buttons').on('click', function (e) {

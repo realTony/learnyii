@@ -12,7 +12,7 @@ foreach ($model as $item ):
     $cat  = $categories->category;
     ?>
     <li <?php if($item->isPremium ): ?> class="premium" <?php endif; ?>>
-        <a class="like-star" href="#">&#160;</a>
+        <a class="like-star" href="<?= Url::toRoute('/myaccount/default/make-fav')?>" data-id="<?= $item->id ?>">&#160;</a>
         <a href="<?= Url::to('/advertisement/page/'.$item->id)?>">
             <div class="holder-img">
                 <?php if(! empty($item->images)): ?>

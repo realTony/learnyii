@@ -120,7 +120,7 @@ use ymaker\social\share\widgets\SocialShare;
                         <?php $img = \app\components\Images::isImageExists($img); ?>
                         <div>
                             <div class="holder-img" style="background: url('<?= $img ?>') no-repeat center center; background-size: cover;">
-                                <a class="like-star" href="#" tabindex="0">&nbsp;</a>
+                                <a class="like-star" href="<?= Url::toRoute('/myaccount/default/make-fav')?>" data-id="<?= $model->id ?>"tabindex="0">&nbsp;</a>
                                 <img src="/images/post_placeholder.png" alt="<?= $image['alt'] ?>">
                             </div>
                         </div>
@@ -133,7 +133,7 @@ use ymaker\social\share\widgets\SocialShare;
                     <?php $img = \app\components\Images::isImageExists($img); ?>
                     <div>
                         <div class="holder-img" style="background: url('<?= $img ?>') no-repeat center center; background-size: cover;">
-                            <a class="like-star" href="#" tabindex="0">&nbsp;</a>
+                            <a class="like-star" href="<?= Url::toRoute('/myaccount/default/make-fav')?>" tabindex="0">&nbsp;</a>
                             <img src="/images/post_placeholder.png" alt="no photo">
                         </div>
                     </div>
@@ -210,7 +210,7 @@ use ymaker\social\share\widgets\SocialShare;
                     Images::isThumbnailExists($images);
                 ?>
                     <li <?php if(Premium::checkPrem($item->id)): ?>class="premium"<?php endif; ?>>
-                        <a class="like-star" href="#" data-id="<?= $item->id ?>">&#160;</a>
+                        <a class="like-star" href="<?= Url::toRoute('/myaccount/default/make-fav')?>" data-id="<?= $item->id ?>">&#160;</a>
                         <a href="<?= Url::to('/advertisement/page/'.$item->id)?>">
                             <div class="holder-img" style="background: url('<?= $images ?>') no-repeat center center; background-size: cover;">
                                 <img src="/images/avatar-holder.png" alt="<?= (empty($item->images[0]['alt']) ? 'no-photo' : $item->images[0]['alt'])?>">

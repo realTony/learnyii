@@ -10,7 +10,7 @@ use yii\helpers\Url;
 <?php
 foreach ($models as $model):?>
     <li <?php if(Premium::checkPrem($model->id)): ?>class="premium" <?php endif ?>>
-        <a class="like-star" href="#" data-id="<?= $model->id ?>">&#160;</a>
+        <a class="like-star" href="<?= Url::toRoute('/myaccount/default/make-fav')?>" data-id="<?= $model->id ?>">>&#160;</a>
         <a href="<?= Url::to('/advertisement/page/'.$model->id)?>">
             <?php
                 $img = (empty($model->images[0])) ? '/images/no-photo_item-small.png' : $model->images[0]['image_name'];
