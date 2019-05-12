@@ -560,8 +560,10 @@ $(document).ready(function() {
 
     //popup-profile
     $(".btn-profile").click(function(){
-        $('.popup-profile').fadeIn();
-        return false;
+        if(!$(this).is('.btn-login')) {
+            $('.popup-profile').fadeIn();
+            return false;
+        }
     });
     $(".closed-popup-profile").click(function(){
         $('.popup-profile').fadeOut();
