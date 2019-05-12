@@ -6,6 +6,8 @@ use Yii;
 use app\models\Settings;
 use app\models\SettingsSearch;
 use app\modules\admin\models\SettingsFormModel;
+use yii\base\DynamicModel;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -31,7 +33,7 @@ class SettingsController extends Controller
         ];
     }
 
-    public function beforeAction($action) : void
+    public function beforeAction($action)
     {
         if (Yii::$app->user->isGuest) {
             Yii::$app->response->redirect(['account#login']);
@@ -61,10 +63,31 @@ class SettingsController extends Controller
     {
         $model = new SettingsFormModel();
         $settings = Yii::createObject(Settings::className())->find()->all();
-        $propList = array_keys(get_object_vars($model));
+        $additions = Yii::createObject(Settings::className())->find()->
+        where(['in', 'name', ['main_slider_max', 'advertisement_pageSize', 'vip_message_ru', 'vip_message_uk',
+            'liqpay_public_key', 'premium_alert_message', '']])->all();
 
+        $propList = array_keys(get_object_vars($model));
         foreach ($settings as $option) {
             $name = $option['name'];
+
+            //Lil bit fast hardcode not to change previous DB structure
+            if( $name == 'account_settings') {
+                break;
+            }
+
+            $val = $option['option_value'];
+            $model->$name = $val;
+        }
+
+        foreach ($additions as $option) {
+            $name = $option['name'];
+
+            //Lil bit fast hardcode not to change previous DB structure
+            if( $name == 'account_settings') {
+                break;
+            }
+
             $val = $option['option_value'];
             $model->$name = $val;
         }
@@ -74,8 +97,6 @@ class SettingsController extends Controller
         }
         return $this->render('main', [
             'model' => $model
-//            'searchModel' => $searchModel,
-//            'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -165,8 +186,72 @@ class SettingsController extends Controller
         return $this->render('menu');
     }
 
-    public function actionSeo()
+    public function actionSeo() : string
     {
-        return $this->render('seo-settings');
+        $options = (Yii::createObject(Settings::className()))
+            ->find()
+            ->where(['>=', 'id', '8'])
+            ->all();
+        $options = ArrayHelper::map($options,'name', 'option_value');
+
+        $model = new DynamicModel($options);
+        $attributes = $model->getAttributes();
+
+        foreach ($attributes as $attribute => $val) {
+            if(! empty($val)) {
+                $val = json_decode($val, true);
+            }
+
+            $default = [
+                'lang' => 0,
+                'options' => [
+                    'seo_title' => '',
+                    'seo_description' => '',
+                    'seo_text' => '',
+                    'no_index' => 0,
+                    'no_follow' => 0,
+                ],
+                'translation' => [
+                    'seo_title' => '',
+                    'seo_description' => '',
+                    'seo_text' => '',
+                    'no_index' => 0,
+                    'no_follow' => 0,
+                ]
+            ];
+
+            $model->$attribute = (empty($val)) ? $default : $val;
+        }
+
+        if(Yii::$app->request->isPost) {
+            $post = Yii::$app->request->post();
+            $formData = $post['DynamicModel'];
+            $settingsModel = new SaveDynamicSettings();
+
+            if( $settingsModel->load($formData) && $settingsModel->saveSettings()) {
+                Yii::$app->response->redirect(['/admin/settings/seo']);
+            }
+        }
+
+        Yii::$app->getView()->title = Yii::t('app', 'Настройки SEO');
+        return $this->render('seo-settings', [
+            'model' => $model,
+            'options' => $attributes
+        ]);
+    }
+
+    public function getLabels() : array
+    {
+        $labels = [
+            'account_settings' => Yii::t('app', 'Кабинет'),
+            'account_create_settings' => Yii::t('app', 'Новое объявление'),
+            'news_settings' => Yii::t('app', 'Новости'),
+            'search_settings' => Yii::t('app', 'Поиск'),
+            'advertisement_settings' => Yii::t('app', 'Объявления'),
+            'inner_advertisement' => Yii::t('app', 'Внутренняя страница объявлений'),
+            'user_advertisement' => Yii::t('app', 'Объявления пользователя'),
+        ];
+
+        return $labels;
     }
 }
