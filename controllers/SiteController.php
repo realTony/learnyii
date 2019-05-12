@@ -225,7 +225,7 @@ class SiteController extends Controller
 
             if(! empty($model->options)) {
                 $model->options->content = (!empty($model->options->content)) ? $model->options->content : '';
-                $model->options->content = ($currentLang == 'uk' && !empty($model->options->content)) ? $model->options->content : $model->options->content;
+                $model->options->content = ($currentLang == 'uk' && !empty($model->options->content)) ? $model->translation->content : $model->options->content;
             }
 
             $breadcrumbs = ['label' => Yii::t('app', $metaData['title'] )];
@@ -256,10 +256,11 @@ class SiteController extends Controller
         }
 
         $currentLang = (Yii::$app->language == 'ru-Ru') ? 'ru' : 'uk';
-       if(! empty($model->options)) {
+
+        if(! empty($model->options)) {
            $model->options->content = (!empty($model->options->content))? $model->options->content : '';
            $model->options->content = ($currentLang == 'uk' && !empty($model->options->content)) ? $model->translation->content : $model->options->content;
-       }
+        }
 
         $model->title = $metaData['title'];
         $breadcrumbs = ['label' => Yii::t('app', $metaData['title'] )];
