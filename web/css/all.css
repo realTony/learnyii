@@ -5617,6 +5617,10 @@ hr{
         background: #f7f7fa;
         border-color: transparent;
     }
+    .mobile-nav-btn a.btn-profile {
+        border-radius: 50%;
+        border-style: none;
+    }
     .promo-slider .slick-prev, .promo-slider .slick-next {
         top: 100%;
         margin: -51px 0 0;
