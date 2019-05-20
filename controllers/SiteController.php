@@ -75,8 +75,11 @@ class SiteController extends Controller
 
 
         if (! empty($model->options->promo)) {
-            $categories->catName = (! empty($model->options->promo)) ? array_values((array)$model->options->promo) : [];
             $categories->category = (! empty($model->options->promo)) ? array_values((array)$model->options->promo) : [];
+
+            if(! empty($categories->category)) {
+                $categories->catName = (! empty($model->options->promo)) ? array_values((array)$model->options->promo) : [];
+            }
         }
 
         $slider = $model->imagesLinks;
