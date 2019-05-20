@@ -1,14 +1,14 @@
 $(document).on('load ready', function (e) {
-    // resolutions();
-    // resolutions1();
-    // resolutions2();
-    // resolutions3();
-    // init_and_resize();
-    // init_and_resize1();
-    // init_and_resize2();
-    // init_and_resize3();
-    //
-    // $('.form-content:last').css({display: 'none'});
+    resolutions();
+    resolutions1();
+    resolutions2();
+    resolutions3();
+    init_and_resize();
+    init_and_resize1();
+    init_and_resize2();
+    init_and_resize3();
+
+    $('.form-content:last').css({display: 'none'});
 });
 
 $(document).ready(function() {
@@ -24,19 +24,19 @@ $(document).ready(function() {
         $('.slider-arrow').css({opacity: 1});
     }
 
-    // $(window).resize(function () {
-    //     init_and_resize();
-    //     init_and_resize1();
-    //     init_and_resize2();
-    //     init_and_resize3();
-    // });
-    // acardionMobileAside();
-    // initTabs();
-    // blockText();
-    // accordion();
-    // asideAccordion();
-    // initDropCity();
-    // initDropDistrict();
+    $(window).resize(function () {
+        init_and_resize();
+        init_and_resize1();
+        init_and_resize2();
+        init_and_resize3();
+    });
+    acardionMobileAside();
+    initTabs();
+    blockText();
+    accordion();
+    asideAccordion();
+    initDropCity();
+    initDropDistrict();
 
     $('#widget').draggable();
 
