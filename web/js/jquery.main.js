@@ -674,17 +674,17 @@ $(document).ready(function() {
     });
 
     //up page
-    $(window).scroll(function(){
-        if ($(window).scrollTop() > $(window).height()/2) {
-            $('.up:hidden').fadeIn(300);
-        } else {
-            $('.up:visible').fadeOut(300);
-        }
-    });
-    $('.up').click(function(){
-        $('body, html').stop().animate({scrollTop:0},300);
-        return false;
-    });
+    // $(window).scroll(function(){
+    //     if ($(window).scrollTop() > $(window).height()/2) {
+    //         $('.up:hidden').fadeIn(300);
+    //     } else {
+    //         $('.up:visible').fadeOut(300);
+    //     }
+    // });
+    // $('.up').click(function(){
+    //     $('body, html').stop().animate({scrollTop:0},300);
+    //     return false;
+    // });
 
 
     $(document).click(function(event) {
