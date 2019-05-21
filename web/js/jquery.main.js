@@ -682,7 +682,7 @@ $(document).ready(function() {
         }
     });
     $('.up').click(function(){
-        // $('body, html').stop().animate({scrollTop:0},300);
+        $('body, html').stop().animate({scrollTop:0},300);
         return false;
     });
 
