@@ -15,7 +15,7 @@ foreach ($models as $model):?>
         $likeClass = (SiteComponents::checkUserFav($model->id) == true ) ? 'active': '';
     ?>
     <li <?php if(Premium::checkPrem($model->id)): ?>class="premium" <?php endif ?>>
-        <a class="like-star <?= $likeClass ?>" href="<?= Url::toRoute('/myaccount/default/make-fav')?>" data-id="<?= $model->id ?>">>&#160;</a>
+        <a class="like-star <?= $likeClass ?>" href="<?= Url::toRoute('/myaccount/default/make-fav')?>" data-id="<?= $model->id ?>">&#160;</a>
         <a href="<?= Url::to('/advertisement/page/'.$model->id)?>">
             <?php
                 $img = (empty($model->images[0])) ? '/images/no-photo_item-small.png' : $model->images[0]['image_name'];
