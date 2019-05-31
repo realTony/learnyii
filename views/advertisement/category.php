@@ -65,9 +65,9 @@ $this->params['breadcrumbs'] = $breadcrumbs;
             ]) ?>
             <?php Pjax::begin([
                 'id' => 'search-sort',
-                'enablePushState' => false,
                 'timeout' => false,
-                'formSelector' => '#sortingForm'
+                'formSelector' => '#sortingForm',
+                'enablePushState' => true
             ]) ?>
 
                 <?= $this->render('_loop', [

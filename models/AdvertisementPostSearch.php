@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\AdvertisementPost;
@@ -141,8 +142,8 @@ class AdvertisementPostSearch extends AdvertisementPost
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
-                'pageSize' => 29,
-                'pageSizeLimit' => 29,
+                'pageSize' => Yii::$app->params['pageSize'],
+                'pageSizeLimit' => Yii::$app->params['pageSize'],
             ],
             'sort' => [
                 'defaultOrder' => [

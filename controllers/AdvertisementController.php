@@ -22,7 +22,6 @@ use yii\web\NotFoundHttpException;
 class AdvertisementController extends Controller
 {
 
-    const PAGE_SIZE = 29;
 
     public function behaviors()
     {
@@ -115,7 +114,7 @@ class AdvertisementController extends Controller
 
             $pages = new Pagination([
                 'totalCount' => $dataProvider->getTotalCount(),
-                'pageSize' => self::PAGE_SIZE,
+                'pageSize' => Yii::$app->params['pageSize']
 
             ]);
 
@@ -253,7 +252,7 @@ class AdvertisementController extends Controller
 
             $pages = new Pagination([
                 'totalCount' => $dataProvider->getTotalCount(),
-                'pageSize' => self::PAGE_SIZE,
+                'pageSize' => Yii::$app->params['pageSize'],
 
             ]);
 
@@ -399,7 +398,7 @@ class AdvertisementController extends Controller
 
             $pages = new Pagination([
                 'totalCount' => $dataProvider->getTotalCount(),
-                'pageSize' => self::PAGE_SIZE,
+                'pageSize' => Yii::$app->params['pageSize'],
 
             ]);
 
@@ -526,8 +525,8 @@ class AdvertisementController extends Controller
 
             $pages = new Pagination([
                 'totalCount' => $dataProvider->getTotalCount(),
-                'pageSize' => self::PAGE_SIZE,
-                'pageSizeLimit' => self::PAGE_SIZE
+                'pageSize' => Yii::$app->params['pageSize'],
+                'pageSizeLimit' => Yii::$app->params['pageSize']
 
             ]);
 
@@ -612,7 +611,7 @@ class AdvertisementController extends Controller
 
         $pages = new Pagination([
             'totalCount' => $dataProvider->getTotalCount(),
-            'pageSize' => self::PAGE_SIZE,
+            'pageSize' => Yii::$app->params['pageSize'],
 
         ]);
 

@@ -1,6 +1,6 @@
 <?php
 
-use ymaker\social\share\drivers\Facebook;
+use     ymaker\social\share\drivers\Facebook;
 use ymaker\social\share\drivers\Telegram;
 use ymaker\social\share\drivers\Viber;
 use ymaker\social\share\drivers\WhatsApp;
@@ -230,14 +230,14 @@ if (YII_ENV_DEV) {
     $config['modules']['debug'] = [
         'class' => 'yii\debug\Module',
         // uncomment the following to add your IP if you are not connecting from localhost.
-        'allowedIPs' => ['192.168.1.10', '::1'],
+        'allowedIPs' => ['127.0.0.1', '::1'],
     ];
 
     $config['bootstrap'][] = 'gii';
     $config['modules']['gii'] = [
         'class' => 'yii\gii\Module',
         // uncomment the following to add your IP if you are not connecting from localhost.
-        'allowedIPs' => ['192.168.1.10', '::1'],
+        'allowedIPs' => ['127.0.0.1', '::1'],
     ];
 }
 return $config;
