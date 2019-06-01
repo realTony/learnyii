@@ -6,6 +6,7 @@ use Yii;
 use app\models\Settings;
 use app\models\SettingsSearch;
 use app\modules\admin\models\SettingsFormModel;
+use app\modules\admin\models\SaveDynamicSettings;
 use yii\base\DynamicModel;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
