@@ -60,7 +60,7 @@ use yii\widgets\Pjax;
                     $categories->category = $item->category_id;
                     $cat  = $categories->category;
                     $likeClass = '';
-                    $likeClass = (SiteComponents::checkUserFav($model->id) == true) ? 'active' : '';
+                    $likeClass = (SiteComponents::checkUserFav($item->id) == true) ? 'active' : '';
                 ?>
                     <li
                     <li <?php if(Premium::checkPrem($item->id)): ?>class="premium" <?php endif ?>>

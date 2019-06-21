@@ -92,6 +92,24 @@ class Module extends \yii\base\Module
                     ]
                 ],
                 [
+                    'label' => 'Объявления',
+                    'url' => ['/admin/blog'],
+                    'template' => '<a href="#"><i class="icon-folder"></i><span>{label}</span></a>',
+                    'controller' => 'blog',
+                    'items' => [
+                        [
+                            'label' => 'Список объявлений',
+                            'url' => ['/admin/advertisement'],
+                            'template' => '<a href="{url}"><span>{label}</span></a>'
+                        ],
+                        [
+                            'label' => 'Архив объявлений',
+                            'url' => ['/admin/advertisement/archive'],
+                            'template' => '<a href="{url}"><span>{label}</span></a>'
+                        ],
+                    ]
+                ],
+                [
                     'label' => 'Премиум модели',
                     'url' => ['/admin/premium'],
                     'template' => '<a href="{url}"><i class="icon-diamond"></i><span>{label}</span></a>',

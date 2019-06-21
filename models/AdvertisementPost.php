@@ -85,9 +85,9 @@ class AdvertisementPost extends \yii\db\ActiveRecord
             'sticking_area' => Yii::t('app', 'Sticking Area'),
             'authorId' => Yii::t('app', 'Author ID'),
             'showEmail' => Yii::t('app', 'Show Email'),
-            'isPremium' => Yii::t('app', 'Is Premium'),
+            'isPremium' => Yii::t('app', 'Премиум'),
             'coverage_type' => Yii::t('app', 'Coverage Type'),
-            'published_at' => Yii::t('app', 'Published At'),
+            'published_at' => Yii::t('app', 'Дата публикации'),
             'city' => Yii::t('app', 'Город')
         ];
     }

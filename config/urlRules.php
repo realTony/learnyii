@@ -19,6 +19,8 @@ return [
     'user/recover/<id:\d+>/<code:[A-Za-z0-9_-]+>' => 'user/recovery/reset',
     'admin/blog' => 'admin/blog/index',
     'admin/pages' => 'admin/pages/index',
+    'admin/advertisement' => 'admin/advertisement/index',
+    'admin/advertisement/archive' => 'admin/advertisement/archive',
     'admin/categories' => 'admin/categories/index',
     'admin/users' => 'admin/user/index',
     'admin/settings' => 'admin/settings/index',
