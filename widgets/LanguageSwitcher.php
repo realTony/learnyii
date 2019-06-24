@@ -45,6 +45,10 @@ class LanguageSwitcher extends Widget
                 'label' => self::label($language),
                 'url' => $params,
             ];
+
+//            if(Yii::$app->language == 'uk-Uk') {
+                $this->items = array_reverse($this->items);
+//            }
         }
 
         parent::init();
@@ -64,7 +68,7 @@ class LanguageSwitcher extends Widget
                 if($lang['url']['active']) {
                     $activeClass = 'active';
                 }
-                $link = str_replace('/uk', '', Url::current());
+                $link = str_replace('/ru', '', Url::current());
 
 
                 $langList .= "<li class=\"$activeClass\">";
@@ -81,8 +85,8 @@ class LanguageSwitcher extends Widget
     {
         if (self::$_labels === null) {
             self::$_labels = [
-                'ru-Ru' => Yii::t('app', 'Рус'),
                 'uk-Uk' => Yii::t('app', 'Укр'),
+                'ru-Ru' => Yii::t('app', 'Рус'),
             ];
         }
 
