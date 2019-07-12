@@ -6,16 +6,18 @@ class LoginCest
 {
     public function ensureThatLoginWorks(AcceptanceTester $I)
     {
-        $I->amOnPage(Url::toRoute('/site/login'));
-        $I->see('Login', 'h1');
+        $I->amOnPage('/account#login');
+        $I->see('Вхід', 'a');
 
         $I->amGoingTo('try to login with correct credentials');
-        $I->fillField('input[name="LoginForm[username]"]', 'admin');
-        $I->fillField('input[name="LoginForm[password]"]', 'admin');
-        $I->click('login-button');
+        $I->click('input[name="LoginForm[email]"]');
+        $I->fillField('input[name="LoginForm[email]"]', 'diamantweb.dev3@gmail.com');
+        $I->click('input[name="LoginForm[password]"]');
+        $I->fillField('input[name="LoginForm[password]"]', 'test123');
+        $I->click('.btn-orange');
         $I->wait(2); // wait for button to be clicked
 
         $I->expectTo('see user info');
-        $I->see('Logout');
+        $I->see('Особистий кабінет');
     }
 }

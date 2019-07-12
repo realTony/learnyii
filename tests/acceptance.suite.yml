@@ -3,8 +3,8 @@ modules:
     enabled:
         - WebDriver:
             url: http://stickit.loc/
-            browser: firefox
+            browser: chrome
         - Yii2:
             part: orm
-            entryScript: index-test.php
+            entryScript: index.php
             cleanup: false

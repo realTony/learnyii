@@ -30,14 +30,14 @@ $config = [
         ],
         'assetManager' => [
             'linkAssets' => true,
-            'bundles' => array(
+            'bundles' => [
                 'yii\web\JqueryAsset' => array(
                     'sourcePath' => '@web',
                     'js' => array(
                         'js/jquery.min.js',
                     ),
                 ),
-            )
+            ]
         ],
         'authClientCollection' => [
             'class' => 'yii\authclient\Collection',

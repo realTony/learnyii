@@ -65,7 +65,8 @@ class Cities extends \yii\db\ActiveRecord
             $citiesList = ArrayHelper::map($cities, 'id', 'name');
 
         foreach ($citiesList as $k => $item) {
-            $citiesList[$k] = Html::encode($item);
+            $item = str_replace('\'', '', $item);
+            $citiesList[$k] = $item;
         }
 
         return $citiesList;

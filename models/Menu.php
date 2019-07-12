@@ -156,15 +156,14 @@ class Menu extends ActiveRecord
         $parent = self::find(['id'])->asArray()->where(['like', 'name', $parentName])->one();
         $result = [];
         $menu = self::find()->asArray()->indexBy('id')->where(['parent' => $parent['id']])->orderBy('order')->all();
-
         foreach ($menu as $item){
             if($item['is_active']) {
                 $items = [
                     'label' => Yii::t('app', $item['name']),
                     'url' => Url::toRoute($item['route']),
                 ];
+                $result[] = $items;
             }
-            $result[] = $items;
         }
         return $result;
     }

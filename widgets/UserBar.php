@@ -94,7 +94,7 @@ class UserBar extends Widget
                                 <?php endif; ?>
                                 <?php if(! empty($profile->viber)):?>
                                     <li>
-                                        <i class="fab fa-viber"></i> <a href="viber://chat?number=<?= $profile->viber ?>"><?= $profile->viber ?></a>
+                                        <i class="fab fa-viber"></i> <a href="<?= $profile->viber ?>"><?= $profile->viber ?></a>
                                     </li>
                                 <?php endif; ?>
                                 <?php if(! empty($profile->telegram)):?>

@@ -36,7 +36,7 @@ class SocialList extends Widget
             ],
             'site_viber' => [
                 'class' => 'fa-half fa-viber',
-                'url' => 'viber://chat?number=%2B'
+                'url' => ''
             ]
     ];
 

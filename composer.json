@@ -32,7 +32,8 @@
         "brussens/yii2-bootstrap-select": "*",
         "yiimaker/yii2-social-share": "^2.3",
         "liqpay/liqpay": "^1.2",
-        "tinymce/tinymce": "4.9.4"
+        "tinymce/tinymce": "4.9.4",
+        "yiisoft/yii2-bootstrap4": "^2.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

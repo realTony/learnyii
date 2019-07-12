@@ -39,8 +39,6 @@ class PremiumDemonController extends Controller
 
     public function actionSendNotifications()
     {
-        $startTime = microtime(true);
-        $endTime = false;
         $userPurchases = new UserPremiumAdvertisement();
         $settings = new Settings();
         $currentDate = (new \DateTime());
@@ -79,5 +77,20 @@ class PremiumDemonController extends Controller
         }
 
         $endTime = microtime(true);
+    }
+
+    public function actionArchivate()
+    {
+
+        $advertisements = (new AdvertisementPost())
+            ->find()
+            ->where(['not', ['is_archived' => 1]])
+            ->all();
+
+        foreach ($advertisements as $post) {
+            $post->is_archived = 1;
+
+            $post->update();
+        }
     }
 }
