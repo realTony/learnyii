@@ -1,3 +1,6 @@
 #edit-image-form input{
     display: none;
 }
+.img-container img{
+    max-width: 100%;
+}

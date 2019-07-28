@@ -5,6 +5,7 @@ use app\components\Premium;
 use app\components\SiteComponents;
 use app\widgets\FooterInfo;
 use app\widgets\SearchAdverts;
+use yii\bootstrap4\Modal;
 use yii\helpers\Url;
 use app\modules\admin\models\Categories;
 

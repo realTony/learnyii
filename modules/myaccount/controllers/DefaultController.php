@@ -168,7 +168,7 @@ class DefaultController extends Controller
             ]);
 
         }
-        return $this->render('edit.twig', [
+        return $this->render('user_edit.php', [
             'model' => $editProfile,
             'changePassword' => $changePassword,
             'uploadImage' => $uploadImage,
@@ -629,7 +629,7 @@ class DefaultController extends Controller
                 $model->deleteCurrentImage($profile->profile_image);
             }
 
-            $file = UploadedFile::getInstance($model, 'imageFile');
+            $file = UploadedFile::getInstanceByName('imageFile');
             $editProfile->saveImage($model->uploadImage($file, $profile->profile_image));
         }
         Yii::$app->response->redirect(['myaccount/edit']);

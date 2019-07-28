@@ -37,7 +37,19 @@ $config = [
                         'js/jquery.min.js',
                     ),
                 ),
-            ]
+                'yii\bootstrap4\BootstrapAsset' => [
+                    'sourcePath' => '@app/assets/source/bootstrap/dist',
+                    'css' => [
+                        YII_ENV_DEV ? 'css/bootstrap.css' : 'css/bootstrap.min.css',
+                    ],
+                ],
+                'yii\bootstrap4\BootstrapPluginAsset' => [
+                    'sourcePath' => '@app/assets/source/bootstrap/dist',
+                    'js' => [
+                        YII_ENV_DEV ? 'js/bootstrap.js' : 'js/bootstrap.min.js',
+                    ]
+                ],
+            ],
         ],
         'authClientCollection' => [
             'class' => 'yii\authclient\Collection',

@@ -156,15 +156,115 @@ $(document).ready(function() {
         });
     });
     $('.edit-photo a#save-photo').on('click', function (e) {
-        alert();
-        // e.preventDefault();
-        // e.stopPropagation();
-        // var $imageInput = $('#edit-image-form').find('[type = file]');
-        // $imageInput.trigger('click');
-        // $imageInput.on('change', function () {
-        //     $('#edit-image-form').trigger('submit');
-        // });
+        e.preventDefault();
+        e.stopPropagation();
+        let $imageInput = $('#edit-image-form').find('[type = file]');
+        let avatar = document.getElementById('avatar_big');
+        let $modal = $('#photo-modal');
+        let cropper;
+        let avatarFile = null;
+
+        $imageInput.trigger('click');
+        $imageInput.on('change', function (e) {
+            let files = e.target.files;
+            let done = function(url) {
+                $imageInput[0].value.value = '';
+                avatar.src = url;
+                $modal.modal('show');
+            };
+            let file;
+            let url;
+            let reader;
+
+            if( files && files.length > 0) {
+                file = files[0];
+                if(URL) {
+                    avatarFile = file;
+                    done(URL.createObjectURL(file));
+                } else if (FileReader) {
+                    reader = new FileReader();
+                    reader.onload = function (e) {
+                        done(reader.result);
+                    };
+                    reader.readAsDataURL(file);
+                }
+
+            }
+        });
+        $modal.on('shown.bs.modal', function () {
+            cropper = new Cropper(avatar, {
+                aspectRatio: 1,
+                viewMode: 3,
+                cropBoxResizable: false,
+                minCropBoxHeight: 210,
+                maxCropBoxHeight: 210,
+                minCropBoxWidth: 210,
+                maxCropBoxWidth: 210
+            });
+        }).on('hidden.bs.modal', function () {
+            cropper.destroy();
+            cropper = null;
+        });
+
+        document.getElementById('avatar_crop').addEventListener('click', function () {
+            let initialAvatarUrl;
+            let canvas;
+
+            $modal.modal('hide');
+
+            if(cropper) {
+                canvas = cropper.getCroppedCanvas({
+                    width: 210,
+                    height: 210
+                });
+                initialAvatarUrl = avatar.src;
+                avatar.src = canvas.toDataURL();
+
+                canvas.toBlob(function (blob) {
+                    let formData = new FormData();
+                    let action = document.getElementById('edit-image-form').action;
+
+                    formData.append('imageFile', blob, avatarFile.name);
+
+                    $.ajax(action, {
+                        method: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+
+                        xhr: function () {
+                            let xhr = new XMLHttpRequest();
+
+                            xhr.upload.onprogress = function (e) {
+                              var percent = 0;
+                              var percentage = '0%';
+
+                              if(e.lengthComputable) {
+                                  percent = Math.round((e.loaded / e.total)* 100);
+                                  percentage = percent+'%';
+                                  console.log(percentage);
+                              }
+                            };
+
+                            return xhr;
+                        },
+                        success: function () {
+                        },
+                        error: function () {
+                            avatar.src = initialAvatarUrl;
+                        },
+                        complete: function () {
+                        }
+                    })
+
+                });
+            }
+        });
+        document.getElementById('avatar_cancel').addEventListener('click', function () {
+            $modal.modal('hide');
+        });
     });
+
     $('.list-img').on('change', 'input[type=file]', function (e) {
         var fileSrc = e.target.files;
         var input = $(this).clone().val('');

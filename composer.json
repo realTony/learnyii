@@ -75,6 +75,9 @@
             ]
         }
     },
+    "replace": {
+        "npm-asset/bootstrap": ">=4.2.1"
+    },
     "repositories": [
         {
             "type": "composer",
