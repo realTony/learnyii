@@ -177,14 +177,17 @@ $config = [
         'db' => $db,
         'urlManager' => [
             'class' => 'codemix\localeurls\UrlManager',
-            'languages' => ['ru' => 'ru-Ru', 'uk' => 'uk-Uk'],
+            'languages' => [
+                'uk' => 'uk-Uk',
+                'ru' => 'ru-Ru'
+            ],
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => $urlRules,
-            'ignoreLanguageUrlPatterns' => [
-                // route pattern => url pattern
-                '#^site/(login|register)#' => '#^(signin|signup)#',
-            ],
+//            'ignoreLanguageUrlPatterns' => [
+//                // route pattern => url pattern
+//                '#^site/(login|register)#' => '#^(signin|signup)#',
+//            ],
         ],
         'i18n' =>[
             'translations' => [

@@ -40,14 +40,13 @@ class LanguageSwitcher extends Widget
             }
 
             $params['language'] = $language;
-
             $this->items[] = [
                 'label' => self::label($language),
                 'url' => $params,
             ];
 
 //            if(Yii::$app->language == 'uk-Uk') {
-                $this->items = array_reverse($this->items);
+//                $this->items = array_reverse($this->items);
 //            }
         }
 
@@ -64,7 +63,7 @@ class LanguageSwitcher extends Widget
         } else {
             foreach ($this->items as $lang) {
                 $activeClass = '';
-                $currLang = ($lang['url']['language'] == 'ru-Ru') ? 'ru' : 'uk';
+                $currLang = ($lang['url']['language'] == 'uk-Uk') ? 'uk' : 'ru';
                 if($lang['url']['active']) {
                     $activeClass = 'active';
                 }
