@@ -6,6 +6,8 @@ use app\models\AdvertisementPost;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use yii\db\ActiveRecord;
+use yii\db\Expression;
 
 /**
  * AdvertisementPostSearch represents the model behind the search form of `app\models\AdvertisementPost`.
@@ -19,6 +21,30 @@ class AdvertisementPostSearch extends AdvertisementPost
     public $district;
     public $orderBy;
     public $user_id;
+
+    public $filters = [
+        'city' => '',
+        'district' => '',
+        'subCat_id' => '',
+        'minPrice' => '',
+        'maxPrice' => '',
+        'minDistance' => '',
+        'maxDistance' => '',
+        'stickingArea' => '',
+        'extraFilter' => '',
+        'subCategory' => '',
+        'is_approved' => ['type'=>'boolean', 'value'=>0],
+        'isPremium' => ['type'=>'boolean', 'value'=>0],
+        'is_banned' => ['type'=>'boolean', 'value'=>0],
+        'is_archived' => ['type'=>'boolean', 'value'=>0],
+    ];
+
+    public $ordering = [
+        'default' => '`pr`.`isUp` DESC, `pr`.`isTop` DESC, {{%advertisement_post}}.`published_at` DESC',
+        'price_asc' => '`pr`.`isUp` DESC, `pr`.`isTop` DESC, pricePerMonth ASC',
+        'price_desc' => '`pr`.`isUp` DESC, `pr`.`isTop` DESC, pricePerMonth DESC',
+        'popular' => '`pr`.`isUp` DESC, `pr`.`isTop` DESC, {{%advertisement_post}}.views DESC',
+    ];
 
     public function rules()
     {
@@ -178,9 +204,11 @@ class AdvertisementPostSearch extends AdvertisementPost
             ],
             'sort' => [
                 'defaultOrder' => [
-                    'isPremium' => SORT_DESC,
+//                    'isPremium' => SORT_DESC,
+//                    '`upa`.`id`' => SORT_DESC,
                     'published_at' => SORT_DESC,
-                ]
+                ],
+                'attributes' => ['`upa`.`id`','published_at',]
             ],
         ]);
 
@@ -262,6 +290,7 @@ class AdvertisementPostSearch extends AdvertisementPost
         $query
             ->andWhere(['is_approved' => 1])
             ->andWhere(['is_banned' => 0])
+            ->andWhere(['isPremium' => 0])
             ->andWhere(['is_archived' => 0]);
         $query->andFilterWhere(['like', 'title', $this->title])
             ->andFilterWhere(['like', 'condition', $this->condition]);
@@ -290,6 +319,114 @@ class AdvertisementPostSearch extends AdvertisementPost
         return $dataProvider;
     }
 
+    public function searchPremCat($params)
+    {
+        $query = $this->getAdvertisementPosts($params);
+        $this->filters['isPremium']['value'] = true;
+        $this->filters['is_approved']['value'] = true;
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 6,
+            ],
+            'sort' => [
+                'defaultOrder' => [
+                '`upa`.`id`' => SORT_DESC,
+                'published_at' => SORT_DESC,
+                ],
+                'attributes' => ['`upa`.`id`','published_at',]
+            ],
+        ]);
+
+        if (! empty($params['city'])) {
+            $this->city = $params['city'];
+        }
+
+        if (! empty($params['district'])) {
+            $this->district = $params['district'];
+        }
+
+        $this->load($params);
+        $this->setFilters($params);
+
+        if (!$this->validate()) {
+            return $dataProvider;
+        }
+
+
+        if (! empty($params['city'])) {
+            $cityId = (new Cities())->find()
+            ->where(['like', 'name', $params['city']])
+            ->orWhere(['name_ua' => $params['city']])
+            ->orderBy('name DESC' )
+            ->one();
+        }
+
+        $query->leftJoin('{{%advertise_cities_regions}} `cr`','{{%advertisement_post}}.`id` = `cr`.`advertise_id`');
+        // grid filtering conditions
+        if( ! empty($params['category_id'])) {
+            $query->andFilterWhere([
+                'category_id' => $params['category_id'],
+            ]);
+        }
+        if( !empty($params['subCat_id'])) {
+            $query->andFilterWhere([
+                'subCat_id' => $params['subCat_id'],
+            ]);
+        }
+
+        if(! empty($params['city'])) {
+            $query->andFilterWhere(['`cr`.`city_id`' => $cityId['id']]);
+        }
+
+        if(! empty($params['district'])) {
+            $region = (new CityRegions())->find()
+                                         ->where(['like', 'region', $params['district']])
+                                         ->orWhere(['region_ua' => $params['district']])->orderBy('region DESC' )->one();
+
+            $query->andFilterWhere(['`cr`.`region_id`' =>  $region['id']]);
+        }
+
+        if(! empty($params['minPrice'])) {
+            $query->andFilterWhere(['>', 'pricePerMonth', $params['minPrice']]);
+        }
+
+        if(! empty($params['maxPrice'])) {
+            $query->andFilterWhere(['<', 'pricePerMonth', $params['maxPrice']]);
+        }
+
+        if(! empty($params['minDistance'])) {
+            $query->andFilterWhere(['>', 'distancePerMonth', $params['minDistance']]);
+        }
+
+        if(! empty($params['maxDistance'])) {
+            $query->andFilterWhere(['<', 'distancePerMonth', $params['maxDistance']]);
+        }
+
+        if(! empty($params['stickingArea'])) {
+            $query->andFilterWhere(['in', 'sticking_area', $params['stickingArea']]);
+        }
+
+        if(! empty($params['extraFilter'])) {
+            $query->andFilterWhere(['in', 'filter_id', $params['extraFilter']]);
+        }
+        if(! empty($params['subCategory'])) {
+            $query->andFilterWhere(['in', 'subCat_id', $params['subCategory']]);
+        }
+
+        $query = $this->setQueryFilters($query);
+        $query->andWhere(['not', ['`upa`.`id`' => null]]);
+//              ->andFilterWhere(['like', 'condition', $this->condition]);
+
+        if(! empty($params['orderBy'])) {
+            $query->orderBy($this->ordering[$params['orderBy']]);
+        }
+
+        $query->orderBy('RAND()');
+
+        return $dataProvider;
+    }
 
     public function searchUser($params)
     {
@@ -403,5 +540,41 @@ class AdvertisementPostSearch extends AdvertisementPost
 
 
         return $dataProvider;
+    }
+
+    /**
+     * @param $params
+     *
+     * @return ActiveRecord
+     */
+    private function getAdvertisementPosts($params) : AdvertisementPostQuery
+    {
+        $query = AdvertisementPost::find();
+        $query->leftJoin('{{%user_premium_advertisement}} `upa`', '{{%advertisement_post}}.`id` = `upa`.`advertisement_id`');
+        $query->leftJoin('{{%premium_rates}} `pr`', '`upa`.`premium_type_id` = `pr`.`id`');
+
+        return $query;
+    }
+
+    private function setFilters(array $params)
+    {
+        if(! empty($params)) {
+            foreach ($params as $param =>$val) {
+                $this->filters[$param] = $val;
+            }
+        }
+
+        return $this;
+    }
+
+    private function setQueryFilters(AdvertisementPostQuery $query) : AdvertisementPostQuery
+    {
+        foreach ( $this->filters as $filter=> $val) {
+            if(is_array($val) && isset($val['value'])) {
+                $query->andWhere([$filter => $val['value']]);
+            }
+        }
+
+        return $query;
     }
 }

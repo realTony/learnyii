@@ -8,8 +8,13 @@ use yii\helpers\Url;
 
 ?>
 <ul class="list-announcements">
-<?php
-foreach ($models as $model):?>
+<?php if(! empty($premium)) : ?>
+<?= $this->render('_premium_loop', [
+    'premium' => $premium,
+]); ?>
+<?php endif; ?>
+
+<?php foreach ($models as $model):?>
     <?php
         $likeClass = '';
         $likeClass = (SiteComponents::checkUserFav($model->id) == true ) ? 'active': '';

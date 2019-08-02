@@ -67,13 +67,19 @@ class AdvertisementController extends Controller
             $asideFilter = new AdvertisementFilter();
             $searchModel = new AdvertisementPostSearch();
             $filter = new AdvSearch();
+
             $dataProvider = $searchModel->searchCat(Yii::$app->request->queryParams);
+
             $settings = (Yii::createObject(Settings::className()))
                 ->find()
                 ->where(['name' => 'advertisement_settings'])
                 ->one();
+
             $settings = !empty($settings->option_value)? json_decode($settings->option_value, true): [];
+
             $currentLang = (Yii::$app->language == 'ru-Ru') ? 'ru' : 'uk';
+
+
             $metaData = [
                 'ru' => [
                     'title' => (! empty($model->title)) ? $model->title : '',
@@ -108,7 +114,7 @@ class AdvertisementController extends Controller
             $filter->district = (!empty($requested['district'])) ? $requested['district'] : '';
 
             $dataProvider = $searchModel->searchCat($requested);
-//        }
+            $premiumProvider = $searchModel->searchPremCat($requested);
 
             $breadcrumbs = ['label' => Yii::t('app', 'Все объявления')];
 
@@ -122,6 +128,7 @@ class AdvertisementController extends Controller
 
             return $this->render('index', [
                 'models' => $dataProvider->getModels(),
+                'premium' => $premiumProvider->getModels(),
                 'filter' => $filter,
                 'sideFilter' => $asideFilter,
                 'pages' => $pages,
@@ -247,6 +254,7 @@ class AdvertisementController extends Controller
                 $filter->district = (!empty($requested['district'])) ? $requested['district'] : '';
                 $requested['category_id'] = $catId->id;
                 $dataProvider = $searchModel->searchCat($requested);
+            $premiumProvider = $searchModel->searchPremCat($requested);
             $advPosts = $model;
             $breadcrumbs = [['label' => Yii::t('app', 'Объявления')],];
 
@@ -261,6 +269,7 @@ class AdvertisementController extends Controller
 
             return $this->render('category', [
                 'models' => $dataProvider->getModels(),
+                'premium' => $premiumProvider->getModels(),
                 'filter' => $filter,
                 'sideFilter' => $asideFilter,
                 'pages' => $pages,
@@ -379,7 +388,7 @@ class AdvertisementController extends Controller
             $filter->district = (!empty($requested['district'])) ? $requested['district'] : '';
 
             $dataProvider = $searchModel->searchCat($requested);
-
+            $premiumProvider = $searchModel->searchPremCat($requested);
             $advCategories->parent = $catId->id;
             $parentCat = $advCategories->parents;
 
@@ -405,6 +414,7 @@ class AdvertisementController extends Controller
 
             return $this->render('category', [
                 'models' => $dataProvider->getModels(),
+                'premium' => $premiumProvider->getModels(),
                 'filter' => $filter,
                 'sideFilter' => $asideFilter,
                 'pages' => $pages,

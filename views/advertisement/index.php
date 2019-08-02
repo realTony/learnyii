@@ -66,6 +66,7 @@ $this->params['breadcrumbs'] = $breadcrumbs;
             ]) ?>
             <?= $this->render('_loop', [
                 'models' => $models,
+                'premium' => $premium,
                 'data' => $data,
                 'pages' => $pages
             ]);

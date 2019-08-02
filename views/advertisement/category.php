@@ -70,12 +70,13 @@ $this->params['breadcrumbs'] = $breadcrumbs;
                 'enablePushState' => true
             ]) ?>
 
-                <?= $this->render('_loop', [
-                    'models' => $models,
-                    'data' => $data,
-                    'pages' => $pages
-                ]);
-                ?>
+            <?= $this->render('_loop', [
+                'models' => $models,
+                'premium' => $premium,
+                'data' => $data,
+                'pages' => $pages
+            ]);
+            ?>
 
 
             <?php if (! empty($pages) && $pages->pageSize < $pages->totalCount):?>

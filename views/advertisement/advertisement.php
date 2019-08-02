@@ -188,7 +188,6 @@ use ymaker\social\share\widgets\SocialShare;
                     'url'           => Url::to(Url::home(true).'advertisement/page/'.$model->id),
                     'title'         => $model->title,
                     'description'   => $model->description,
-//                    'imageUrl'      => Url::to('@web'.$model->post_image, true),
                     'containerOptions' => [
                         'tag' => 'ul',
                         'class' => 'social-list'
