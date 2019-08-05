@@ -1,0 +1,14 @@
+{
+  "name": "stickit_project",
+  "version": "0.0.1",
+  "description": "",
+  "author": "Some moron",
+  "scripts": {
+    "watch": "babel src/js -d js --presets env -w"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.7.0"
+  }
+}

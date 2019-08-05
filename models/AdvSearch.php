@@ -22,9 +22,4 @@ class AdvSearch extends Model
         ];
     }
 
-    public function search()
-    {
-
-    }
-
 }

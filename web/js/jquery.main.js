@@ -236,14 +236,14 @@ $(document).ready(function() {
                             let xhr = new XMLHttpRequest();
 
                             xhr.upload.onprogress = function (e) {
-                              var percent = 0;
-                              var percentage = '0%';
+                                var percent = 0;
+                                var percentage = '0%';
 
-                              if(e.lengthComputable) {
-                                  percent = Math.round((e.loaded / e.total)* 100);
-                                  percentage = percent+'%';
-                                  console.log(percentage);
-                              }
+                                if(e.lengthComputable) {
+                                    percent = Math.round((e.loaded / e.total)* 100);
+                                    percentage = percent+'%';
+                                    console.log(percentage);
+                                }
                             };
 
                             return xhr;
@@ -590,15 +590,14 @@ $(document).ready(function() {
     }
 
     $('#sortingForm').find('input, select').on('change', function (e) {
-        var _csrf = $('[name = "_csrf"]').val();
         var url = $('#sortingForm').attr('action')+'?action=lazyLoad';
         $.pjax.reload({
             type: 'GET',
             container: '#search-sort',
             data: {
-                _csrf: _csrf,
                 city: $('#advsearch-city').val(),
                 district: $('#advsearch-district').val(),
+                orderBy: $('#advsearch-orderby').val()
             },
             url: url
         });
@@ -636,21 +635,21 @@ $(document).ready(function() {
     $(".filters").click(function(e){
         $(this).next().slideToggle(400,function(){
             $('.filters').toggleClass("active");
-    });
+        });
         e.preventDefault();
     });
     $('form.holder-aside-left').find('.submit').on('click', function (e) {
-       e.preventDefault();
+        e.preventDefault();
 
-       var city = $('#advsearch-city').val();
-       var district = $('#advsearch-district').val();
-       var order = $('#advsearch-orderby-dropdown-selected').val();
+        var city = $('#advsearch-city').val();
+        var district = $('#advsearch-district').val();
+        var order = $('#advsearch-orderby-dropdown-selected').val();
 
-       $('#hiddenCity').find('input').val(city);
-       $('#hiddenDistrict').find('input').val(district);
-       $('#hiddenOrder').find('input').val(order);
+        $('#hiddenCity').find('input').val(city);
+        $('#hiddenDistrict').find('input').val(district);
+        $('#hiddenOrder').find('input').val(order);
 
-       $(this).submit();
+        $(this).submit();
     });
     // dibalenie klasa eske est
     var testElements = document.getElementsByClassName('edit-list');
@@ -681,8 +680,8 @@ $(document).ready(function() {
         e.preventDefault();
         var thisEl = $(this);
         var parents = {
-          city: $('#advertisementpost-city'),
-          district: $('#advertisementpost-city_district')
+            city: $('#advertisementpost-city'),
+            district: $('#advertisementpost-city_district')
         };
         var cityName = parents.city.attr('name');
         var districtName = parents.district.attr('name');
@@ -690,14 +689,14 @@ $(document).ready(function() {
         if($(this).hasClass('add-input')){
             var numsList = $('.list-add-del');
             lastNum = '<li>' +
-                        '<div class="holder-input field-advertisementpost-city">' +
-                        '   <input class="input" type="text" name="'+cityName+'" placeholder="'+parents.city.attr('placeholder')+'">' +
-                        '</div>' +
-                        '<div class="holder-input city-district">' +
-                        '<a class="btn-change add-input" href="#"></a>' +
-                        '<input class="input" name="'+districtName+'" type="text" disabled placeholder="'+parents.district.attr('placeholder')+'">' +
-                        '</div>' +
-                    '</li>';
+                '<div class="holder-input field-advertisementpost-city">' +
+                '   <input class="input" type="text" name="'+cityName+'" placeholder="'+parents.city.attr('placeholder')+'">' +
+                '</div>' +
+                '<div class="holder-input city-district">' +
+                '<a class="btn-change add-input" href="#"></a>' +
+                '<input class="input" name="'+districtName+'" type="text" disabled placeholder="'+parents.district.attr('placeholder')+'">' +
+                '</div>' +
+                '</li>';
             numsList.append(lastNum);
             thisEl.removeClass('add-input');
             $('.list-add-del > li:last').find('input:first').autocomplete({
@@ -750,27 +749,27 @@ $(document).ready(function() {
 
     // end list-add-del
     $(document).on('click', '.liqpay_submit', function (e) {
-       e.preventDefault();
-       let $form = $(this).parents('form');
-       var _csrf = $('[name = "_csrf"]').val();
+        e.preventDefault();
+        let $form = $(this).parents('form');
+        var _csrf = $('[name = "_csrf"]').val();
 
-       let requestObj = {
-         rate: $form.attr('data-rate'),
-         advertisement: $form.attr('data-advertisement'),
-         data: $form.find('input[name=data]').val(),
-         _csrf: $('[name = "_csrf"]').val(),
-       };
+        let requestObj = {
+            rate: $form.attr('data-rate'),
+            advertisement: $form.attr('data-advertisement'),
+            data: $form.find('input[name=data]').val(),
+            _csrf: $('[name = "_csrf"]').val(),
+        };
 
-       $.ajax({
-           url: $form.attr('data-orderurl'),
-           type: 'POST',
-           data: requestObj,
-           success: function (response) {
+        $.ajax({
+            url: $form.attr('data-orderurl'),
+            type: 'POST',
+            data: requestObj,
+            success: function (response) {
                 if( typeof response != 'undefined' && response != '') {
                     $form.trigger('submit');
                 }
-           }
-       })
+            }
+        })
 
     });
 
@@ -867,12 +866,12 @@ function initTabs(){
 
 function asideAccordion(){
 
-        var opener = $('.aside-title');
-        var menu = $('.aside-content');
-        opener.on('click', function(e){
-            menu.slideToggle();
-            $(this).toggleClass('active');
-        });
+    var opener = $('.aside-title');
+    var menu = $('.aside-content');
+    opener.on('click', function(e){
+        menu.slideToggle();
+        $(this).toggleClass('active');
+    });
 
 }
 
@@ -979,9 +978,9 @@ function initDropCity(){
                 });
             },
             select: function(event, ui) {
-              if ($(this).parents('li').find('.city-district > input') != 'undefined') {
-                  $(this).parents('li').find('.city-district > input').removeAttr('disabled');
-              }
+                if ($(this).parents('li').find('.city-district > input') != 'undefined') {
+                    $(this).parents('li').find('.city-district > input').removeAttr('disabled');
+                }
             },
             minLength: 3
         });
@@ -1057,41 +1056,3 @@ function getRoundedCanvas(sourceCanvas) {
     context.fill();
     return canvas;
 }
-
-
-
-// window.addEventListener('DOMContentLoaded', function () {
-//     var image = document.getElementById('image');
-//     var button = document.getElementById('button');
-//     var result = document.getElementById('result');
-//     var croppable = false;
-//     var cropper = new Cropper(image, {
-//         aspectRatio: 1,
-//         viewMode: 1,
-//         ready: function () {
-//             croppable = true;
-//         },
-//     });
-//
-//     button.onclick = function () {
-//         var croppedCanvas;
-//         var roundedCanvas;
-//         var roundedImage;
-//
-//         if (!croppable) {
-//             return;
-//         }
-//
-//         // Crop
-//         croppedCanvas = cropper.getCroppedCanvas();
-//
-//         // Round
-//         roundedCanvas = getRoundedCanvas(croppedCanvas);
-//
-//         // Show
-//         roundedImage = document.createElement('img');
-//         roundedImage.src = roundedCanvas.toDataURL()
-//         result.innerHTML = '';
-//         result.appendChild(roundedImage);
-//     };
-// });

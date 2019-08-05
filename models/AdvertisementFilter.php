@@ -34,4 +34,16 @@ class AdvertisementFilter extends Model
         ];
     }
 
+    public function setProperties( array $properties)
+    {
+        if(! empty($properties)) {
+            foreach ($properties as $index => $property) {
+                if(isset($this->$index)) {
+                    $this->$index = $property;
+                }
+            }
+        }
+
+        return $this;
+    }
 }

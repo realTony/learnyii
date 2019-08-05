@@ -441,7 +441,7 @@ class DefaultController extends Controller
         $countQuery = clone $advPosts;
         $pages = new Pagination([
             'totalCount' => $countQuery->count(),
-            'pageSize' => 5,
+            'pageSize' => Yii::$app->params['pageSize'],
 
         ]);
         $title = Yii::t('app', 'Мои объявления');
@@ -490,13 +490,13 @@ class DefaultController extends Controller
                     $countQuery = clone $advPosts;
                     $pages = new Pagination([
                         'totalCount' => $countQuery->count(),
-                        'pageSize' => 5,
+                        'pageSize' => Yii::$app->params['pageSize'],
 
                     ]);
 
                     $models = $advPosts->offset($pages->offset)
                         ->limit($pages->limit)
-                        ->orderBy('isPremium DESC, published_at DESC')
+                        ->orderBy('published_at DESC')
                         ->all();
 
                     break;
