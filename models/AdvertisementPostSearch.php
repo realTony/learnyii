@@ -299,7 +299,7 @@ class AdvertisementPostSearch extends AdvertisementPost
     public function searchUser($params)
     {
         $query = AdvertisementPost::find();
-
+        $query = $this->setAdditionalTables($query);
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
