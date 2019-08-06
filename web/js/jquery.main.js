@@ -143,7 +143,8 @@ $(document).ready(function() {
         ]
 
     });
-
+    //Isotope grid
+    //At blog only
     $(window).on('load', function () {
         $('.blog-list').isotope({
             // set itemSelector so .grid-sizer is not used in layout
@@ -155,6 +156,7 @@ $(document).ready(function() {
             }
         });
     });
+
     $('.edit-photo a#save-photo').on('click', function (e) {
         e.preventDefault();
         e.stopPropagation();
@@ -503,7 +505,7 @@ $(document).ready(function() {
     });
 
     function refreshAnouncements() {
-        // $('.list-announcements li').matchHeight();
+        $('.list-announcements li').matchHeight();
     }
 
     //open menu

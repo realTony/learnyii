@@ -8,9 +8,6 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 if(! empty($premium)):
-    echo '<pre>';
-    print_r(count($premium));
-    echo '</pre>';
     foreach ($premium as $model):
         $likeClass = '';
         $likeClass = (SiteComponents::checkUserFav($model->id) == true ) ? 'active': '';

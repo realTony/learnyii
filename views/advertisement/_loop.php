@@ -7,7 +7,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 ?>
-<ul class="list-announcements">
+<!--<ul class="list-announcements">-->
 <?php if(! empty($premium)) : ?>
 <?= $this->render('_premium_loop', [
     'premium' => $premium,
@@ -83,4 +83,4 @@ use yii\helpers\Url;
         </li>
     <?php endif; ?>
 <?php endif; ?>
-</ul>
+<!--</ul>-->
