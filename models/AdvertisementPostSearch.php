@@ -113,19 +113,8 @@ class AdvertisementPostSearch extends AdvertisementPost
 
         // grid filtering conditions
         $query->andFilterWhere([
-//            'id' => $this->id,
-//            'category_id' => $this->category_id,
-//            'subCat_id' => $this->subCat_id,
-//            'pricePerMonth' => $this->pricePerMonth,
-//            'contract_term' => $this->contract_term,
-//            'distancePerMonth' => $this->distancePerMonth,
-//            'adv_type' => $this->adv_type,
-//            'sticking_area' => $this->sticking_area,
-//            'authorId' => $this->authorId,
-//            'showEmail' => $this->showEmail,
-//            'isPremium' => $this->isPremium,
-//            'coverage_type' => $this->coverage_type,
-//            'published_at' => $this->published_at,
+            'is_archived' => 0,
+            'is_banned' => 0,
         ]);
 
         $query->andFilterWhere(['like', 'title', $this->title])

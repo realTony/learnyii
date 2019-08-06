@@ -32,6 +32,7 @@ use app\modules\admin\models\Categories;
  * @property int $filter_id
  * @property int $is_banned
  * @property int $is_approved
+ * @property int $is_archived
  */
 class AdvertisementPost extends \yii\db\ActiveRecord
 {

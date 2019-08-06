@@ -41,28 +41,18 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'isPremium:boolean',
             'published_at:datetime',
-            //            'seo_text:ntext',
-            //            'seo_title',
             [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{to-archive} {ban} {delete}',
+                'template' => '{restore} {delete}',
                 'buttons' => [
-                        'ban' => function($url, $model, $key) {
-                            return Html::a('<span class="glyphicon glyphicon-ban-circle"></span>',
-                                $url,
-                                [
-                                    'title' => Yii::t('app', 'Заблокировать')
-                                ]
-                            );
-                        },
-                        'to-archive' => function($url, $model, $key) {
-                            return Html::a('<span class="glyphicon glyphicon-inbox"></span>',
-                                $url,
-                                [
-                                    'title' => Yii::t('app', 'В архив')
-                                ]
-                            );
-                        }
+                    'restore' => function($url, $model, $key) {
+                        return Html::a('<span class="glyphicon glyphicon-repeat"></span>',
+                            $url,
+                            [
+                                'title' => Yii::t('app', 'Восстановить')
+                            ]
+                        );
+                    },
                 ]
             ],
         ],
