@@ -9,6 +9,7 @@ use app\models\Settings;
 use app\models\UserPremiumAdvertisement;
 use Yii;
 use yii\console\Controller;
+use yii\console\ExitCode;
 
 class PremiumDemonController extends Controller
 {
@@ -81,16 +82,21 @@ class PremiumDemonController extends Controller
 
     public function actionArchivate()
     {
-
+        $currDate = (new \DateTime())->getTimestamp();
         $advertisements = (new AdvertisementPost())
             ->find()
             ->where(['not', ['is_archived' => 1]])
             ->all();
 
         foreach ($advertisements as $post) {
-            $post->is_archived = 1;
-
-            $post->update();
+            $postDate = strtotime($post->published_at);
+            $postDate = strtotime('+30 days', $postDate);
+            if($postDate < $currDate) {
+                $post->is_archived = 1;
+                $post->save();
+            }
         }
+
+        return ExitCode::OK;
     }
 }
