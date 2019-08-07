@@ -9,11 +9,13 @@
 namespace app\modules\myaccount\models;
 
 
+use app\components\SendNotification;
 use app\models\AdvertiseCitiesRegions;
 use app\models\AdvertisementPost;
 use app\models\Cities;
 use app\models\CityRegions;
 use app\models\Images;
+use app\models\Settings;
 use Imagine\Image\Box;
 use Yii;
 use yii\base\Model;
@@ -75,6 +77,11 @@ class CreateAdvertisementPost extends Model
      */
     public function createAdvertisement()
     {
+        $adminEmail = (Yii::createObject(Settings::className()))
+            ->find(['option_value'])
+            ->where(['name' => 'site_email'])
+            ->one();
+
         if(! $this->validate()) {
             return false;
         } else {
@@ -139,15 +146,7 @@ class CreateAdvertisementPost extends Model
 
                 }
 
-            } else {
-                echo "<pre>";
-                print_r( $advertisement->errors);
-                echo "</pre>";
             }
-
-//            if(! empty($this->city)) {
-//                $advCityRegions->
-//            }
         }
 
     }
