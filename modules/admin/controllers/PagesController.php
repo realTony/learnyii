@@ -96,7 +96,8 @@ class PagesController extends Controller
         $options = [];
         $settings = (new Settings())
             ->find()
-            ->where(['in', 'name', ['main_slider_max', 'advertisement_pageSize', 'vip_message_ru', 'vip_message_uk', 'show_how_it_works']])
+            ->where(['in', 'name', ['main_slider_max', 'advertisement_pageSize',
+             'vip_message_ru', 'vip_message_uk', 'show_how_it_works']])
             ->all();
 
         foreach ($settings as $option) {

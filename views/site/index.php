@@ -73,6 +73,33 @@ use app\modules\admin\models\Categories;
         </div>
         <div class="main-slider-announcements">
             <ul class="list-announcements">
+                <?php foreach ($premAdverts as $item): ?>
+                    <?php
+                    $categories = Yii::createObject(Categories::className());
+                    $categories->category = $item->category_id;
+                    $cat  = $categories->category;
+                    $img = (empty($item->images[0])) ? '/images/no-photo_item-small.png' : $item->images[0]['image_name'];
+                    $img = Images::isThumbnailExists($img);
+
+                    ?>
+                    <li <?php if(Premium::checkPrem($item->id)): ?>class="premium" <?php endif ?>>
+                        <?php
+                        $likeClass = '';
+                        $likeClass = (SiteComponents::checkUserFav($item->id) == true ) ? 'active': '';
+                        ?>
+                        <a class="like-star <?= $likeClass ?>" href="<?= Url::toRoute('/myaccount/default/make-fav')?>" data-id="<?= $item->id ?>">&#160;</a>
+                        <a href="<?= Url::to(['/advertisement/page/'.$item->id]) ?>">
+                            <div class="holder-img" style="background: url('<?= $img ?>') no-repeat 50% 50%; background-size: cover;">
+                                <img src="<?= '/images/announcement_holder.png' ?>" alt="<?= (!empty($item->images[0])) ? $item->images[0]['alt'] : 'no-photo'?>">
+                            </div>
+                            <div class="holder-text">
+                                <span><?= $item->title ?></span>
+                                <p><?= $cat['title'] ?></p>
+                                <strong><?= $item->pricePerMonth ?> <sup><small><?= Yii::t('app', 'грн/мес')?></small></sup></strong>
+                            </div>
+                        </a>
+                    </li>
+                <?php endforeach;?>
                 <?php foreach ($posts as $item): ?>
                 <?php
                     $categories = Yii::createObject(Categories::className());

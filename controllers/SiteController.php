@@ -68,11 +68,20 @@ class SiteController extends Controller
         $news = Yii::createObject(BlogPosts::className());
         $advertisement = (Yii::createObject(AdvertisementPost::className()))
             ->find()
-            ->andWhere(['is_approved' => 1])
             ->andWhere(['is_banned' => 0])
             ->andWhere(['is_archived' => 0])
-            ->orderBy('isPremium DESC, published_at DESC')->limit(12)->all();
-
+            ->andWhere(['isPremium' => 0])
+            ->orderBy('published_at DESC')
+            ->limit(8)
+            ->all();
+        $premiumAdv = (Yii::createObject(AdvertisementPost::className()))
+        ->find()
+        ->andWhere(['is_banned' => 0])
+        ->andWhere(['isPremium' => 1])
+        ->andWhere(['is_archived' => 0])
+        ->orderBy('RAND()')
+        ->limit(4)
+        ->all();
 
         if (! empty($model->options->promo)) {
             $categories->category = (! empty($model->options->promo)) ? array_values((array)$model->options->promo) : [];
@@ -102,6 +111,7 @@ class SiteController extends Controller
                 'model' => $model,
                 'slider' => $slider,
                 'adverts' => $adverts,
+                'premAdverts' => $premiumAdv,
                 'posts' => $advertisement,
                 'news' => $categories->category,
                 'promo' => $promo,
