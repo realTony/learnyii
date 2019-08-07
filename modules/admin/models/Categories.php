@@ -271,11 +271,7 @@ class Categories extends \yii\db\ActiveRecord
     {
         $cat = $this->category;
 
-        return (new AdvertisementPost())->find()
-        ->where(['category_id' => $cat->id])
-        ->andWhere(['is_banned' => 0])
-        ->andWhere(['is_archived' => 0])
-        ->count();
+        return (new AdvertisementPost())->find()->where(['category_id' => $cat->id])->count();
     }
     
     public function catByUser($id)
