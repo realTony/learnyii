@@ -96,7 +96,7 @@ class PagesController extends Controller
         $options = [];
         $settings = (new Settings())
             ->find()
-            ->where(['in', 'name', ['main_slider_max', 'advertisement_pageSize', 'vip_message_ru', 'vip_message_uk']])
+            ->where(['in', 'name', ['main_slider_max', 'advertisement_pageSize', 'vip_message_ru', 'vip_message_uk', 'show_how_it_works']])
             ->all();
 
         foreach ($settings as $option) {
@@ -173,9 +173,12 @@ class PagesController extends Controller
     /**
      * Deletes an existing Pages model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
+     *
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
      */
     public function actionDelete($id)
     {

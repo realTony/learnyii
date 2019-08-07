@@ -41,6 +41,7 @@ class SettingsFormModel extends Model
     public $liqpay_public_key;
     public $liqpay_private_key;
     public $premium_alert_message;
+    public $show_how_it_works;
 
     public function rules()
     {
@@ -50,6 +51,7 @@ class SettingsFormModel extends Model
             [['site_name', 'site_facebook', 'site_instagram', 'site_viber', 'site_telegram', 'vip_message_ru', 'vip_message_uk',
                 'liqpay_public_key', 'liqpay_private_key', 'premium_alert_message'], 'string'],
             [['main_slider_max', 'advertisement_pageSize'] ,'integer'],
+            [['show_how_it_works'], 'boolean'],
             [['site_email'], 'email'],
         ];
     }

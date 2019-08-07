@@ -23,7 +23,7 @@ $maxSlides = $settings['main_slider_max'] - count($model->imagesLinksData);
     <div class="col-md-8">
         <div class="card bg-white m-b">
             <div class="card-header ">
-                <h3 class="text-center m-b-md">Редактировать слайдер</h3>
+                <h3 class="text-center m-b-md"><?= Yii::t('app', 'Редактировать слайдер')?></h3>
             </div>
             <div class="card-block">
                 <?=
@@ -182,6 +182,28 @@ $maxSlides = $settings['main_slider_max'] - count($model->imagesLinksData);
                                             ]);
 
                                         ?>
+                                    </div>
+                                    <div class="card-header">
+                                        <h3><?= Yii::t('app', 'Раздел "Как это работает"')?></h3>
+                                    </div>
+                                    <div class="card-block">
+                                        <div class="row">
+                                            <div class="col-xs-6">
+                                                <h4>Отображать блок на главной странице?</h4>
+                                            </div>
+                                            <?= $form->field($model, "options[show_how_it_works]", [
+                                                'options' => [
+                                                    'tag' => 'div',
+                                                    'class' => 'col-xs-6'
+                                                ],
+                                                'template' => '<label class="switch">{input}<span><i class="handle"></i></span></label>'
+                                            ])
+                                                     ->checkbox([    'label' => false,
+                                                                     'type' => 'checkbox'
+                                                     ]);
+
+                                            ?>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -381,6 +403,29 @@ $maxSlides = $settings['main_slider_max'] - count($model->imagesLinksData);
                                             ]);
 
                                         ?>
+                                    </div>
+
+                                    <div class="card-header">
+                                        <h3><?= Yii::t('app', 'Раздел "Как это работает"')?></h3>
+                                    </div>
+                                    <div class="card-block">
+                                        <div class="row">
+                                            <div class="col-xs-6">
+                                                <h4>Отображать блок на главной странице?</h4>
+                                            </div>
+                                            <?= $form->field($model, "translation[show_how_it_works]", [
+                                                'options' => [
+                                                    'tag' => 'div',
+                                                    'class' => 'col-xs-6'
+                                                ],
+                                                'template' => '<label class="switch">{input}<span><i class="handle"></i></span></label>'
+                                            ])
+                                                     ->checkbox([    'label' => false,
+                                                                     'type' => 'checkbox'
+                                                     ]);
+
+                                            ?>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

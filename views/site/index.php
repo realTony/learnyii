@@ -178,6 +178,7 @@ use app\modules\admin\models\Categories;
 <?php endif; ?>
 
 <div class="accordion">
+    <?php if(! empty($show_how_it_works) && $show_how_it_works == 1): ?>
     <div class="holder-section fon-grey">
         <div class="container">
             <div class="item-accordion">
@@ -249,6 +250,7 @@ use app\modules\admin\models\Categories;
             </div>
         </div>
     </div>
+    <?php endif; ?>
     <?= FooterInfo::widget([
             'options' => [
                     'has_seo' => false

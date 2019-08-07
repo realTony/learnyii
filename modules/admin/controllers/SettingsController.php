@@ -65,8 +65,9 @@ class SettingsController extends Controller
         $model = new SettingsFormModel();
         $settings = Yii::createObject(Settings::className())->find()->all();
         $additions = Yii::createObject(Settings::className())->find()->
-        where(['in', 'name', ['main_slider_max', 'advertisement_pageSize', 'vip_message_ru', 'vip_message_uk',
-            'liqpay_public_key', 'premium_alert_message', '']])->all();
+        where(['in', 'name', ['main_slider_max', 'advertisement_pageSize',
+              'vip_message_ru', 'vip_message_uk', 'liqpay_public_key',
+              'premium_alert_message']])->all();
 
         $propList = array_keys(get_object_vars($model));
         foreach ($settings as $option) {

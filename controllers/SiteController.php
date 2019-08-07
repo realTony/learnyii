@@ -91,6 +91,7 @@ class SiteController extends Controller
 
         $news->category = (! empty($categories->category))? array_values((array)$model->options->promo): [];
         $promo = (! empty($categories->category))? $news->postsByCat : [];
+        $show_how_it_works = (! empty($model->options->show_how_it_works))? $model->options->show_how_it_works : false;
 
 
         if( $currentLang == 'uk') {
@@ -103,7 +104,8 @@ class SiteController extends Controller
                 'adverts' => $adverts,
                 'posts' => $advertisement,
                 'news' => $categories->category,
-                'promo' => $promo
+                'promo' => $promo,
+                'show_how_it_works' => $show_how_it_works
         ]);
     }
 
