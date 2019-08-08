@@ -117,7 +117,7 @@ class Categories extends \yii\db\ActiveRecord
     }
 
 
-    public function makeMenuList() : array 
+    public function makeMenuList() : array
     {
         $currentLang = (Yii::$app->language == 'ru-Ru') ? 'ru' : 'uk';
         $menuList = [];
@@ -260,20 +260,24 @@ class Categories extends \yii\db\ActiveRecord
         $cat = $this->category;
 
         return (new AdvertisementPost())->find()
-            ->where(['subCat_id' => $cat->id])
-            ->andWhere(['is_approved' => 1])
-            ->andWhere(['is_banned' => 0])
-            ->andWhere(['is_archived' => 0])
-            ->count();
+                                        ->where(['subCat_id' => $cat->id])
+                                        ->andWhere(['is_approved' => 1])
+                                        ->andWhere(['is_banned' => 0])
+                                        ->andWhere(['is_archived' => 0])
+                                        ->count();
     }
 
     public function getTotalCount()
     {
         $cat = $this->category;
 
-        return (new AdvertisementPost())->find()->where(['category_id' => $cat->id])->count();
+        return (new AdvertisementPost())->find()
+                                        ->where(['category_id' => $cat->id])
+                                        ->andWhere(['is_banned' => 0])
+                                        ->andWhere(['is_archived' => 0])
+                                        ->count();
     }
-    
+
     public function catByUser($id)
     {
         $user = User::findOne($id);
@@ -341,7 +345,7 @@ class Categories extends \yii\db\ActiveRecord
 
         return false;
     }
-    
+
     public function countUserCat($id, $user_id)
     {
         return (new AdvertisementPost())
