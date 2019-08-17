@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\components\L10nTrait;
 use app\models\AdvertisementPost;
 use app\models\Cities;
 use app\models\CityRegions;
@@ -28,6 +29,7 @@ class SiteController extends Controller
     use AjaxValidationTrait;
     use EventTrait;
     use MetaTrait;
+    use L10nTrait;
 
     public $successUrl = 'myaccount';
 
@@ -59,11 +61,15 @@ class SiteController extends Controller
      */
     public function actionIndex() : string
     {
-        $model = Yii::createObject(Pages::className())->find()->where(['link' => 'main'])->one();
-        MetaTrait::setModel($model);
-        MetaTrait::getMeta();
+        $model = Yii::createObject(Pages::className())
+                    ->find()
+                    ->where(['link' => 'main'])
+                    ->one();
 
-        $currentLang = (Yii::$app->language == 'ru-Ru') ? 'ru' : 'uk';
+        $model->options = ($this->getLanguage() == 'uk') ?
+            $model->translation : $model->options ;
+        $this->setMetaData($model);
+
         $categories = Yii::createObject(Categories::className());
         $news = Yii::createObject(BlogPosts::className());
         $advertisement = (Yii::createObject(AdvertisementPost::className()))
@@ -102,8 +108,7 @@ class SiteController extends Controller
         $promo = (! empty($categories->category))? $news->postsByCat : [];
         $show_how_it_works = (! empty($model->options->show_how_it_works))? $model->options->show_how_it_works : false;
 
-
-        if( $currentLang == 'uk') {
+        if( $this->getLanguage() == 'uk') {
             $model->options = $model->translation;
         }
 
@@ -134,8 +139,7 @@ class SiteController extends Controller
         $this->trigger('beforeRegister', $registerEvent );
 
         $validateReset = $this->performAjaxValidation($restoreModel);
-//        if( !empty($validateReset))
-//            return $validateReset;
+
         //Account restoring
         if( $restoreModel->load(Yii::$app->request->post()) && $restoreModel->sendRecoveryMessage() ) {
             return $this->render('message/message', [
@@ -192,97 +196,74 @@ class SiteController extends Controller
     }
 
     /**
+     * How it works page
+     *
      * @return string
      * @throws \yii\base\InvalidConfigException
      */
     public function actionHowItWorks() : string
     {
-        $model = Yii::createObject(Pages::className())->find()->where(['link' => 'how-it-works'])->one();
-        MetaTrait::setModel($model);
-        $metaData = MetaTrait::getMeta();
-        $currentLang = (Yii::$app->language == 'ru-Ru') ? 'ru' : 'uk';
+        try{
+            $model = Yii::createObject(Pages::className())
+                        ->find()
+                        ->where(['link' => 'how-it-works'])
+                        ->one();
 
-        if(! empty($model)) {
-
-            if(! empty($model->options)) {
-                $model->options->content = (!empty($model->options->content)) ?: '';
-                $model->options->content = ($currentLang == 'uk' && !empty($model->translation->content)) ? $model->translation->content : $model->options->content;
-                $model->options->after_content = ($currentLang == 'uk' && !empty($model->translation->after_content)) ? $model->translation->after_content : $model->options->after_content;
-                $model->options->after_content = (!empty($model->options->after_content)) ?: '';
-            }
-
-            $model->title = $metaData['title'];
-            $breadcrumbs = ['label' => Yii::t('app', $metaData['title'])];
+            $model->options = ($this->getLanguage() == 'uk') ?
+               $model->translation : $model->options ;
+            $this->setMetaData($model);
+            $meta = $this->getMetaData();
+            $breadcrumbs = ['label' => Yii::t('app', $meta['title'])];
 
             return $this->render('how-it-works.php', [
-                'model' => $model,
-                'breadcrumbs' => $breadcrumbs
+                    'model' => $model,
+                    'breadcrumbs' => $breadcrumbs
             ]);
-        } else {
-            return new NotFoundHttpException();
+        } catch (NotFoundHttpException $exception) {
+            return $exception;
         }
     }
 
-    /**
-     * @return string
-     * @throws NotFoundHttpException
-     * @throws \yii\base\InvalidConfigException
-     */
     public function actionPrivacyPolicy() : string
     {
-        $model = Yii::createObject(Pages::className())->find()->where(['link' => 'privacy-policy'])->one();
-        MetaTrait::setModel($model);
-        $metaData = MetaTrait::getMeta();
-        $currentLang = (Yii::$app->language == 'ru-Ru') ? 'ru' : 'uk';
-        $model->title = $metaData['title'];
+        try {
+            $model = Yii::createObject(Pages::className())
+                        ->find()
+                        ->where(['link' => 'privacy-policy'])
+                        ->one();
+            $model->options = ($this->getLanguage() == 'uk') ?
+                $model->translation : $model->options ;
 
-        if(! empty($model)) {
+            $this->setMetaData($model);
+            $meta = $this->getMetaData();
 
-            if(! empty($model->options)) {
-                $model->options->content = (!empty($model->options->content)) ? $model->options->content : '';
-                $model->options->content = ($currentLang == 'uk' && !empty($model->options->content)) ? $model->translation->content : $model->options->content;
-            }
-
-            $breadcrumbs = ['label' => Yii::t('app', $metaData['title'] )];
+            $breadcrumbs = ['label' => Yii::t('app', $meta['title'])];
 
             return $this->render('page', [
-                'model' => $model,
-                'breadcrumbs' => $breadcrumbs
+               'model' => $model,
+               'breadcrumbs' => $breadcrumbs
             ]);
-        } else {
+        } catch ( NotFoundHttpException $exception) {
             throw new NotFoundHttpException();
         }
-
     }
 
-    /**
-     * @param $link
-     * @return string
-     * @throws NotFoundHttpException
-     * @throws \yii\base\InvalidConfigException
-     */
     public function actionPage($link) : string
     {
-        $model = Yii::createObject(Pages::className())->find()->where(['link' => $link])->one();
-        MetaTrait::setModel($model);
-        $metaData = MetaTrait::getMeta();
-        if(empty($model)) {
-            throw new NotFoundHttpException();
-        }
+        $model = Yii::createObject(Pages::className())
+                    ->find()
+                    ->where(['link' => $link])
+                    ->one();
 
-        $currentLang = (Yii::$app->language == 'ru-Ru') ? 'ru' : 'uk';
-
-        if(! empty($model->options)) {
-           $model->options->content = (!empty($model->options->content))? $model->options->content : '';
-           $model->options->content = ($currentLang == 'uk' && !empty($model->options->content)) ? $model->translation->content : $model->options->content;
-        }
-
-        $model->title = $metaData['title'];
-        $breadcrumbs = ['label' => Yii::t('app', $metaData['title'] )];
+        $model->options = ($this->getLanguage() == 'uk') ?
+            $model->translation : $model->options ;
+        $this->setMetaData($model);
+        $meta = $this->getMetaData();
+        $breadcrumbs = ['label' => Yii::t('app', $meta['title'])];
 
         return $this->render('page', [
-            'model' => $model,
-            'breadcrumbs' => $breadcrumbs
+           'model' => $model,
+           'breadcrumbs' => $breadcrumbs
         ]);
     }
 
@@ -325,7 +306,6 @@ class SiteController extends Controller
                 $citiesList = ArrayHelper::map($cities, 'id', 'name');
 
             foreach ($citiesList as $k => $item) {
-//                $item = str_replace('\'', '', $item);
                 $jsonList['label'] = $item;
                 $jsonList['value'] = $item;
                 $citiesList[$k] = $item;

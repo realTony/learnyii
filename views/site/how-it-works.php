@@ -30,7 +30,7 @@ $this->params['breadcrumbs'] = $breadcrumbs;
             <div class="title-text">
                 <h1><?= $model->title ?></h1>
             </div>
-            <?= $model->options->content ?>
+            <?= $model->options['content'] ?>
 
             <ul class="proposal-list how-it-work">
                 <li>
@@ -82,7 +82,8 @@ $this->params['breadcrumbs'] = $breadcrumbs;
                     </div>
                 </li>
             </ul>
-            <?= $model->options->after_content ?>
+            <?= $model->options['after_content'] ?>
+
             <a href="<?= Url::to(['/account#register']) ?>" class="free-registration">
                 <h2><?= Yii::t('app', 'зарегистрируйтесь' ) ?></h2>
                 <span><?= Yii::t('app', 'Это бесплатно!')?></span>

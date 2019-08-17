@@ -205,14 +205,16 @@ use app\modules\admin\models\Categories;
 <?php endif; ?>
 
 <div class="accordion">
-    <?php if(! empty($show_how_it_works) && $show_how_it_works == 1): ?>
     <div class="holder-section fon-grey">
         <div class="container">
             <div class="item-accordion">
+                <?php if(! empty($show_how_it_works) && $show_how_it_works == 1): ?>
                 <div class="title-text">
                     <h1 class="btn-accordion"><?= Yii::t('app', 'Как это работает?') ?></h1>
                 </div>
+                <?php endif; ?>
                 <div class="content-accordion">
+                    <?php if(! empty($show_how_it_works) && $show_how_it_works == 1): ?>
                     <div class="holder-box-hidden">
                         <?= $model->options->how_it_works ?>
                         <a class="btn-show-more" href="<?= Url::to(['/how-it-works']) ?>"><?= Yii::t('app', 'Читать дальше...') ?></a>
@@ -269,15 +271,15 @@ use app\modules\admin\models\Categories;
                             </div>
                         </li>
                     </ul>
+                    <?php endif; ?>
                     <div class="holder-box-hidden white">
-                        <?= $model->seo_text ?>
+                        <?= $model->options['seo_text'] ?>
                         <a class="btn-show-more" href="#"><?= Yii::t('app', 'Читать дальше...') ?></a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <?php endif; ?>
     <?= FooterInfo::widget([
             'options' => [
                     'has_seo' => false

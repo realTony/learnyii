@@ -3,83 +3,123 @@
 namespace app\models;
 
 
+use app\components\L10nTrait;
 use Yii;
 
 trait MetaTrait
 {
-    /** @var object $model */
-    private static $model;
-    /** @var array $metaData - empty template of metaData to set it if model has uncommon structure */
-    private static $metaData = [
-        'ru' => [
-            'title' => '',
-            'meta_description' => '',
-            'seo_title' => '',
-            'seo_text' => '',
-            'no_index' => 0,
-            'no_follow' => 0,
-        ],
-        'uk' => [
-            'title' =>  '',
-            'meta_description' =>  '',
-            'seo_title' =>  '',
-            'seo_text' => '',
-            'no_index' =>  0,
-            'no_follow' => 0,
-        ]
+    /** @var object $model - object of current page*/
+    private  $model;
+    /** @var array $metaData - empty template of metaData to set
+     * it if model has uncommon structure
+     */
+    private $metaData = [
+        'title' => '',
+        'seo_title' => '',
+        'seo_description' => '',
+        'seo_text' => '',
+        'no_index' => 0,
+        'no_follow' => 0,
     ];
 
-    public static function setModel(object $model) : void
+    public function setMetaData($model)
     {
-        self::$model = $model;
-    }
+        $this->setModel($model)
+             ->setTitle()
+             ->setDescription()
+             ->setSeoTitle()
+             ->setSeoText()
+             ->setNoIndex()
+             ->setNoFollow();
 
-    public static function getMeta() : array
-    {
-        $model = self::$model;
-        $currentLang = (Yii::$app->language == 'ru-Ru') ? 'ru' : 'uk';
 
-        $model->options = json_decode($model->options);
-        $model->translation = json_decode($model->translation);
-
-        $metaData = [
-            'ru' => [
-                'title' => (! empty($model->title)) ? $model->title : '',
-                'meta_description' => (! empty($model->options->seo_description)) ? $model->options->seo_description : '',
-                'seo_title' => (! empty($model->seo_title)) ? $model->seo_title : '',
-                'seo_text' => (! empty($model->seo_text)) ? $model->seo_text : '',
-                'no_index' => (! empty($model->options->no_index)) ? $model->options->no_index : 0,
-                'no_follow' => (! empty($model->options->no_follow)) ? $model->options->no_follow : 0,
-            ],
-            'uk' => [
-                'title' => (! empty($model->translation->title)) ? $model->translation->title : '',
-                'meta_description' => (! empty($model->translation->seo_description)) ? $model->translation->seo_description : '',
-                'seo_title' => (! empty($model->translation->seo_title)) ? $model->translation->seo_title : '',
-                'seo_text' => (! empty($model->translation->seo_text)) ? $model->seo_text : '',
-                'no_index' => (! empty($model->translation->no_index)) ? $model->translation->no_index : 0,
-                'no_follow' => (! empty($model->translation->no_follow)) ? $model->translation->no_follow : 0,
-            ]
-        ];
-        $metaData = $metaData[$currentLang];
         $noIndex = '';
 
-        if($metaData['no_index'] == 1) {
+        if($this->metaData['no_index'] == 1) {
             $noIndex = 'noindex';
         }
-        if($metaData['no_index'] == 1) {
+
+        if($this->metaData['no_follow'] == 1) {
             $noIndex .= ', nofollow';
         }
 
         Yii::$app->view->registerMetaTag([
-            'name' => 'description',
-            'content' => $metaData['meta_description']
-        ]);
-        Yii::$app->view->registerMetaTag([
             'name' => 'robots',
             'content' => $noIndex
         ]);
-        Yii::$app->view->title = (empty($metaData['seo_title'])) ? $metaData['title'] : $metaData['seo_title'];
+        Yii::$app->view->title = (empty($this->metaData['seo_title'])) ?
+            $this->metaData['title'] : $this->metaData['seo_title'];
+        Yii::$app->view->registerMetaTag([
+            'name' => 'description',
+            'content' => $this->metaData['seo_description']
+        ]);
 
-        return $metaData;
     }
+
+    public function getMetaData() : array
+    {
+        return $this->metaData;
+    }
+
+
+    private function setModel(object $model) : object
+    {
+        $this->model = $model;
+        if(Yii::$app->language == 'uk') {
+            $this->model->options = $this->model->translation;
+        }
+
+        return $this;
+    }
+
+    private function setTitle() : object
+    {
+        $this->metaData['title'] = $this->getOption('title');
+
+        return $this;
+    }
+
+    private function setSeoTitle() : object
+    {
+        $this->metaData['seo_title'] =
+            $this->getOption('seo_title');
+
+        return $this;
+    }
+
+    private function setDescription() : object
+    {
+        $this->metaData['seo_description'] =
+            $this->getOption('seo_description');
+
+        return $this;
+    }
+
+    private function setSeoText()
+    {
+        $this->metaData['seo_text'] = $this->getOption('seo_text');
+
+        return $this;
+    }
+
+    private function setNoIndex()
+    {
+        $this->metaData['no_index'] = $this->getOption('no_index');
+
+        return $this;
+    }
+
+    private function setNoFollow()
+    {
+        $this->metaData['no_follow'] = $this->getOption('no_follow');
+
+        return $this;
+    }
+
+    private function getOption($option)
+    {
+        return (! empty($this->model->options[$option])) ?
+            $this->model->options[$option] : $this->metaData[$option];
+    }
+
 }
