@@ -226,45 +226,30 @@ class SiteController extends Controller
 
     public function actionPrivacyPolicy() : string
     {
-        try {
+        return $this->actionPage('privacy-policy');
+    }
+
+    public function actionPage($link) : string
+    {
+        try{
             $model = Yii::createObject(Pages::className())
                         ->find()
-                        ->where(['link' => 'privacy-policy'])
+                        ->where(['link' => $link])
                         ->one();
+
             $model->options = ($this->getLanguage() == 'uk') ?
                 $model->translation : $model->options ;
-
             $this->setMetaData($model);
             $meta = $this->getMetaData();
-
             $breadcrumbs = ['label' => Yii::t('app', $meta['title'])];
 
             return $this->render('page', [
                'model' => $model,
                'breadcrumbs' => $breadcrumbs
             ]);
-        } catch ( NotFoundHttpException $exception) {
+        } catch (\ErrorException $exception) {
             throw new NotFoundHttpException();
         }
-    }
-
-    public function actionPage($link) : string
-    {
-        $model = Yii::createObject(Pages::className())
-                    ->find()
-                    ->where(['link' => $link])
-                    ->one();
-
-        $model->options = ($this->getLanguage() == 'uk') ?
-            $model->translation : $model->options ;
-        $this->setMetaData($model);
-        $meta = $this->getMetaData();
-        $breadcrumbs = ['label' => Yii::t('app', $meta['title'])];
-
-        return $this->render('page', [
-           'model' => $model,
-           'breadcrumbs' => $breadcrumbs
-        ]);
     }
 
     public function successCallback($client)

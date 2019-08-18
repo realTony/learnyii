@@ -1,8 +1,8 @@
 {
     "name": "yiisoft/yii2-app-basic",
-    "description": "Yii 2 Basic Project Template",
-    "keywords": ["yii2", "framework", "basic", "project template"],
-    "homepage": "http://www.yiiframework.com/",
+    "description": "",
+    "keywords": [],
+    "homepage": "https://stickit.com.ua/",
     "type": "project",
     "license": "BSD-3-Clause",
     "support": {
@@ -16,10 +16,8 @@
     "require": {
         "php": ">=7.2.0",
         "yiisoft/yii2": "~2.0.14",
-        "yiisoft/yii2-bootstrap": "~2.0.0",
         "yiisoft/yii2-swiftmailer": "~2.0.0",
         "yiisoft/yii2-twig": "^2.2",
-        "codeception/codeception": "*",
         "yiisoft/yii2-imagine": "*",
         "yiisoft/yii2-authclient": "^2.1",
         "spomky-labs/jose": "^7.1",
@@ -37,12 +35,7 @@
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
-        "yiisoft/yii2-gii": "~2.0.0",
-        "yiisoft/yii2-faker": "~2.0.0",
-
-        "codeception/codeception": "^2.2.3",
-        "codeception/verify": "~0.3.1",
-        "codeception/specify": "~0.4.3"
+        "yiisoft/yii2-gii": "~2.0.0"
     },
     "config": {
         "process-timeout": 1800,

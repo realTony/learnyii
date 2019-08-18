@@ -206,8 +206,8 @@ class AdvertisementFilter extends Widget
                 $category = new Categories();
                 $data = $category->findOne($id);
                 $current = $data->meta['title'];
-                $options = json_decode($data->options, true);
-                $translation = json_decode($data->translation, true);
+                $options = $data->options;
+                $translation = $data->translation;
                 $extraFilter = (new AdvertisementCatFilters())->find()->where(['category_id' => $id])->all();
                 if( !empty($this->options['sub_only']) && $this->options['sub_only'] == true) {
 
