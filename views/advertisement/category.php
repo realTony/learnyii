@@ -102,4 +102,9 @@ $this->params['breadcrumbs'] = $breadcrumbs;
         </div>
     </div>
 </div>
-<?= FooterInfo::widget() ?>
+<?= FooterInfo::widget([
+    'options' => [
+        'has_seo' => true
+    ],
+    'seo_text' => $meta['seo_text']
+]) ?>

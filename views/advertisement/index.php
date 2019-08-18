@@ -2,6 +2,7 @@
 
 use app\components\Premium;
 use app\widgets\AdvertisementFilter;
+use app\widgets\FooterInfo;
 use app\widgets\SearchAdverts;
 use app\widgets\SortingForm;
 use yii\helpers\Html;
@@ -96,4 +97,9 @@ $this->params['breadcrumbs'] = $breadcrumbs;
         </div>
     </div>
 </div>
-<?= \app\widgets\FooterInfo::widget() ?>
+<?= FooterInfo::widget([
+    'options' => [
+        'has_seo' => true
+    ],
+    'seo_text' => $meta['seo_text']
+]) ?>

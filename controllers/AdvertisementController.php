@@ -105,7 +105,8 @@ class AdvertisementController extends Controller
             'sideFilter' => $asideFilter,
             'pages' => $pages,
             'data' => $dataProvider,
-            'breadcrumbs' => $breadcrumbs
+            'breadcrumbs' => $breadcrumbs,
+            'meta' => $metaData
         ]);
     }
 
@@ -189,6 +190,7 @@ class AdvertisementController extends Controller
                 'pages' => $pages,
                 'data' => $dataProvider,
                 'breadcrumbs' => $breadcrumbs,
+                'meta' => $meta,
                 'catInfo' => $catId
             ]);
         }
@@ -290,7 +292,8 @@ class AdvertisementController extends Controller
                 'pages' => $pages,
                 'data' => $dataProvider,
                 'breadcrumbs' => $breadcrumbs,
-                'catInfo' => $catId
+                'catInfo' => $catId,
+                'meta' => $metaData
             ]);
         }
     }

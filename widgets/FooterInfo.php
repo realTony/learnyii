@@ -9,7 +9,7 @@ use yii\base\Widget;
 class FooterInfo extends Widget
 {
     public $options = [
-            'has_seo' => true
+        'has_seo' => true
     ];
 
     public $seo_text;
@@ -32,9 +32,9 @@ class FooterInfo extends Widget
         <div class="accordion">
             <div class="holder-section">
                 <div class="container">
-                    <?php if( !empty( $seo_text)): ?>
+                    <?php if( !empty( $this->seo_text)): ?>
                     <div class="holder-box-hidden clone">
-                        <?= $seo_text ?>
+                        <?= $this->seo_text ?>
                         <a class="btn-show-more" href="#"><?= \Yii::t('app', 'Читать дальше...')?></a>
                     </div>
                     <?php endif; ?>
