@@ -19,8 +19,8 @@ class AdvertisementFilter extends Model
     public $minDistance = 0;
     public $maxDistance = 2000;
     public $stickingArea;
-    public $extraFilter;
-    public $subCategory;
+    public $extraFilter = [];
+    public $subCategory = [];
     public $city;
     public $district;
     public $orderBy;
@@ -43,7 +43,6 @@ class AdvertisementFilter extends Model
                 }
             }
         }
-
         return $this;
     }
 }
