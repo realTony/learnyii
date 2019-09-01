@@ -40,7 +40,8 @@ $this->params['breadcrumbs'] = $breadcrumbs;
                     'user_id' => false,
                     'use_wrapper' => true,
                     'show_filters' => false,
-                    'custom_filters' => false
+                    'custom_filters' => false,
+                    'route' => $route
             ]
         ]) ?>
 

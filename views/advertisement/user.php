@@ -44,7 +44,8 @@ $this->params['breadcrumbs'] = $breadcrumbs;
                     'options' => [
                         'user_id' => $user->id,
                         'use_wrapper' => false,
-                        'show_filters' => true
+                        'show_filters' => true,
+                        'route' => $route
                     ],
             ])?>
         </div>
@@ -76,6 +77,7 @@ $this->params['breadcrumbs'] = $breadcrumbs;
                 'timeout' => false,
                 'formSelector' => '#sortingForm'
             ]) ?>
+            <ul class="list-announcements">
             <?php if(! empty($models)): ?>
                 <?= $this->render('_loop', [
                     'models' => $models,
@@ -83,6 +85,8 @@ $this->params['breadcrumbs'] = $breadcrumbs;
                     'pages' => $pages
                 ]);
                 ?>
+
+            </ul>
             <?php endif; ?>
             <?php if (! empty($pages) && $pages->pageSize < $pages->totalCount):?>
                 <div class="holder-pagination">

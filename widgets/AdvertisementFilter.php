@@ -27,7 +27,8 @@ class AdvertisementFilter extends Widget
             'cat_id' => '',
             'user_id' => false,
             'use_wrapper' => true,
-            'custom_filters' => false
+            'custom_filters' => false,
+            'route' => ''
     ];
     public $filter;
 
@@ -59,6 +60,7 @@ class AdvertisementFilter extends Widget
         <?php endif; ?>
         <?php $form = ActiveForm::begin([
         'method' => 'GET',
+        'action' => Url::to([$this->options['route']]),
         'options' => [
             'class' => 'holder-aside-left'
         ]
@@ -179,8 +181,10 @@ class AdvertisementFilter extends Widget
         <?php
         $form = ActiveForm::begin([
             'method' => 'GET',
+            'action' => Url::to([$this->options['route']]),
             'options' => [
-                'class' => 'holder-aside-left'
+                'class' => 'holder-aside-left',
+                'data-pjax' => true
             ]
         ]);
         $stickingAreas = (new StickingAreas())->find()->all();

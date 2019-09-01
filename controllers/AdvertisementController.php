@@ -106,7 +106,8 @@ class AdvertisementController extends Controller
             'pages' => $pages,
             'data' => $dataProvider,
             'breadcrumbs' => $breadcrumbs,
-            'meta' => $metaData
+            'meta' => $metaData,
+            'route' => 'advertisement'
         ]);
     }
 
@@ -191,7 +192,8 @@ class AdvertisementController extends Controller
                 'data' => $dataProvider,
                 'breadcrumbs' => $breadcrumbs,
                 'meta' => $meta,
-                'catInfo' => $catId
+                'catInfo' => $catId,
+                'route' => $path
             ]);
         }
     }
@@ -293,7 +295,8 @@ class AdvertisementController extends Controller
                 'data' => $dataProvider,
                 'breadcrumbs' => $breadcrumbs,
                 'catInfo' => $catId,
-                'meta' => $metaData
+                'meta' => $metaData,
+                'route' => $path
             ]);
         }
     }
@@ -379,6 +382,7 @@ class AdvertisementController extends Controller
                 'data' => $dataProvider,
                 'models' => $dataProvider->getModels(),
                 'pages' => $pages,
+                'route' => 'advertisement/user/'.$id
             ]);
         }
     }
