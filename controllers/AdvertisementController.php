@@ -330,10 +330,12 @@ class AdvertisementController extends Controller
         $metaData['seo_title'] = str_replace('{user}', $user->username, $metaData['seo_title']);
         Yii::$app->getView()->title = $metaData['seo_title'];
 
+        $requested = Yii::$app->request->queryParams;
+        $requested['user_id'] = $id;
+        $asideFilter->setProperties($requested);
+
         if (Yii::$app->request->isAjax && (Yii::$app->request->queryParams)['action'] == 'lazyLoad') {
-            $requested = Yii::$app->request->queryParams;
-            $requested['user_id'] = $id;
-            $asideFilter->setProperties($requested);
+
 
             if(!empty($requested['orderBy'])) {
                 $filter->orderBy =  $requested['orderBy'];
@@ -349,16 +351,10 @@ class AdvertisementController extends Controller
 
         } else {
 
-            $requested = Yii::$app->request->queryParams;
-            $requested['user_id'] = $id;
             if (!empty(Yii::$app->request->queryParams)) {
-                $asideFilter->setProperties($requested);
-
-                if(!empty($requested['orderBy'])) {
-                    $filter->orderBy =  $requested['orderBy'];
-                }
-
-                $filter->orderBy = (!empty($requested['orderBy'])) ? $requested['orderBy'] : 'price_asc';
+                $filter->orderBy =
+                    (!empty($requested['orderBy'])) ? $requested['orderBy'] :
+                        'price_asc';
                 $filter->city = (!empty($requested['city'])) ? $requested['city'] : '';
                 $filter->district = (!empty($requested['district'])) ? $requested['district'] : '';
 

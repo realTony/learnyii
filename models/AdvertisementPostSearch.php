@@ -287,14 +287,17 @@ class AdvertisementPostSearch extends AdvertisementPost
 
     public function searchUser($params)
     {
-        $query = AdvertisementPost::find();
+        $params['page'] = (! empty($params['page'])) ? $params['page']: 1;
+        $this->load($params);
+        $query = $this->getAdvertisementPosts();
         $query = $this->setAdditionalTables($query);
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
-                'pageSize' => 29,
+                'pageSize' => Yii::$app->params['pageSize'],
+                'pageSizeLimit' => Yii::$app->params['pageSize'],
             ],
             'sort' => [
                 'defaultOrder' => [
@@ -312,8 +315,9 @@ class AdvertisementPostSearch extends AdvertisementPost
             $this->district = $params['district'];
         }
 
+        $this->setFilters($params);
+        $query = $this->setQueryFilters($query, $params);
 
-        $this->load($params);
         if (!$this->validate()) {
             return $dataProvider;
         }
