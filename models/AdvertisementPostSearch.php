@@ -307,20 +307,8 @@ class AdvertisementPostSearch extends AdvertisementPost
             ],
         ]);
 
-        if (! empty($params['city'])) {
-            $this->city = $params['city'];
-        }
-
-        if (! empty($params['district'])) {
-            $this->district = $params['district'];
-        }
-
         $this->setFilters($params);
         $query = $this->setQueryFilters($query, $params);
-
-        if (!$this->validate()) {
-            return $dataProvider;
-        }
 
         // grid filtering conditions
 

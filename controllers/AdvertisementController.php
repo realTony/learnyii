@@ -333,13 +333,18 @@ class AdvertisementController extends Controller
         $requested = Yii::$app->request->queryParams;
         $requested['user_id'] = $id;
         $asideFilter->setProperties($requested);
+        if(!empty($requested['orderBy'])) {
+            $filter->orderBy =  $requested['orderBy'];
+        }
 
+        if(!empty($requested['extraFilter'])) {
+            $filter->extraFilter =  $requested['extraFilter'];
+        }
+        if(!empty($requested['stickingArea'])) {
+            $filter->extraFilter =  $requested['stickingArea'];
+        }
         if (Yii::$app->request->isAjax && (Yii::$app->request->queryParams)['action'] == 'lazyLoad') {
 
-
-            if(!empty($requested['orderBy'])) {
-                $filter->orderBy =  $requested['orderBy'];
-            }
 
             $filter->city = (!empty($requested['city'])) ? $requested['city'] : '';
             $filter->district = (!empty($requested['district'])) ? $requested['district'] : '';

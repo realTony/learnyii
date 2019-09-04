@@ -18,7 +18,7 @@ class AdvertisementFilter extends Model
     public $maxPrice = 11000;
     public $minDistance = 0;
     public $maxDistance = 2000;
-    public $stickingArea;
+    public $stickingArea = [];
     public $extraFilter = [];
     public $subCategory = [];
     public $city;
