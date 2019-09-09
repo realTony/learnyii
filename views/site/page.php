@@ -30,7 +30,7 @@ $this->params['breadcrumbs'] = $breadcrumbs;
         <?= InfoPages::widget() ?>
         <div class="content">
             <div class="title-text">
-                <h1><?= $model->title ?></h1>
+                <h1><?= Yii::t('app', $model->title) ?></h1>
             </div>
             <?php if(! empty($model->options['content'])): ?>
             <?= $model->options['content'] ?>

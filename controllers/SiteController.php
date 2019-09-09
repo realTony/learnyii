@@ -242,10 +242,11 @@ class SiteController extends Controller
             $this->setMetaData($model);
             $meta = $this->getMetaData();
             $breadcrumbs = ['label' => Yii::t('app', $meta['title'])];
+            $model->title = $meta['title'];
 
             return $this->render('page', [
                'model' => $model,
-               'breadcrumbs' => $breadcrumbs
+               'breadcrumbs' => $breadcrumbs,
             ]);
         } catch (\ErrorException $exception) {
             throw new NotFoundHttpException();
