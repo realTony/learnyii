@@ -90,8 +90,12 @@ class CategoriesController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+        $model->options = json_encode($model->options);
+        $model->translation = json_encode($model->translation);
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' =>$model,
         ]);
     }
 
@@ -153,8 +157,8 @@ class CategoriesController extends Controller
         $model->updated_at = date('Y-m-d H:i:s');
         $parentCat = ArrayHelper::map($model->find()->all(), 'id', 'title');
 
-        $model->options = json_decode($model->options, true);
-        $model->translation = json_decode($model->translation, true);
+//        $model->options = json_decode($model->options, true);
+//        $model->translation = json_decode($model->translation, true);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
