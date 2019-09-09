@@ -214,6 +214,7 @@ class SiteController extends Controller
             $this->setMetaData($model);
             $meta = $this->getMetaData();
             $breadcrumbs = ['label' => Yii::t('app', $meta['title'])];
+            $model->title = $meta['title'];
 
             return $this->render('how-it-works.php', [
                     'model' => $model,
