@@ -84,8 +84,8 @@ class NewsController extends Controller
             throw new NotFoundHttpException();
         }
 
-        $options = (!empty($model->options)) ? json_decode($model->options, true) : [];
-        $model->translation = (!empty($model->translation)) ? json_decode($model->translation, true) : [];
+        $options = (!empty($model->options)) ? $model->options : [];
+        $model->translation = (!empty($model->translation)) ? $model->translation : [];
         $model->options = $options;
         $meta_data = [
             'ru' => [
@@ -120,7 +120,8 @@ class NewsController extends Controller
                 ->find()
                 ->where(['id' => $cat])
                 ->one();
-            $translation = (!empty($category->translation))? json_decode($category->translation, true): [];
+            $options = json_decode($model->options, true);
+            $model->options = array_merge($options, $category->options);
             $breadcrumbs[] = [
                 'label' => ($currentLang == 'uk' && ! empty($translation['title'])) ? $translation['title'] : $category->title,
                 'url' => Url::to(['news/category/'.$category->link])
@@ -150,9 +151,6 @@ class NewsController extends Controller
         if(empty($category)) {
             throw new NotFoundHttpException();
         }
-
-        $options = (!empty($category->options)) ? json_decode($category->options, true) : [];
-        $category->translation = (!empty($category->translation)) ? json_decode($category->translation, true) : [];
 
         $metaData = [
             'ru' => [
