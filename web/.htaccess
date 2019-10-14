@@ -1,8 +1,8 @@
  # use mod_rewrite for pretty URL support
 RewriteEngine on
 
-#RewriteCond %{HTTPS} off
-#RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,NE,R=301]
+RewriteCond %{HTTPS} off
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,NE,R=301]
 
 # if $showScriptName is false in UrlManager, do not allow accessing URLs with script name
 RewriteRule ^index.php/ - [L,R=404]
