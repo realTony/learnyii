@@ -9,6 +9,7 @@ use app\models\CityRegions;
 use app\models\ImageUpload;
 use app\models\MetaTrait;
 use app\models\Pages;
+use app\models\Sitemap;
 use app\modules\admin\models\Categories;
 use app\modules\admin\models\BlogPosts;
 use app\models\Profile;
@@ -24,6 +25,12 @@ use yii\web\Response;
 use app\models\LoginForm;
 use app\models\RegisterForm;
 
+/**
+ * Class SiteController
+ *
+ * @package app\controllers
+ * @property \dektrium\user\Module $module
+ */
 class SiteController extends Controller
 {
     use AjaxValidationTrait;
@@ -133,15 +140,16 @@ class SiteController extends Controller
             'class'    => RecoveryForm::className(),
             'scenario' => RecoveryForm::SCENARIO_REQUEST,
         ]);
-
+        $event = $this->getFormEvent($restoreModel);
         $registerEvent = $event = $this->getFormEvent($registerModel);
 
         $this->trigger('beforeRegister', $registerEvent );
 
         $validateReset = $this->performAjaxValidation($restoreModel);
-
         //Account restoring
+        $this->trigger('beforeRequest', $event);
         if( $restoreModel->load(Yii::$app->request->post()) && $restoreModel->sendRecoveryMessage() ) {
+            $this->trigger('afterRequest', $event);
             return $this->render('message/message', [
                 'title'  => \Yii::t('user', 'Recovery message sent'),
                 'module' => $this->module,
@@ -151,8 +159,8 @@ class SiteController extends Controller
         //Account registration
         $validateRegister = $this->performAjaxValidation($registerModel);
 
-        if( !empty( $validateRegister ))
-            return $validateRegister;
+//        if( !empty( $validateRegister ))
+//            return $validateRegister;
 
         if ( $registerModel->load(Yii::$app->request->post()) &&  $registerModel->register() ) {
             return $this->render('message/message', [
@@ -353,5 +361,16 @@ class SiteController extends Controller
         } else {
             throw new NotFoundHttpException();
         }
+    }
+
+    public function actionSitemap()
+    {
+        $sitemap = new Sitemap();
+
+        if (!$xml_sitemap = Yii::$app->cache->get('sitemap')) {
+//            $urls = $sitemap->getUrlList();
+        }
+die;
+        return var_dump('test');
     }
 }
