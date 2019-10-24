@@ -1,8 +1,8 @@
 {{ use('app/widgets/SocialAuth') }}
 {% set form = active_form_begin({
     'id': 'login-form',
-    'enableAjaxValidation': false,
-    'enableClientValidation': false,
+    'enableAjaxValidation': true,
+    'enableClientValidation': true,
     'options': {
         'class': 'for-login',
     },
