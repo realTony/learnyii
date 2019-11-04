@@ -107,8 +107,8 @@ class SiteController extends Controller
         $slider = $model->imagesLinks;
         $advertIds = [];
 
-        $adverts = (! empty($model->options->categories))? $categories->find()
-            ->where(['in', 'id', array_values($model->options->categories)])
+        $adverts = (! empty($model->options['categories']))? $categories->find()
+            ->where(['in', 'id', array_values($model->options['categories'])])
             ->all(): [];
 
         $news->category = (! empty($categories->category))? array_values((array)$model->options->promo): [];
@@ -118,7 +118,6 @@ class SiteController extends Controller
         if( $this->getLanguage() == 'uk') {
             $model->options = $model->translation;
         }
-
         return $this->render('index', [
                 'model' => $model,
                 'slider' => $slider,
