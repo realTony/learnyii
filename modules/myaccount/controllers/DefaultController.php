@@ -436,7 +436,9 @@ class DefaultController extends Controller
         $model = new AdvertisementPost();
         $advPosts = $model
             ->find()
-            ->where(['authorId' => $user->id, 'is_approved' => 1, 'is_archived' => 0]);
+            ->where(['authorId' => $user->id,
+//                     'is_approved' => 1,
+                     'is_archived' => 0]);
 
         $countQuery = clone $advPosts;
         $pages = new Pagination([

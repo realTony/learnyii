@@ -76,7 +76,9 @@ class User extends \dektrium\user\models\User implements IdentityInterface
     {
         return ( new AdvertisementPost)
             ->find()
-            ->where( ['authorId' => $this->id, 'is_approved' => 1, 'is_archived' => 0])
+            ->where( ['authorId' => $this->id,
+//                      'is_approved' => 1,
+                      'is_archived' => 0])
             ->count();
     }
 
